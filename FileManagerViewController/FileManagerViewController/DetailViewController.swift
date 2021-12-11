@@ -15,15 +15,24 @@ class DetailViewController: UIViewController {
 
   /// # It has to be an `optional`, as it `may or may not` get an init value
   var selectedImage: String?
+  var picturesList: [String]?
+  var currentPicture: Int?
 
   override func viewDidLoad() {
     super.viewDidLoad()
     /// # Since both `title` and `selectedImage` are `optionals` there is no need for unwrapping
-    title = self.selectedImage
+    /// # But if set to something else, then unwrapping is needed
+    if let listOfPictures = picturesList {
+      if let picture = currentPicture {
+        title = "Picture \(picture) of \(listOfPictures.count)"
+      } else {
+        title = "Picture X of \(listOfPictures.count)"
+      }
+    }
     /// # This will inherit the settings from the `NavigationController`
     navigationItem.largeTitleDisplayMode = .never
-    if let imageToLoad = self.selectedImage {
-      self.imageViwq.image = UIImage(named: imageToLoad)
+    if let imageToLoad = selectedImage {
+      imageViwq.image = UIImage(named: imageToLoad)
     }
   }
 

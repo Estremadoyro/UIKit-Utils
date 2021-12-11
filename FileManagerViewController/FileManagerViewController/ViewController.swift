@@ -10,6 +10,7 @@ import UIKit
 /// # `UITableViewController` is a `ViewController` for making tables
 class ViewController: UITableViewController {
   var pictures = [String]()
+  var pictureNames = [String]()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -25,11 +26,21 @@ class ViewController: UITableViewController {
     for item in items {
       if item.hasPrefix("nssl") {
         // this is the picture to load
+        /// # remove the `.type`
         pictures.append(item)
+        pictureNames.append(removeSuffix(pictureName: item))
       }
     }
-
+    pictures = sortItems()
     print(pictures)
+  }
+
+  private func removeSuffix(pictureName: String) -> String {
+    return pictureName.components(separatedBy: ".")[0]
+  }
+
+  private func sortItems() -> [String] {
+    return pictures.sorted(by: { $0 < $1 })
   }
 
   /// # Define the `number of rows` of the table
@@ -45,12 +56,16 @@ class ViewController: UITableViewController {
     /// # `iOS 14 >` on onwards
     if #available(iOS 14.0, *) {
       var content = cell.defaultContentConfiguration()
-      content.text = self.pictures[indexPath.row]
+      content.text = self.pictureNames[indexPath.row]
+      content.textProperties.color = .systemIndigo
+      content.textProperties.font = .boldSystemFont(ofSize: 20)
       cell.contentConfiguration = content
     } else {
       /// # `< iOS 14` -> `HackingWithSwift's`
       /// # Specify the `textLabel` value if exists
       cell.textLabel?.text = pictures[indexPath.row]
+      cell.textLabel?.font = .boldSystemFont(ofSize: 20)
+      cell.textLabel?.textColor = .systemIndigo
     }
     return cell
   }
@@ -63,6 +78,8 @@ class ViewController: UITableViewController {
     if let vc = storyboard?.instantiateViewController(withIdentifier: "Detail") as? DetailViewController {
       /// # 2. Set the `DetailViewController` class' property `selectedImage` to our image name
       vc.selectedImage = pictures[indexPath.row]
+      vc.picturesList = pictures
+      vc.currentPicture = indexPath.row + 1
       /// # 3. Push the `DetailViewController` with id `Detail` into the navigation controller
       /// # Gets the nearest `NavigationViewController`, if any
       navigationController?.pushViewController(vc, animated: true)
