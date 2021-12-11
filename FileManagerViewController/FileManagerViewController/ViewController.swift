@@ -13,6 +13,8 @@ class ViewController: UITableViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    title = "Storm Viewer"
+    navigationController?.navigationBar.prefersLargeTitles = true
     /// # `FileManager`, allows to work with the `file system`
     let fm = FileManager.default
     /// # Full path name of the `Bundle's directory`
@@ -51,5 +53,19 @@ class ViewController: UITableViewController {
       cell.textLabel?.text = pictures[indexPath.row]
     }
     return cell
+  }
+
+  /// # Load the `DatailViewController` created, from storyboard
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    /// # 1. Try loading the `Detail` view controller (Storyboard ViewController) and typecasting it to DetailViewController (`CocoaTouch` file created)
+    /// # basically leting the code know it came from a story board and use it
+    /// # `storyboard` the Storyboard from which the ViewController originated
+    if let vc = storyboard?.instantiateViewController(withIdentifier: "Detail") as? DetailViewController {
+      /// # 2. Set the `DetailViewController` class' property `selectedImage` to our image name
+      vc.selectedImage = pictures[indexPath.row]
+      /// # 3. Push the `DetailViewController` with id `Detail` into the navigation controller
+      /// # Gets the nearest `NavigationViewController`, if any
+      navigationController?.pushViewController(vc, animated: true)
+    }
   }
 }
