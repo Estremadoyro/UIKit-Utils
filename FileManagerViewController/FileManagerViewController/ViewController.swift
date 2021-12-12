@@ -53,6 +53,7 @@ class ViewController: UITableViewController {
     /// # Cells in a table are `recycled` meaning the cells rendered on screen are then `rehused` by other cells
     /// # that don't fit in the screen
     let cell = tableView.dequeueReusableCell(withIdentifier: "Picture", for: indexPath)
+    /// # There is `no neeed to` cast `cell` to some `custom ViewController` as it doesn't require its on properties
     /// # `iOS 14 >` on onwards
     if #available(iOS 14.0, *) {
       var content = cell.defaultContentConfiguration()
@@ -75,6 +76,7 @@ class ViewController: UITableViewController {
     /// # 1. Try loading the `Detail` view controller (Storyboard ViewController) and typecasting it to DetailViewController (`CocoaTouch` file created)
     /// # basically leting the code know it came from a story board and use it
     /// # `storyboard` the Storyboard from which the ViewController originated
+    /// # Most importantly, to `customize` the `ViewController`, which properties need to be accessed `safely aka unwrapped`
     if let vc = storyboard?.instantiateViewController(withIdentifier: "Detail") as? DetailViewController {
       /// # 2. Set the `DetailViewController` class' property `selectedImage` to our image name
       vc.selectedImage = pictures[indexPath.row]
