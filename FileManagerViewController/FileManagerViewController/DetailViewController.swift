@@ -31,6 +31,7 @@ class DetailViewController: UIViewController {
     }
     /// # This will inherit the settings from the `NavigationController`
     navigationItem.largeTitleDisplayMode = .never
+    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(shareApp))
     if let imageToLoad = selectedImage {
       imageViwq.image = UIImage(named: imageToLoad)
     }
@@ -44,5 +45,22 @@ class DetailViewController: UIViewController {
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(true)
     navigationController?.hidesBarsOnTap = false
+  }
+
+  @objc private func shareApp() {
+    let appDescription: String = "Best app in the whole spiderverse"
+    /// # It's ok to `force unwrap (!)`, due to this being `static values` which are from the `AppBundle`, meaning it `CAN'T` fail to a `logic error` but to a `human error`
+    let appShareIcon = UIImage(named: "senku.jpeg")! /// # Not entirely necessary
+    guard let appLink = NSURL(string: "https://www.apple.com") else {
+      print("App website down")
+      return
+    }
+    let vc = UIActivityViewController(activityItems: [appDescription, appLink, appShareIcon], applicationActivities: nil)
+    /// # Prevents from `crashing in iPad`
+    popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+    /// # Pre-configuring activity items
+    vc.activityItemsConfiguration = [UIActivity.ActivityType.message] as? UIActivityItemsConfigurationReading
+    vc.isModalInPresentation = true
+    present(vc, animated: true, completion: nil)
   }
 }

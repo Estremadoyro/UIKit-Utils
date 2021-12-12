@@ -62,8 +62,18 @@ class DetailViewController: UIViewController {
       print("No image found")
       return
     }
+    guard let imageList = picturesList else {
+      print("No pictures")
+      return
+    }
+    guard let imageIndex = currentPicture else {
+      print("No image index")
+      return
+    }
+    let imageName = imageList[imageIndex]
     /// # Create a `UIActivityViewController` to give option to share
-    let vc = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+    /// # `activityItems` is a list of objects that can be passed, each one of them has a different share option
+    let vc = UIActivityViewController(activityItems: [image, imageName], applicationActivities: nil)
     /// # Set the `barButtonItem` which will anchor the `popover`
     /// # Whitout it, it won't run in iPad
     vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem

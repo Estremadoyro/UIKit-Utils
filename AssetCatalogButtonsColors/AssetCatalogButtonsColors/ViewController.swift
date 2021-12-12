@@ -44,6 +44,8 @@ class ViewController: UIViewController {
 
     countries += ["estonia", "france", "germany", "ireland", "italy", "monaco", "nigeria", "poland", "russia", "spain", "uk", "us"]
 
+    /// # Create navigation button to show score
+    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(navigationShowScore))
     askQuestion()
   }
 
@@ -109,5 +111,14 @@ class ViewController: UIViewController {
 
   @IBAction func buttonTapped(_ sender: UIButton) {
     alertToDisplay(numberOfQuestion: questionsAsked, sender: sender)
+  }
+
+  @objc private func navigationShowScore() {
+    /// # Create new `UIAlertController`
+    let ac = UIAlertController(title: "Score", message: "Your current score is: \(score)", preferredStyle: .alert)
+    /// # `handler` can be `nil`, meaning don't execute anything when `alert was activated`
+    ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: nil))
+    /// # `completion` is an optional action to be executed after the `UIAlertAction` has been dismissed
+    present(ac, animated: true, completion: nil)
   }
 }
