@@ -1,8 +1,8 @@
 //
-//  ViewController.swift
+//  WebViewController.swift
 //  WebKitSheetsProgressView
 //
-//  Created by Leonardo  on 12/12/21.
+//  Created by Leonardo  on 14/12/21.
 //
 
 import UIKit
@@ -11,11 +11,12 @@ import WebKit
 /// # Swift needs to know all the methods of `WKWebView's delegate` need to implement (Come in a Protocol)
 /// # `ViewController` inherits from `UIViewController (Class)`, but `WKNavigationDelegate (Protoocl)` is actually a `promise` of implementing all of its methods
 /// # The `SuperClass` (UIViewController) comes first, then the `Protocols` (WKNavigationDelegate)
-class ViewController: UIViewController, WKNavigationDelegate {
+class WebViewController: UIViewController, WKNavigationDelegate {
   /// # `Implicity Unwrapped` optional, it `might be nil` but Swift eliminates the need for unwrapping. It doesn't matter if has no value assigned, as it will default to `nil`
   var webView: WKWebView!
   var progressView: UIProgressView!
-  let allowedWebsites: [String] = ["lolfriends.herokuapp.com", "apple.com", "hackingwithswift.com", "google.com"]
+  var allowedWebsites: [String]?
+  var website: String?
 
   override func loadView() {
     webView = WKWebView()
@@ -32,7 +33,7 @@ class ViewController: UIViewController, WKNavigationDelegate {
   override func viewDidLoad() {
     super.viewDidLoad()
     navigationBarSettings()
-    let url = URL(string: "https://\(allowedWebsites[0])")!
+    let url = URL(string: "https://\(website!)")!
     /// # Give the `webView` this `url` to load
     webView.load(URLRequest(url: url))
     /// # Allow `swipping` left to right to go back or forward
@@ -47,6 +48,9 @@ class ViewController: UIViewController, WKNavigationDelegate {
     let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
     /// # Button to `refresh` the `webView`
     let refresh = UIBarButtonItem(barButtonSystemItem: .refresh, target: webView, action: #selector(webView.reload))
+    /// # `back` and `forward` buttons
+    let goBack = UIBarButtonItem(barButtonSystemItem: .reply, target: webView, action: #selector(webView.goBack))
+    let goForward = UIBarButtonItem(barButtonSystemItem: .add, target: webView, action: #selector(webView.goForward))
     /// # Make the `toolbar` visible
     navigationController?.isToolbarHidden = false
     /// # Set the `progressView`
@@ -58,7 +62,7 @@ class ViewController: UIViewController, WKNavigationDelegate {
     /// # The `flexibleSpace` item will make itself smaller to fit the `progressView`
     let progressButton = UIBarButtonItem(customView: progressView)
     /// # Add the items to the `toolbarItems`
-    toolbarItems = [progressButton, spacer, refresh]
+    toolbarItems = [goBack, goForward, progressButton, spacer, refresh]
     /// # `webView` can give us the `estimate progress value` but the `navigationDelegate` doesn't tell us when the value has changed
     /// # Solution: `KVO` (Key Value Observing), tell me when property `X` of object `Y` gets changed by `anyone` at `anytime`
     /// # First, we need to add an `observer` to the `webView` to `observe for changes`
@@ -70,11 +74,17 @@ class ViewController: UIViewController, WKNavigationDelegate {
     /// # `Must` override the method `observeValue()` tells you when the `observed value` has changed
   }
 
+  private func alertNotAllowedWebsite() {
+    let ac = UIAlertController(title: "Website not allowed", message: "External webistes are not allowed", preferredStyle: .alert)
+    ac.addAction(UIAlertAction(title: "Done", style: .default, handler: nil))
+    present(ac, animated: true, completion: nil)
+  }
+
   @objc private func openWebsiteList() {
     /// # Creates the `alert controller` to show an `actionSheet` with the list of websites (List of UIAlerts)
     let ac = UIAlertController(title: "Open page...", message: nil, preferredStyle: .actionSheet)
     /// # `handler` takes a `method` with `UIAlertAction` as `parameter`
-    allowedWebsites.forEach { website in
+    allowedWebsites!.forEach { website in
       ac.addAction(UIAlertAction(title: website, style: .default, handler: openWebsite))
     }
     ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -91,6 +101,7 @@ class ViewController: UIViewController, WKNavigationDelegate {
   /// # `didFinish` runs when the `web view` has loaded
   func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
     title = webView.title
+    navigationItem.largeTitleDisplayMode = .never
   }
 
   override class func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
@@ -120,14 +131,16 @@ class ViewController: UIViewController, WKNavigationDelegate {
     /// # Not all the `urls` have `hosts` assigned to them
     if let host = url?.host {
       /// # `allowedWebsites.contains` fails the 2nd time, due to the `host` updating its name to `www.host.com` or sth else, that's why it's needed to check each if the changing `host` contains an `allowedWebsite` one by one, due to the `host` potentially being anywhere after reached the site
-      for website in allowedWebsites {
+      for website in allowedWebsites! {
         if host.contains(website) {
           decisionHandler(.allow)
           return
         }
       }
     }
+    /// # If a `website` has multiple middle `URL's` before its final destiny, then the check is gonna fail, as the `middle website` won't pass
     print("Website not allowed: \(url?.host ?? "NO_HOST_DETECTED")")
     decisionHandler(.cancel)
+    alertNotAllowedWebsite()
   }
 }
