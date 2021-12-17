@@ -70,8 +70,79 @@ final class TableViewController: UITableViewController {
   }
 
   private func submitAnswer(answer: String) {
-    usedWords.append(answer)
-    tableView.reloadData()
+    let errorTitle: String
+    let errorMessage: String
+    let lowerAnswer = answer.lowercased()
+
+    if !isPossible(answer: lowerAnswer) {
+      errorTitle = "Word not possible"
+      errorMessage = "You can't spell that word from \(title!.lowercased())"
+    }
+    else if !isOriginal(answer: lowerAnswer) {
+      errorTitle = "Word used already"
+      errorMessage = "Be more original!"
+    }
+    else if !isReal(answer: lowerAnswer) {
+      errorTitle = "Word not recognized"
+      errorMessage = "You can't just make them up bruhh"
+    }
+    else {
+      /// # Passed all the filters, is an acceptable word
+      insertWordInTable(answer: lowerAnswer)
+      return
+    }
+    /// # Create an alert if word was `invalid`
+    let ac = UIAlertController(title: errorTitle, message: errorMessage, preferredStyle: .alert)
+    ac.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+    present(ac, animated: true)
+  }
+
+  private func insertWordInTable(answer word: String) {
+    /// # Insert the `word` at possition `0`
+    usedWords.insert(word, at: 0)
+    /// # New `IndexPath` (List of indexes ``row and section indexes``) which points at the `first row`
+    let indexPath = IndexPath(row: 0, section: 0)
+    /// # This is needed to display the `animation` of the new `cell` animating from top
+    tableView.insertRows(at: [indexPath], with: .left)
+  }
+
+  /// # Word hasn't been used before
+  private func isOriginal(answer word: String) -> Bool {
+    return !usedWords.contains(word)
+  }
+
+  /// # Word can't be made from the `title` word
+  private func isPossible(answer word: String) -> Bool {
+    /// # Create a `tempWord` of the word to play with
+    guard var tempWord = title?.lowercased() else { return false }
+    /// # Loop through every `letter` in the `word answer`
+    for letter in word {
+      /// # Look for the `answer letter` position inside the `play word (title)`
+      if let position = tempWord.firstIndex(of: letter) {
+        /// # If `found` then `remove` it from the `tempWord` list, in order to prevent answer letters passing the test, if those are repeated more times than in the `play word (title)`
+        tempWord.remove(at: position)
+        /// # Answer letter doesn't exist in the `play word (title)`, so it fails
+      }
+      else {
+        return false
+      }
+    }
+    /// # If no answer letters were repeated or didn't exist
+    return true
+  }
+
+  /// # Word is `misspelled`
+  private func isReal(answer word: String) -> Bool {
+    /// # Instantiate the `UIKit` letter checker obj.
+    let checker = UITextChecker()
+    /// # Range the checker will be cheaking for a misspelling
+    /// # `location` starting position, `utf16` is a `16 Bit Unicode Transformation Format`, compatibility with `Objective-C`
+    let range = NSRange(location: 0, length: word.utf16.count)
+    /// # If there is a `misspelled word`, then return the `range`
+    /// # `wrap`: If there is no `misspelled word` then start from the `startingAt` position
+    let misspelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")
+    /// # If `misspelledRange` didn't find any spelling errors, then there is no `starting position` for a wrong word
+    return misspelledRange.location == NSNotFound
   }
 
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
