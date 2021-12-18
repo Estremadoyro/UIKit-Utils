@@ -34,6 +34,7 @@ final class TableViewController: UITableViewController {
 
   private func navigationBar() {
     navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promptForAnswer))
+    navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(startGame))
   }
 
   /// # Method to call when the `bar button item` is pressed
@@ -59,7 +60,7 @@ final class TableViewController: UITableViewController {
     print("TableView controller destroyed")
   }
 
-  private func startGame() {
+  @objc private func startGame() {
     /// # Gets a `random word`
     title = allWords.randomElement()
     navigationController?.navigationBar.prefersLargeTitles = true
@@ -70,29 +71,27 @@ final class TableViewController: UITableViewController {
   }
 
   private func submitAnswer(answer: String) {
-    let errorTitle: String
-    let errorMessage: String
     let lowerAnswer = answer.lowercased()
 
-    if !isPossible(answer: lowerAnswer) {
-      errorTitle = "Word not possible"
-      errorMessage = "You can't spell that word from \(title!.lowercased())"
-    }
-    else if !isOriginal(answer: lowerAnswer) {
-      errorTitle = "Word used already"
-      errorMessage = "Be more original!"
-    }
-    else if !isReal(answer: lowerAnswer) {
-      errorTitle = "Word not recognized"
-      errorMessage = "You can't just make them up bruhh"
-    }
-    else {
-      /// # Passed all the filters, is an acceptable word
-      insertWordInTable(answer: lowerAnswer)
+    guard isPossible(answer: lowerAnswer) else {
+      showErrorMessage(errorTitle: "Word not possible", errorMessage: "You can't spell that word from \(title!.lowercased())")
       return
     }
-    /// # Create an alert if word was `invalid`
-    let ac = UIAlertController(title: errorTitle, message: errorMessage, preferredStyle: .alert)
+
+    guard isOriginal(answer: lowerAnswer) else {
+      showErrorMessage(errorTitle: "Word used already", errorMessage: "Be more original!")
+      return
+    }
+    guard isReal(answer: lowerAnswer) else {
+      showErrorMessage(errorTitle: "Word not recognized", errorMessage: "You can't just make them up bruhh")
+      return
+    }
+    /// # Passed all the filters, is an acceptable word
+    insertWordInTable(answer: lowerAnswer)
+  }
+
+  private func showErrorMessage(errorTitle title: String, errorMessage message: String) {
+    let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
     ac.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
     present(ac, animated: true)
   }
@@ -106,9 +105,9 @@ final class TableViewController: UITableViewController {
     tableView.insertRows(at: [indexPath], with: .left)
   }
 
-  /// # Word hasn't been used before
+  /// # Word hasn't been used before, that is not the same as the `title word`, and it's longer than 3 letters
   private func isOriginal(answer word: String) -> Bool {
-    return !usedWords.contains(word)
+    return !usedWords.contains(word) && word != title?.lowercased() && word.count >= 3
   }
 
   /// # Word can't be made from the `title` word
@@ -145,11 +144,11 @@ final class TableViewController: UITableViewController {
     return misspelledRange.location == NSNotFound
   }
 
-  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  override internal func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return usedWords.count
   }
 
-  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  override internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "Word", for: indexPath)
     var content = cell.defaultContentConfiguration()
     content.text = usedWords[indexPath.row]

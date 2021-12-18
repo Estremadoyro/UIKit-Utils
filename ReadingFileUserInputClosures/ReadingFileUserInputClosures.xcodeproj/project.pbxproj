@@ -13,7 +13,7 @@
 		A7466F2B276C280A00EE68F4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7466F29276C280A00EE68F4 /* Main.storyboard */; };
 		A7466F2D276C280D00EE68F4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7466F2C276C280D00EE68F4 /* Assets.xcassets */; };
 		A7466F30276C280D00EE68F4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7466F2E276C280D00EE68F4 /* LaunchScreen.storyboard */; };
-		A7466F38276C2BE300EE68F4 /* start.txt in Resources */ = {isa = PBXBuildFile; fileRef = A7466F37276C2BE300EE68F4 /* start.txt */; };
+		A7D83641276D83330039A8DF /* start.txt in Resources */ = {isa = PBXBuildFile; fileRef = A7D83640276D83330039A8DF /* start.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,7 +25,7 @@
 		A7466F2C276C280D00EE68F4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A7466F2F276C280D00EE68F4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A7466F31276C280D00EE68F4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A7466F37276C2BE300EE68F4 /* start.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = start.txt; path = "../../../Resources/project5-files/start.txt"; sourceTree = "<group>"; };
+		A7D83640276D83330039A8DF /* start.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = start.txt; path = "../../Resources/project5-files/start.txt"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,7 +65,7 @@
 				A7466F2C276C280D00EE68F4 /* Assets.xcassets */,
 				A7466F2E276C280D00EE68F4 /* LaunchScreen.storyboard */,
 				A7466F31276C280D00EE68F4 /* Info.plist */,
-				A7466F37276C2BE300EE68F4 /* start.txt */,
+				A7D83640276D83330039A8DF /* start.txt */,
 			);
 			path = ReadingFileUserInputClosures;
 			sourceTree = "<group>";
@@ -129,7 +129,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7466F30276C280D00EE68F4 /* LaunchScreen.storyboard in Resources */,
-				A7466F38276C2BE300EE68F4 /* start.txt in Resources */,
+				A7D83641276D83330039A8DF /* start.txt in Resources */,
 				A7466F2D276C280D00EE68F4 /* Assets.xcassets in Resources */,
 				A7466F2B276C280A00EE68F4 /* Main.storyboard in Resources */,
 			);
