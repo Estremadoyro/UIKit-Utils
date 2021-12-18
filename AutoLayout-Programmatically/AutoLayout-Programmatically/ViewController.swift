@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+final class VFLViewController: UIViewController {
   var colors = [UIColor.red, UIColor.green, UIColor.cyan, UIColor.purple, UIColor.blue]
   var mangas = ["Spy x Family", "Dr. Stone", "One Punch Man", "The Promised Neverland", "Komi Can't Communicate"]
   var viewsDictionary = [String: UILabel]()
