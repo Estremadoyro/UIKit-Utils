@@ -8,7 +8,7 @@
 import UIKit
 class TableViewController: UITableViewController {
   var petitions = [Petition]()
-  var filteredPetitions: [Petition]?
+  var filteredPetitions = [Petition]()
   var url: String?
 
   override func viewDidLoad() {
@@ -40,8 +40,10 @@ class TableViewController: UITableViewController {
   }
 
   @objc private func resetFilter() {
-    if filteredPetitions == nil { return }
-    filteredPetitions = nil
+    if filteredPetitions.count == petitions.count {
+      return
+    }
+    filteredPetitions = petitions
     tableView.reloadData()
   }
 
@@ -89,6 +91,7 @@ class TableViewController: UITableViewController {
     if let jsonPetitions = try? decoder.decode(Petitions.self, from: json) {
       /// # Set the `petitions property` to the `decoded Petitions data type`
       petitions = jsonPetitions.results
+      filteredPetitions = petitions
       /// # Reload the table
       tableView.reloadData()
     }
@@ -101,19 +104,13 @@ class TableViewController: UITableViewController {
   }
 
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    guard let filteredPetitions = filteredPetitions else {
-      return petitions.count
-    }
     return filteredPetitions.count
   }
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
     var content = cell.defaultContentConfiguration()
-    var petition = petitions[indexPath.row]
-    if let filteredPetitions = filteredPetitions {
-      petition = filteredPetitions[indexPath.row]
-    }
+    let petition = filteredPetitions[indexPath.row]
     content.text = petition.title
     content.textProperties.font = UIFont.boldSystemFont(ofSize: 19)
     /// # Make cell text wrap
@@ -129,11 +126,7 @@ class TableViewController: UITableViewController {
 
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let detailVC = DetailViewController()
-    if let filteredPetitions = filteredPetitions {
-      detailVC.detailItem = filteredPetitions[indexPath.row]
-    } else {
-      detailVC.detailItem = petitions[indexPath.row]
-    }
+    detailVC.detailItem = filteredPetitions[indexPath.row]
     navigationController?.pushViewController(detailVC, animated: true)
   }
 
