@@ -8,29 +8,29 @@
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+  /// # Window in which the app is currently running, it can be nil, as the app can be `running in the background` and there will be no `windows` currently open
   var window: UIWindow?
 
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-    // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-    // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-    // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
     guard let _ = (scene as? UIWindowScene) else { return }
 
     /// ``Override point for customization after application launch.``
     /// # Safe cast the `rootViewController`, in this case is `UITabBarController`
     /// # ``window`` current window
-    /// # ``rootViewController`` the root view controller defined, `UITabController`
+    /// # Will `always` be `UITabController` unless the app is running in `background`
+    /// # ``rootViewController`` the root view controller defined, `UITabController`.
+    /// # ``as?`` is `attempting` to downcast a `UIViewController hirarchy type` (It can be UINavigation, UITable) to `UITabBarController`
+    /// # It will be ``nil`` if the `downcasting` was `NOT POSSIBLE` (aka `rootViewController` not being a `superClass` of `UITabBarController`
     if let tabBarController = window?.rootViewController as? UITabBarController {
-      print("window \(type(of: window?.rootViewController))")
       /// # Instantiate the `Main storyboard`
       let storyboard = UIStoryboard(name: "Main", bundle: nil)
-      /// # Instantiate the `#NavController` VC, created in the `Storyboard`
+      /// # Create a `new` instance of `NavigatonViewController`
       let vc = storyboard.instantiateViewController(withIdentifier: "NavController")
       /// # Set the 2nd `tabBarItem` (Index 1), 2 in total, and the `icon`
-      vc.tabBarItem = UITabBarItem(tabBarSystemItem: .topRated, tag: 1)
-      /// # Add the new `bar item` to the `tabBarController`
+      vc.tabBarItem = UITabBarItem(tabBarSystemItem: .topRated, tag: 1) /// # `1` is the `2nd` tab bar item
+      /// # Append the new `NavigationViewController` to the `tabBarController` from the `UITabBarController`
       tabBarController.viewControllers?.append(vc)
-      /// # ``HOW IS THIS DUPLICATING THE VIEW CONTROLLER? ``
+      /// #
     }
   }
 
