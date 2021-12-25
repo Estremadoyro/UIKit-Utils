@@ -13,6 +13,19 @@ class ViewController: UIViewController {
   var currentAnswer: UITextField!
   var scoreLabel: UILabel!
   var letterButtons = [UIButton]()
+  /// # Buttons current selected
+  var activatedButtons = [UIButton]()
+  /// # All possible solutions
+  var solutions = [String]()
+  var score = 0 {
+    didSet {
+      scoreLabel.text = "Score: \(score)"
+    }
+  }
+
+  var hiddenButtons: Int = 0
+
+  var level = 1
 
   /// # To make the whole view `programmatically`
   override func loadView() {
@@ -83,13 +96,129 @@ class ViewController: UIViewController {
     ])
   }
 
+  private func loadLevel() {
+    var levelClues = ""
+    var levelNumberLetters = ""
+    var buttonsLetters = [String]()
+
+    /// # Read the `level` file
+    if let levelFileURL = Bundle.main.url(forResource: "level\(level)", withExtension: "txt") {
+      if let levelContents = try? String(contentsOf: levelFileURL) {
+        /// # Make an array of all the file lines
+        var lines = levelContents.components(separatedBy: "\n")
+        lines.shuffle()
+        // # Itereate through each level word-question
+        for (index, line) in lines.enumerated() {
+          /// # Split the line in 2 parts. One is `letter groups` (combined form the answer) and the other the `question clues`
+          let parts = line.components(separatedBy: ": ")
+          let answer = parts[0]
+          let clue = parts[1]
+          /// # Make the entire clues a `single string` with line jump per question (`\n`)
+          levelClues += "\(index + 1). \(clue) \n"
+          /// # Removes `|` in order to get the full answer
+          let solutionWord = answer.replacingOccurrences(of: "|", with: "")
+          levelNumberLetters += "\(solutionWord.count) letters\n"
+          /// # Append answer to the list of `possible`solutions
+          solutions.append(solutionWord)
+          /// # Split the `answer` into an array of `buttonLetters` by the `|`
+          let buttonLetters = answer.components(separatedBy: "|")
+          /// # Append the `answer letters array` to the list with all the `buttonLetters`
+          buttonsLetters += buttonLetters
+        }
+      }
+    }
+    /// # Remove the empty lines from the strings
+    cluesLabel.text = levelClues.trimmingCharacters(in: .whitespacesAndNewlines)
+    answersLabel.text = levelNumberLetters.trimmingCharacters(in: .whitespacesAndNewlines)
+    /// # Shuffle them so the `2-3 group of letters` that conform an answer are not next to each other
+    buttonsLetters.shuffle()
+    /// # Check if there are as `many groups of letters` as there are `UIButtons`
+    if buttonsLetters.count == letterButtons.count {
+      for i in 0..<letterButtons.count {
+        letterButtons[i].setTitle(buttonsLetters[i], for: .normal)
+      }
+    }
+  }
+
+  @objc func letterTapped(_ sender: UIButton) {
+    /// # Check if butons has title
+    guard let buttonTitle = sender.titleLabel?.text else { return }
+    /// # Append to the `currentAnswer` text
+    currentAnswer.text = currentAnswer.text?.appending(buttonTitle)
+    /// # Active btn on tap
+    activatedButtons.append(sender)
+    /// # Hide btn after tapped
+    sender.isHidden = true
+  }
+
+  @objc func submitTapped(_ sender: UIButton) {
+    guard let answerText = currentAnswer.text else { return }
+    guard !answerText.isEmpty else { return }
+    /// # Check if the answer exists among the rest of answers
+    if let solutionPosition = solutions.firstIndex(of: answerText) {
+      let buttonsUsed = activatedButtons.count
+      hiddenButtons += buttonsUsed
+      /// # If correct answer, remove activated buttons so far
+      activatedButtons.removeAll()
+      /// # Replace the `N letters` label with the `answer`
+      var splitAnswers = answersLabel.text?.components(separatedBy: "\n")
+      splitAnswers?[solutionPosition] = answerText
+      /// # Putting the `answersLabel` back together
+      answersLabel.text = splitAnswers?.joined(separator: "\n")
+      /// # Reset the `currentAnswer`
+      currentAnswer.text = ""
+      score += 1
+      print("hiddenButtons: \(hiddenButtons)")
+      print("letterButons.count: \(letterButtons.count)")
+      if hiddenButtons == letterButtons.count {
+        let ac = UIAlertController(title: "Well done!", message: "Are you ready for the next level?", preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "Let's go!", style: .default, handler: levelUp))
+        present(ac, animated: true)
+      }
+      return
+    }
+    incorrectAnswer()
+  }
+
+  private func incorrectAnswer() {
+    let ac = UIAlertController(title: "Incorrect", message: "\(currentAnswer.text?.uppercased() ?? "WWW") doesn't exist", preferredStyle: .alert)
+    ac.addAction(UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
+      guard let unwrappedSelf = self else { return }
+      unwrappedSelf.score -= (unwrappedSelf.score > 0 ? 1 : 0)
+    })
+    present(ac, animated: true)
+  }
+
+  private func levelUp(action: UIAlertAction) {
+    level += 1
+    /// # Keep the length of array
+    solutions.removeAll(keepingCapacity: true)
+    /// # Load new level
+    loadLevel()
+    /// # Reset selected buttons
+    for button in letterButtons {
+      button.isHidden = false
+    }
+  }
+
+  @objc func clearTapped(_ sender: UIButton) {
+    currentAnswer.text? = ""
+    /// # Reset active buttons
+    for btn in activatedButtons {
+      btn.isHidden = false
+    }
+    activatedButtons.removeAll()
+  }
+
   private func buttonsLetterView(row: Int, column: Int, buttonsContainer: UIView) {
-    let width: Double = 150.0
-    let height: Double = 80.0
+    let width: Double = 150
+    let height: Double = 80
     let letterButton = UIButton(type: .system)
     letterButton.titleLabel?.font = UIFont.systemFont(ofSize: 36)
     letterButton.setTitle("WWW", for: .normal)
     letterButton.frame = CGRect(x: Double(column) * width, y: Double(row) * height, width: width, height: height)
+    letterButton.backgroundColor = UIColor.white
+    letterButton.addTarget(self, action: #selector(letterTapped), for: .touchUpInside)
     buttonsContainer.addSubview(letterButton)
     letterButtons.append(letterButton)
   }
@@ -97,7 +226,9 @@ class ViewController: UIViewController {
   private func buttonsContainerView() -> UIView {
     let buttonsContainer = UIView()
     buttonsContainer.translatesAutoresizingMaskIntoConstraints = false
-    buttonsContainer.backgroundColor = UIColor.systemGreen
+    buttonsContainer.layer.borderColor = UIColor.gray.cgColor
+    buttonsContainer.layer.borderWidth = 4
+//    buttonsContainer.backgroundColor = UIColor.systemGreen
     /// # Generate letter buttons
     for row in 0..<4 {
       for col in 0..<5 {
@@ -111,6 +242,8 @@ class ViewController: UIViewController {
     let submit = UIButton(type: .system)
     submit.translatesAutoresizingMaskIntoConstraints = false
     submit.setTitle("SUBMIT", for: .normal)
+    /// # Adding an `action` for the button to execute when pressed
+    submit.addTarget(self, action: #selector(submitTapped), for: .touchUpInside)
     return submit
   }
 
@@ -118,6 +251,7 @@ class ViewController: UIViewController {
     let clear = UIButton(type: .system)
     clear.translatesAutoresizingMaskIntoConstraints = false
     clear.setTitle("CLEAR", for: .normal)
+    clear.addTarget(self, action: #selector(clearTapped), for: .touchUpInside)
     return clear
   }
 
@@ -140,7 +274,7 @@ class ViewController: UIViewController {
     /// # Unlimited lines to fit the test
     cluesLabel.numberOfLines = 0
     cluesLabel.textAlignment = NSTextAlignment.left
-    cluesLabel.backgroundColor = UIColor.systemBlue
+//    cluesLabel.backgroundColor = UIColor.systemBlue
     /// # Make the view `first in line` to be stretched more than its `intrinsic content size` (more than needed)
     /// # `contentHuggingPriority` -> Stretching resistance, to make the view larger than its `instric content size`
     /// # Default `250` (1 Its ok to stretch, 999: Don't try to stretch)
@@ -157,7 +291,7 @@ class ViewController: UIViewController {
     answersLabel.text = "ANSWERS"
     answersLabel.numberOfLines = 0
     answersLabel.textAlignment = NSTextAlignment.right
-    answersLabel.backgroundColor = UIColor.systemPink
+//    answersLabel.backgroundColor = UIColor.systemPink
     answersLabel.setContentHuggingPriority(UILayoutPriority(1), for: .vertical)
     return answersLabel
   }
@@ -167,11 +301,12 @@ class ViewController: UIViewController {
     scoreLabel.translatesAutoresizingMaskIntoConstraints = false
     scoreLabel.textAlignment = NSTextAlignment.right
     scoreLabel.text = "Score: 0"
-    scoreLabel.backgroundColor = UIColor.systemYellow
+//    scoreLabel.backgroundColor = UIColor.systemYellow
     return scoreLabel
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    loadLevel()
   }
 }

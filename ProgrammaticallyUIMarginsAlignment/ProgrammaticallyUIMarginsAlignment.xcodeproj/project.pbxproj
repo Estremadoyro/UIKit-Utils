@@ -13,6 +13,8 @@
 		A774EBCF277417AC00AD9381 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A774EBCD277417AC00AD9381 /* Main.storyboard */; };
 		A774EBD1277417AF00AD9381 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A774EBD0277417AF00AD9381 /* Assets.xcassets */; };
 		A774EBD4277417AF00AD9381 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A774EBD2277417AF00AD9381 /* LaunchScreen.storyboard */; };
+		A77A31752775656600452B63 /* level1.txt in Resources */ = {isa = PBXBuildFile; fileRef = A77A31732775656600452B63 /* level1.txt */; };
+		A77A31762775656600452B63 /* level2.txt in Resources */ = {isa = PBXBuildFile; fileRef = A77A31742775656600452B63 /* level2.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		A774EBD0277417AF00AD9381 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A774EBD3277417AF00AD9381 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A774EBD5277417AF00AD9381 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A77A31732775656600452B63 /* level1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = level1.txt; path = "../../Resources/project8-files/level1.txt"; sourceTree = "<group>"; };
+		A77A31742775656600452B63 /* level2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = level2.txt; path = "../../Resources/project8-files/level2.txt"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +67,8 @@
 				A774EBD0277417AF00AD9381 /* Assets.xcassets */,
 				A774EBD2277417AF00AD9381 /* LaunchScreen.storyboard */,
 				A774EBD5277417AF00AD9381 /* Info.plist */,
+				A77A31732775656600452B63 /* level1.txt */,
+				A77A31742775656600452B63 /* level2.txt */,
 			);
 			path = ProgrammaticallyUIMarginsAlignment;
 			sourceTree = "<group>";
@@ -125,7 +131,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A77A31762775656600452B63 /* level2.txt in Resources */,
 				A774EBD4277417AF00AD9381 /* LaunchScreen.storyboard in Resources */,
+				A77A31752775656600452B63 /* level1.txt in Resources */,
 				A774EBD1277417AF00AD9381 /* Assets.xcassets in Resources */,
 				A774EBCF277417AC00AD9381 /* Main.storyboard in Resources */,
 			);
