@@ -19,13 +19,12 @@ class TableViewController: UITableViewController {
     guard let url = url else { return }
     /// # `performSelctor` does all the `CGD` work for you
 //    performSelector(inBackground: #selector(fetchData), with: url)
-    performSelector(onMainThread: #selector(fetchData), with: nil, waitUntilDone: false)
     fetchData(url: url)
   }
 
   private func setAPIUrl() {
     if navigationController?.tabBarItem.tag == 0 {
-      url = "https://www.hackingwithswift.com/samples/petitions-1.json"
+      url = "https://www.hackingwithswift.cow/samples/petitions-1.json"
     }
     /// # Top rated petitions
     else if navigationController?.tabBarItem.tag == 1 {
@@ -90,6 +89,7 @@ class TableViewController: UITableViewController {
         }
         /// # Must be executed in the `Async Background Thread` in order to work properly, otherwise, it will `show an alert` regardess of the API Req. result
         self?.apiError()
+//        performSelector(onMainThread: #selector(apiError), with: nil, waitUntilDone: false)
       }
     }
   }
@@ -99,16 +99,20 @@ class TableViewController: UITableViewController {
     let decoder = JSONDecoder() /// # ``Converts from JSON to Codable objects"
     /// # Decode the `Data Type` into the `Petitions Type` defined
     /// # It's `ok` to `parse JSON` in a `background thread`
-    if let jsonPetitions = try? decoder.decode(Petitions.self, from: json) {
-      /// # Set the `petitions property` to the `decoded Petitions data type`
-      petitions = jsonPetitions.results
-      filteredPetitions = petitions
-      /// # Reload the table
-      /// # It is `NEVER OK` to do `UI` work on a `background thread`
-      /// # ``Back to the Main Thread`` for UI work
-      DispatchQueue.main.async { [weak self] in
-        self?.tableView.reloadData()
-      }
+    guard let jsonPetitions = try? decoder.decode(Petitions.self, from: json) else {
+      apiError()
+      return
+    }
+    /// # Set the `petitions property` to the `decoded Petitions data type`
+    petitions = jsonPetitions.results
+    filteredPetitions = petitions
+    /// # Reload the table
+    /// # It is `NEVER OK` to do `UI` work on a `background thread`
+    /// # ``Back to the Main Thread`` for UI work
+    /// # With ``performSelector`` the compiler will `complain` because `tableView` is a `UIController` accessed from `Background Thread`
+//      tableView.performSelector(onMainThread: #selector(UITableView.reloadData), with: nil, waitUntilDone: false)
+    DispatchQueue.main.async { [weak self] in
+      self?.tableView.reloadData()
     }
   }
 
