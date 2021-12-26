@@ -26,7 +26,7 @@ DispatchQueue.global(qos: .userInitiated).async {
 }
 ```
 ## PerformSelector
-### Try not to call inside a Dispatch queue
+Try not to call inside a Dispatch queue
 ```swift
 performSelector(inBackground: #selector(fetchData), with: url)
 performSelector(onMainThread: #selector(fetchData), with: nil, waitUntilDone: false)
