@@ -24,7 +24,7 @@ class TableViewController: UITableViewController {
 
   private func setAPIUrl() {
     if navigationController?.tabBarItem.tag == 0 {
-      url = "https://www.hackingwithswift.cow/samples/petitions-1.json"
+      url = "https://www.hackingwithswift.com/samples/petitions-1.json"
     }
     /// # Top rated petitions
     else if navigationController?.tabBarItem.tag == 1 {
