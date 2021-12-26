@@ -101,41 +101,46 @@ class ViewController: UIViewController {
     var levelNumberLetters = ""
     var buttonsLetters = [String]()
 
-    /// # Read the `level` file
-    if let levelFileURL = Bundle.main.url(forResource: "level\(level)", withExtension: "txt") {
-      if let levelContents = try? String(contentsOf: levelFileURL) {
-        /// # Make an array of all the file lines
-        var lines = levelContents.components(separatedBy: "\n")
-        lines.shuffle()
-        // # Itereate through each level word-question
-        for (index, line) in lines.enumerated() {
-          /// # Split the line in 2 parts. One is `letter groups` (combined form the answer) and the other the `question clues`
-          let parts = line.components(separatedBy: ": ")
-          let answer = parts[0]
-          let clue = parts[1]
-          /// # Make the entire clues a `single string` with line jump per question (`\n`)
-          levelClues += "\(index + 1). \(clue) \n"
-          /// # Removes `|` in order to get the full answer
-          let solutionWord = answer.replacingOccurrences(of: "|", with: "")
-          levelNumberLetters += "\(solutionWord.count) letters\n"
-          /// # Append answer to the list of `possible`solutions
-          solutions.append(solutionWord)
-          /// # Split the `answer` into an array of `buttonLetters` by the `|`
-          let buttonLetters = answer.components(separatedBy: "|")
-          /// # Append the `answer letters array` to the list with all the `buttonLetters`
-          buttonsLetters += buttonLetters
+    DispatchQueue.global(qos: .userInteractive).async { [weak self] in
+      /// # Read the `level` file
+      if let levelFileURL = Bundle.main.url(forResource: "level\(self?.level ?? 1)", withExtension: "txt") {
+        if let levelContents = try? String(contentsOf: levelFileURL) {
+          /// # Make an array of all the file lines
+          var lines = levelContents.components(separatedBy: "\n")
+          lines.shuffle()
+          // # Itereate through each level word-question
+          for (index, line) in lines.enumerated() {
+            /// # Split the line in 2 parts. One is `letter groups` (combined form the answer) and the other the `question clues`
+            let parts = line.components(separatedBy: ": ")
+            let answer = parts[0]
+            let clue = parts[1]
+            /// # Make the entire clues a `single string` with line jump per question (`\n`)
+            levelClues += "\(index + 1). \(clue) \n"
+            /// # Removes `|` in order to get the full answer
+            let solutionWord = answer.replacingOccurrences(of: "|", with: "")
+            levelNumberLetters += "\(solutionWord.count) letters\n"
+            /// # Append answer to the list of `possible`solutions
+            self?.solutions.append(solutionWord)
+            /// # Split the `answer` into an array of `buttonLetters` by the `|`
+            let buttonLetters = answer.components(separatedBy: "|")
+            /// # Append the `answer letters array` to the list with all the `buttonLetters`
+            buttonsLetters += buttonLetters
+          }
         }
       }
-    }
-    /// # Remove the empty lines from the strings
-    cluesLabel.text = levelClues.trimmingCharacters(in: .whitespacesAndNewlines)
-    answersLabel.text = levelNumberLetters.trimmingCharacters(in: .whitespacesAndNewlines)
-    /// # Shuffle them so the `2-3 group of letters` that conform an answer are not next to each other
-    buttonsLetters.shuffle()
-    /// # Check if there are as `many groups of letters` as there are `UIButtons`
-    if buttonsLetters.count == letterButtons.count {
-      for i in 0..<letterButtons.count {
-        letterButtons[i].setTitle(buttonsLetters[i], for: .normal)
+      DispatchQueue.main.async { [weak self] in
+        /// # Remove the empty lines from the strings
+        self?.cluesLabel.text = levelClues.trimmingCharacters(in: .whitespacesAndNewlines)
+        self?.answersLabel.text = levelNumberLetters.trimmingCharacters(in: .whitespacesAndNewlines)
+        /// # Shuffle them so the `2-3 group of letters` that conform an answer are not next to each other
+        buttonsLetters.shuffle()
+        /// # Check if there are as `many groups of letters` as there are `UIButtons`
+        if buttonsLetters.count == self?.letterButtons.count {
+          guard let btns = self?.letterButtons else { return }
+          for i in 0..<btns.count {
+            self?.letterButtons[i].setTitle(buttonsLetters[i], for: .normal)
+          }
+        }
       }
     }
   }
