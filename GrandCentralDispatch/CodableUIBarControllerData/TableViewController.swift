@@ -5,6 +5,7 @@
 //  Created by Leonardo  on 19/12/21.
 //
 
+/// # ``UI must ONLY be executed in the MAIN THREAD``
 import UIKit
 class TableViewController: UITableViewController {
   var petitions = [Petition]()
@@ -88,6 +89,8 @@ class TableViewController: UITableViewController {
     /// # Set the decoder
     let decoder = JSONDecoder() /// # ``Converts from JSON to Codable objects"
     /// # Decode the `Data Type` into the `Petitions Type` defined
+    /// # ``this call, is BLOCKING the UI from rendering (Running on main thread)``
+    /// # Code that is `asynchronous` or that can be run in parallel, should be run in a `different thread` ``Multi-Threading``
     if let jsonPetitions = try? decoder.decode(Petitions.self, from: json) {
       /// # Set the `petitions property` to the `decoded Petitions data type`
       petitions = jsonPetitions.results
