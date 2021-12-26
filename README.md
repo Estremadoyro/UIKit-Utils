@@ -14,3 +14,14 @@ i.e.: *Uploading files into Mega*.
 ## 4️⃣ Background 
 For **long-running tasks** that the user isn't aware of, nor cares when completed. **Not important for the user**.  
 i.e.: *Sending statistical app information*
+## Usage
+```swift
+DispatchQueue.global(qos: .userInitiated).async {
+    if let url = URL(string: urlString) {
+        if let data = try? Data(contentsOf: url) {
+            self.parse(json: data)
+            return
+        }
+    }
+}
+```
