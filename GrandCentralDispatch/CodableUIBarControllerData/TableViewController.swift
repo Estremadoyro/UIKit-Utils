@@ -17,6 +17,9 @@ class TableViewController: UITableViewController {
     setAPIUrl()
     navbarSettings()
     guard let url = url else { return }
+    /// # `performSelctor` does all the `CGD` work for you
+//    performSelector(inBackground: #selector(fetchData), with: url)
+    performSelector(onMainThread: #selector(fetchData), with: nil, waitUntilDone: false)
     fetchData(url: url)
   }
 
@@ -77,33 +80,45 @@ class TableViewController: UITableViewController {
     /// # 1. Request the data, fails if the `url` is `incorrect` (Doesn't exist)
     if let url = URL(string: url) {
       /// # 2. Cast data to `Data Type`
-      if let data = try? Data(contentsOf: url) {
-        parseData(json: data)
-        return
+      /// # ``this call, is BLOCKING the UI from rendering (Running on main thread)``
+      /// # Code that is `asynchronous` or that can be run in parallel, should be run in a `different thread` ``Multi-Threading``
+      /// # Assign the code to a `QoS queue`
+      DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+        if let data = try? Data(contentsOf: url) {
+          self?.parseData(json: data)
+          return
+        }
+        /// # Must be executed in the `Async Background Thread` in order to work properly, otherwise, it will `show an alert` regardess of the API Req. result
+        self?.apiError()
       }
     }
-    apiError()
   }
 
   private func parseData(json: Data) {
     /// # Set the decoder
     let decoder = JSONDecoder() /// # ``Converts from JSON to Codable objects"
     /// # Decode the `Data Type` into the `Petitions Type` defined
-    /// # ``this call, is BLOCKING the UI from rendering (Running on main thread)``
-    /// # Code that is `asynchronous` or that can be run in parallel, should be run in a `different thread` ``Multi-Threading``
+    /// # It's `ok` to `parse JSON` in a `background thread`
     if let jsonPetitions = try? decoder.decode(Petitions.self, from: json) {
       /// # Set the `petitions property` to the `decoded Petitions data type`
       petitions = jsonPetitions.results
       filteredPetitions = petitions
       /// # Reload the table
-      tableView.reloadData()
+      /// # It is `NEVER OK` to do `UI` work on a `background thread`
+      /// # ``Back to the Main Thread`` for UI work
+      DispatchQueue.main.async { [weak self] in
+        self?.tableView.reloadData()
+      }
     }
   }
 
   private func apiError() {
-    let ac = UIAlertController(title: "API Error", message: "There was a problem requesting the data from the server", preferredStyle: .alert)
-    ac.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-    present(ac, animated: true)
+    /// # As this is `UI` work, it `must` be executed in the `Main Thread`
+    DispatchQueue.main.async { [weak self] in
+      let ac = UIAlertController(title: "API Error", message: "There was a problem requesting the data from the server", preferredStyle: .alert)
+      ac.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+      self?.present(ac, animated: true)
+    }
   }
 
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

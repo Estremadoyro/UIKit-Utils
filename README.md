@@ -14,7 +14,7 @@ i.e.: *Uploading files into Mega*.
 ## 4️⃣ Background 
 For **long-running tasks** that the user isn't aware of, nor cares when completed. **Not important for the user**.  
 i.e.: *Sending statistical app information*
-## Usage
+## DispatchQueue
 ```swift
 DispatchQueue.global(qos: .userInitiated).async {
     if let url = URL(string: urlString) {
@@ -24,4 +24,9 @@ DispatchQueue.global(qos: .userInitiated).async {
         }
     }
 }
+```
+## PerformSelector
+```swift
+performSelector(inBackground: #selector(fetchData), with: url)
+performSelector(onMainThread: #selector(fetchData), with: nil, waitUntilDone: false)
 ```
