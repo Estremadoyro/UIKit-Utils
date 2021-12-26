@@ -16,23 +16,33 @@ class ViewController: UITableViewController {
     super.viewDidLoad()
     title = "Storm Viewer"
     navigationController?.navigationBar.prefersLargeTitles = true
-    /// # `FileManager`, allows to work with the `file system`
-    let fm = FileManager.default
-    /// # Full path name of the `Bundle's directory`
-    let path = Bundle.main.resourcePath!
-    /// # Gets contents of directory
-    let items = try! fm.contentsOfDirectory(atPath: path)
-    /// # Loop through all the `items` aka Bundle path contents
-    for item in items {
-      if item.hasPrefix("nssl") {
-        // this is the picture to load
-        /// # remove the `.type`
-        pictures.append(item)
-        pictureNames.append(removeSuffix(pictureName: item))
+    loadImagesFromBundle()
+  }
+
+  private func loadImagesFromBundle() {
+    DispatchQueue.global(qos: .userInteractive).async { [weak self] in
+      guard let strongSelf = self else { return }
+      /// # `FileManager`, allows to work with the `file system`
+      let fm = FileManager.default
+      /// # Full path name of the `Bundle's directory`
+      let path = Bundle.main.resourcePath!
+      /// # Gets contents of directory
+      let items = try! fm.contentsOfDirectory(atPath: path)
+      /// # Loop through all the `items` aka Bundle path contents
+      for item in items {
+        if item.hasPrefix("nssl") {
+          // this is the picture to load
+          /// # remove the `.type`
+          strongSelf.pictures.append(item)
+          strongSelf.pictureNames.append(strongSelf.removeSuffix(pictureName: item))
+        }
+      }
+      strongSelf.pictures = strongSelf.sortItems()
+      print(strongSelf.pictures)
+      DispatchQueue.main.async { [weak self] in
+        self?.tableView.reloadData()
       }
     }
-    pictures = sortItems()
-    print(pictures)
   }
 
   private func removeSuffix(pictureName: String) -> String {

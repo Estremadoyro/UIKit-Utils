@@ -31,7 +31,7 @@ class DetailViewController: UIViewController {
     }
     /// # This will inherit the settings from the `NavigationController`
     navigationItem.largeTitleDisplayMode = .never
-    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(shareApp))
+    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareApp))
     if let imageToLoad = selectedImage {
       imageViwq.image = UIImage(named: imageToLoad)
     }
