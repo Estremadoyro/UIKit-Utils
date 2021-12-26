@@ -1,6 +1,6 @@
 # 🚦Grand Central Dispatch (GCD)
 
-Optimize application support for Multi-core systems, by using different threads, and creating  **4 different QoS (Quality of Service) queues**. Which have different priorities for different multi-thread needs. [HackingWithSwift reference](https://www.hackingwithswift.com/read/9/3/gcd-101-async).
+Optimize application support for Multi-core systems, by using different threads, and creating  **4 different QoS (Quality of Service) queues**. Which have different priorities for different multi-thread needs. The **default** queue **higher** than **Utiliy** but **lower** than **User Initiated**. [HackingWithSwift reference](https://www.hackingwithswift.com/read/9/3/gcd-101-async).
 
 ## 1️⃣ User Interactive
 Highest priority background thread. Should be used for work that is **important to keep the user interface (UI) working**.  

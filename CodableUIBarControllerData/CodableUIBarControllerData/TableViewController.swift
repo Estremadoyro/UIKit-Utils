@@ -66,9 +66,14 @@ class TableViewController: UITableViewController {
   }
 
   private func filterPetitionsByKeyword(keyword: String) {
-    guard !keyword.isEmpty else { return }
-    filteredPetitions = petitions.filter { $0.title.lowercased().contains(keyword) }
-    tableView.reloadData()
+    DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+      guard !keyword.isEmpty else { return }
+      guard let strongSelf = self else { return }
+      strongSelf.filteredPetitions = strongSelf.petitions.filter { $0.title.lowercased().contains(keyword) }
+      DispatchQueue.main.async {
+        strongSelf.tableView.reloadData()
+      }
+    }
   }
 
   private func fetchData(url: String) {
