@@ -1,5 +1,6 @@
 # 🔗 Useful links
-[Organize Layout Code](https://dilloncodes.com/how-i-organize-layout-code-in-swift)
+- [README.md documentation](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
+- [Organize Layout Code](https://dilloncodes.com/how-i-organize-layout-code-in-swift)
 
 # 🚦Grand Central Dispatch (GCD)
 Optimize application support for Multi-core systems, by using different threads, and creating  **4 different QoS (Quality of Service) queues**. Which have different priorities for different multi-thread needs. The **default** queue **higher** than **Utiliy** but **lower** than **User Initiated**. [HackingWithSwift reference](https://www.hackingwithswift.com/read/9/3/gcd-101-async).
