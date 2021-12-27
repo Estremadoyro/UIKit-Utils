@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     /// # Sets the `scene` containing the `window`
     window?.windowScene = windowScene
     /// # Sets the `rootViewController`
-    window?.rootViewController = ViewController()
+    window?.rootViewController = MainViewController()
     // # Shows the window and makes it the key window
     window?.makeKeyAndVisible()
   }
