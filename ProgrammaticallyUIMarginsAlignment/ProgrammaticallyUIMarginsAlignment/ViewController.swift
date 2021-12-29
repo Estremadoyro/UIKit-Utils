@@ -240,6 +240,7 @@ class ViewController: UIViewController {
         buttonsLetterView(row: row, column: col, buttonsContainer: buttonsContainer)
       }
     }
+    print(buttonsContainer.description)
     return buttonsContainer
   }
 
