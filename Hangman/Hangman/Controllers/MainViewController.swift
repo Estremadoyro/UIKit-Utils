@@ -105,7 +105,8 @@ class MainViewController: UIViewController {
 
   private func nextWord() {
     questionNumber += 1
-    guard questionNumber <= questions.count else { return }
+//    guard questionNumber <= questions.count else { questionNumber = 1 }
+    if !(questionNumber <= questions.count) { questionNumber = 1}
     setupLevel()
     currentDiscoveredLetters.removeAll()
     wordPlaceholder = currentPlaceholder
