@@ -52,15 +52,15 @@ class MainView: UIView {
 
   private func constraintsBuilder() {
     NSLayoutConstraint.activate([
-      wordLettersCountLabel.widthAnchor.constraint(equalTo: layoutMarginsGuide.widthAnchor),
+      wordLettersCountLabel.widthAnchor.constraint(equalTo: layoutMarginsGuide.widthAnchor, multiplier: 0.9),
       wordLettersCountLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-      wordLettersCountLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+      wordLettersCountLabel.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
       wordToGuessInputField.topAnchor.constraint(equalTo: wordLettersCountLabel.bottomAnchor),
       wordToGuessInputField.leadingAnchor.constraint(equalTo: wordLettersCountLabel.leadingAnchor),
       wordToGuessInputField.widthAnchor.constraint(equalTo: wordLettersCountLabel.widthAnchor),
-      alphabetButtonsContainer.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+      alphabetButtonsContainer.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor),
       alphabetButtonsContainer.centerXAnchor.constraint(equalTo: centerXAnchor),
-      alphabetButtonsContainer.widthAnchor.constraint(equalTo: layoutMarginsGuide.widthAnchor),
+      alphabetButtonsContainer.widthAnchor.constraint(equalTo: wordLettersCountLabel.widthAnchor),
       alphabetButtonsContainer.topAnchor.constraint(equalTo: wordToGuessInputField.bottomAnchor, constant: 10),
     ])
   }
