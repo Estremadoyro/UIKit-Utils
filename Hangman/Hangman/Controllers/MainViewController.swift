@@ -106,7 +106,7 @@ class MainViewController: UIViewController {
   private func nextWord() {
     questionNumber += 1
 //    guard questionNumber <= questions.count else { questionNumber = 1 }
-    if !(questionNumber <= questions.count) { questionNumber = 1}
+    if !(questionNumber <= questions.count) { questionNumber = 1 }
     setupLevel()
     currentDiscoveredLetters.removeAll()
     wordPlaceholder = currentPlaceholder
@@ -125,7 +125,7 @@ extension MainViewController: MainViewDelegate {
       return currentPlaceholder
     }
     set {
-      mainView.wordToGuessInputField.text = newValue
+      mainView.wordToGuessInputField.text = newValue.uppercased()
     }
   }
 
