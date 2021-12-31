@@ -9,36 +9,42 @@ import UIKit
 
 class MainViewController: UIViewController {
   var questions = [Question]()
+  var currentQuestion: Question!
   var questionNumber = 1
-  var currentWord: String = ""
   var currentPlaceholder: String = "?"
   var currentDiscoveredLetters = [String]()
-  var currentWordLetters: Int = 0
   var lifes: Int = 7
 
-  private lazy var mainView: MainView = {
+  private lazy var mainView = MainView(frame: UIScreen.main.bounds)
+
+  init() {
+    super.init(nibName: nil, bundle: nil)
     readWordsFile()
-    let mainView = MainView(frame: UIScreen.main.bounds, wordToGuessLetters: currentWordLetters, wordPlaceholder: currentPlaceholder)
+  }
+
+  @available(*, unavailable)
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  override func loadView() {
+    super.loadView()
     mainView.delegate = self
-    return mainView
-  }()
+    print("delegate set")
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
     view.addSubview(mainView)
-    print("current word: \(currentWord)")
+    print("current word: \(currentQuestion!)")
   }
 
   override func viewDidAppear(_ animated: Bool) {
     mainView.generateAlphabetButtons()
   }
 
-  private func setCurrentWordLetters() -> Int {
-    return currentWord.count
-  }
-
   private func getPlaceholderString() -> String {
-    return currentWord.reduce("") { placeholder, _ in
+    return currentQuestion.word.reduce("") { placeholder, _ in
       placeholder + "?"
     }
   }
@@ -50,7 +56,7 @@ class MainViewController: UIViewController {
         wordsArray.removeLast(1)
         wordsArray.shuffle()
         for word in wordsArray {
-          let newQuestion = Question(word: word, letters: wordsArray.count)
+          let newQuestion = Question(word: word, letters: word.count)
           questions.append(newQuestion)
         }
         setupLevel()
@@ -59,19 +65,17 @@ class MainViewController: UIViewController {
   }
 
   private func setupLevel() {
-    currentWord = questions[questionNumber - 1].word
+    currentQuestion = questions[questionNumber - 1]
     currentPlaceholder = getPlaceholderString()
-    currentWordLetters = setCurrentWordLetters()
+    wordLetters = currentQuestion.letters
+    wordPlaceholder = getPlaceholderString()
   }
 
   private func checkLetterExistsReturnPosition(letter: Character) -> [String.Index]? {
-    print("letter pressed: \(letter)")
-    var currentWordAux = currentWord
+    var currentWordAux = currentQuestion.word
     var positions = [String.Index]()
     while currentWordAux.contains(letter) {
-      print("currentWordAux: \(currentWordAux)")
       if let position = currentWordAux.firstIndex(of: letter) {
-        print("position found: \(currentWordAux[position])")
         positions.append(position)
         currentWordAux.remove(at: position)
         currentWordAux.insert(Character("?"), at: position)
@@ -82,7 +86,7 @@ class MainViewController: UIViewController {
 
   private func checkWholeWordDiscovered() -> Bool {
     let joinedDiscoveredLettersSorted = currentDiscoveredLetters.joined(separator: "").sorted()
-    let currentWordListSorted = currentWord.sorted()
+    let currentWordListSorted = currentQuestion.word.sorted()
     guard !(joinedDiscoveredLettersSorted == currentWordListSorted) else { return false }
     return true
   }
@@ -99,18 +103,16 @@ class MainViewController: UIViewController {
       print("whole word discovered, placeholder: \(currentPlaceholder)")
       return
     }
-
     print("new placeholder \(currentPlaceholder)")
   }
 
   private func nextWord() {
     questionNumber += 1
-//    guard questionNumber <= questions.count else { questionNumber = 1 }
     if !(questionNumber <= questions.count) { questionNumber = 1 }
     setupLevel()
     currentDiscoveredLetters.removeAll()
     wordPlaceholder = currentPlaceholder
-    mainView.wordToGuessLetters = currentWordLetters
+    wordLetters = currentQuestion.letters
     print("next word")
   }
 
@@ -121,12 +123,13 @@ class MainViewController: UIViewController {
 
 extension MainViewController: MainViewDelegate {
   var wordPlaceholder: String {
-    get {
-      return currentPlaceholder
-    }
-    set {
-      mainView.wordToGuessInputField.text = newValue.uppercased()
-    }
+    get { return currentPlaceholder }
+    set { mainView.wordToGuessInputField.text = newValue.uppercased() }
+  }
+
+  var wordLetters: Int {
+    get { return currentQuestion.letters }
+    set { mainView.wordLettersCountLabel.text = "# Letters: \(newValue)" }
   }
 
   func buttonPressed(_ sender: UIButton) {

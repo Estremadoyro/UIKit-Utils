@@ -11,4 +11,5 @@ import UIKit
 protocol MainViewDelegate: AnyObject {
   func buttonPressed(_ sender: UIButton)
   var wordPlaceholder: String { get set }
+  var wordLetters: Int { get set }
 }

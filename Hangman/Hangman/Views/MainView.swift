@@ -10,23 +10,14 @@ import UIKit
 class MainView: UIView {
   weak var delegate: MainViewDelegate?
 
-  var wordPlaceholder: String
-
-  var wordToGuessLetters: Int = 0 {
-    didSet {
-      wordLettersCountLabel.text = "# Letters: \(wordToGuessLetters)"
-    }
-  }
-
   let wordToGuessInputField = UITextField()
-  private let wordLettersCountLabel = UILabel()
+  let wordLettersCountLabel = UILabel()
   let alphabetButtonsContainer = UIView()
-  let alphabetButton = UIButton(type: .system)
+  private let alphabetButton = UIButton(type: .system)
   /// # Override `UIView` initializer
-  required init(frame: CGRect, wordToGuessLetters: Int, wordPlaceholder: String) {
-    self.wordToGuessLetters = wordToGuessLetters
-    self.wordPlaceholder = wordPlaceholder
-    super.init(frame: frame)
+  /// # It's `NOT` mandatory to implement the `override init`, you can create a ``custom initializer``
+  override init(frame: CGRect) {
+    super.init(frame: frame) /// # This, however, is `required`
     backgroundColor = UIColor.black
     viewBuilder()
   }
@@ -68,7 +59,7 @@ class MainView: UIView {
   private func wordToGuessView() -> UITextField {
     wordToGuessInputField.translatesAutoresizingMaskIntoConstraints = false
     wordToGuessInputField.textColor = UIColor.white
-    wordToGuessInputField.text = wordPlaceholder
+    wordToGuessInputField.text = delegate?.wordPlaceholder
     wordToGuessInputField.textAlignment = .center
     wordToGuessInputField.font = UIFont.systemFont(ofSize: 44)
     wordToGuessInputField.isUserInteractionEnabled = false
@@ -79,7 +70,7 @@ class MainView: UIView {
 
   private func wordLettersCountLabelView() -> UILabel {
     wordLettersCountLabel.translatesAutoresizingMaskIntoConstraints = false
-    wordLettersCountLabel.text = "# Letters: \(wordToGuessLetters)"
+    wordLettersCountLabel.text = "# Letters: \(delegate?.wordLetters ?? 999)"
     wordLettersCountLabel.textColor = UIColor.white
     wordLettersCountLabel.font = UIFont.systemFont(ofSize: 30)
     wordLettersCountLabel.textAlignment = .left
