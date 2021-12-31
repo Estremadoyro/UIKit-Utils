@@ -21,14 +21,13 @@ class MainView: UIView {
   let wordToGuessInputField = UITextField()
   private let wordLettersCountLabel = UILabel()
   let alphabetButtonsContainer = UIView()
-  private let alphabetButton = UIButton(type: .system)
+  let alphabetButton = UIButton(type: .system)
   /// # Override `UIView` initializer
   required init(frame: CGRect, wordToGuessLetters: Int, wordPlaceholder: String) {
     self.wordToGuessLetters = wordToGuessLetters
     self.wordPlaceholder = wordPlaceholder
     super.init(frame: frame)
     backgroundColor = UIColor.black
-    print("current placeholder: \(delegate?.wordPlaceholder)")
     viewBuilder()
   }
 

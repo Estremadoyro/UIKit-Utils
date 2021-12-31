@@ -9,6 +9,7 @@ import UIKit
 
 class MainViewController: UIViewController {
   var questions = [Question]()
+  var questionNumber = 1
   var currentWord: String = ""
   var currentPlaceholder: String = "?"
   var currentDiscoveredLetters = [String]()
@@ -51,51 +52,64 @@ class MainViewController: UIViewController {
         for word in wordsArray {
           let newQuestion = Question(word: word, letters: wordsArray.count)
           questions.append(newQuestion)
-          currentWord = questions[0].word
-          currentPlaceholder = getPlaceholderString()
-          currentWordLetters = setCurrentWordLetters()
         }
+        setupLevel()
       }
     }
   }
 
+  private func setupLevel() {
+    currentWord = questions[questionNumber - 1].word
+    currentPlaceholder = getPlaceholderString()
+    currentWordLetters = setCurrentWordLetters()
+  }
+
   private func checkLetterExistsReturnPosition(letter: Character) -> [String.Index]? {
+    print("letter pressed: \(letter)")
     var currentWordAux = currentWord
     var positions = [String.Index]()
-//    guard let position = currentWord.firstIndex(of: Character(letter)) else { return nil }
-    for letter in currentWord {
+    while currentWordAux.contains(letter) {
+      print("currentWordAux: \(currentWordAux)")
       if let position = currentWordAux.firstIndex(of: letter) {
-        print("position found: \(position)")
+        print("position found: \(currentWordAux[position])")
         positions.append(position)
         currentWordAux.remove(at: position)
-        print("new currentWordAux: \(currentWordAux)")
+        currentWordAux.insert(Character("?"), at: position)
       }
     }
     return positions
   }
 
   private func checkWholeWordDiscovered() -> Bool {
-    let joinedDiscoveredLetters = currentDiscoveredLetters.joined(separator: "")
-    guard !(joinedDiscoveredLetters == currentWord) else { return false }
+    let joinedDiscoveredLettersSorted = currentDiscoveredLetters.joined(separator: "").sorted()
+    let currentWordListSorted = currentWord.sorted()
+    guard !(joinedDiscoveredLettersSorted == currentWordListSorted) else { return false }
     return true
   }
 
   private func updateWordPlaceholder(letter: String) {
     guard let letterPositions = checkLetterExistsReturnPosition(letter: Character(letter)) else { return }
-    guard checkWholeWordDiscovered() else {
-      print("whole word discovered, placeholder: \(currentPlaceholder)")
-      return
-    }
     letterPositions.forEach { letterPosition in
       currentPlaceholder.remove(at: letterPosition)
       currentPlaceholder.insert(Character(letter), at: letterPosition)
       currentDiscoveredLetters.append(letter)
     }
     wordPlaceholder = currentPlaceholder
+    guard checkWholeWordDiscovered() else {
+      print("whole word discovered, placeholder: \(currentPlaceholder)")
+      return
+    }
+
     print("new placeholder \(currentPlaceholder)")
   }
 
   private func nextWord() {
+    questionNumber += 1
+    guard questionNumber <= questions.count else { return }
+    setupLevel()
+    currentDiscoveredLetters.removeAll()
+    wordPlaceholder = currentPlaceholder
+    mainView.wordToGuessLetters = currentWordLetters
     print("next word")
   }
 
