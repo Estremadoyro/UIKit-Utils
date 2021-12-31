@@ -32,6 +32,6 @@ class AlphabetBtnView: UIButton {
     setTitleColor(UIColor.white.withAlphaComponent(0.8), for: .normal)
     layer.borderColor = UIColor.white.cgColor
     layer.borderWidth = 1
-    addTarget(mainViewController, action: #selector(mainViewController.buttonPressed), for: .touchUpInside)
+//    addTarget(mainViewController, action: #selector(mainViewController.buttonPressed), for: .touchUpInside)
   }
 }

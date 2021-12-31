@@ -8,18 +8,9 @@
 import UIKit
 
 class MainView: UIView {
-  var mainViewController = MainViewController()
-  var wordToGuess: String = "" {
-    didSet {
-      print("word set")
-    }
-  }
+  weak var delegate: MainViewDelegate?
 
-  var wordPlaceholder: String = "?" {
-    didSet {
-      wordToGuessInputField.text = mainViewController.getPlaceholderString(currentWord: wordToGuess)
-    }
-  }
+  var wordPlaceholder: String
 
   var wordToGuessLetters: Int = 0 {
     didSet {
@@ -27,24 +18,18 @@ class MainView: UIView {
     }
   }
 
-  private let wordToGuessInputField = UITextField()
+  let wordToGuessInputField = UITextField()
   private let wordLettersCountLabel = UILabel()
   let alphabetButtonsContainer = UIView()
   private let alphabetButton = UIButton(type: .system)
   /// # Override `UIView` initializer
-  override init(frame: CGRect) {
+  required init(frame: CGRect, wordToGuessLetters: Int, wordPlaceholder: String) {
+    self.wordToGuessLetters = wordToGuessLetters
+    self.wordPlaceholder = wordPlaceholder
     super.init(frame: frame)
     backgroundColor = UIColor.black
-    setInitialValues()
+    print("current placeholder: \(delegate?.wordPlaceholder)")
     viewBuilder()
-    constraintsBuilder()
-  }
-
-  private func setInitialValues() {
-    mainViewController.readWordsFile()
-    wordToGuess = mainViewController.currentWord
-    wordPlaceholder = mainViewController.getPlaceholderString(currentWord: wordToGuess)
-    wordToGuessLetters = mainViewController.setCurrentWordLetters(currentWord: wordToGuess)
   }
 
   /// # `*`           -> Applied to all platforms
@@ -53,6 +38,11 @@ class MainView: UIView {
   @available(*, unavailable)
   required init?(coder: NSCoder) { /// # Needed for `Interface Builder`, but not programmatically
     fatalError("init(coder:) has not been implemented")
+  }
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    constraintsBuilder()
   }
 
   private func viewBuilder() {
@@ -134,7 +124,12 @@ class MainView: UIView {
     letterButton.setTitleColor(UIColor.white.withAlphaComponent(0.8), for: .normal)
     letterButton.layer.borderColor = UIColor.white.cgColor
     letterButton.layer.borderWidth = 1
-    letterButton.addTarget(mainViewController, action: #selector(mainViewController.buttonPressed), for: .touchUpInside)
+    letterButton.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
     alphabetButtonsContainer.addSubview(letterButton)
+  }
+
+  @objc private func buttonPressed(_ sender: UIButton) {
+    print("button pressed")
+    delegate?.buttonPressed(sender)
   }
 }
