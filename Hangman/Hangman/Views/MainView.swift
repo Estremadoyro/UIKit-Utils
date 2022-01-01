@@ -10,8 +10,10 @@ import UIKit
 class MainView: UIView {
   weak var delegate: MainViewDelegate?
 
-  let wordToGuessInputField = UITextField()
+  let topLabelsContainer = UIView()
   let wordLettersCountLabel = UILabel()
+  let lifesLabel = UILabel()
+  let wordToGuessInputField = UITextField()
   let alphabetButtonsContainer = UIView()
   private let alphabetButton = UIButton(type: .system)
   /// # Override `UIView` initializer
@@ -36,22 +38,32 @@ class MainView: UIView {
   }
 
   private func viewBuilder() {
-    addSubview(wordLettersCountLabelView())
+    addSubview(topLabelsContainerView())
     addSubview(wordToGuessView())
     addSubview(alphabetButtonsContainerView())
   }
 
   private func constraintsBuilder() {
     NSLayoutConstraint.activate([
-      wordLettersCountLabel.widthAnchor.constraint(equalTo: layoutMarginsGuide.widthAnchor, multiplier: 0.9),
-      wordLettersCountLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-      wordLettersCountLabel.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
-      wordToGuessInputField.topAnchor.constraint(equalTo: wordLettersCountLabel.bottomAnchor),
-      wordToGuessInputField.leadingAnchor.constraint(equalTo: wordLettersCountLabel.leadingAnchor),
-      wordToGuessInputField.widthAnchor.constraint(equalTo: wordLettersCountLabel.widthAnchor),
+      wordLettersCountLabel.leadingAnchor.constraint(equalTo: topLabelsContainer.leadingAnchor, constant: 10),
+      wordLettersCountLabel.widthAnchor.constraint(equalTo: topLabelsContainer.widthAnchor, multiplier: 0.5),
+      wordLettersCountLabel.centerYAnchor.constraint(equalTo: topLabelsContainer.centerYAnchor),
+      lifesLabel.trailingAnchor.constraint(equalTo: topLabelsContainer.trailingAnchor, constant: -10),
+      lifesLabel.widthAnchor.constraint(equalTo: topLabelsContainer.widthAnchor, multiplier: 0.5),
+      lifesLabel.centerYAnchor.constraint(equalTo: topLabelsContainer.centerYAnchor),
+    ])
+    NSLayoutConstraint.activate([
+      topLabelsContainer.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
+      topLabelsContainer.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
+      topLabelsContainer.widthAnchor.constraint(equalTo: layoutMarginsGuide.widthAnchor),
+      topLabelsContainer.heightAnchor.constraint(equalTo: layoutMarginsGuide.heightAnchor, multiplier: 0.05),
+      topLabelsContainer.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
+      wordToGuessInputField.topAnchor.constraint(equalTo: topLabelsContainer.bottomAnchor),
+      wordToGuessInputField.leadingAnchor.constraint(equalTo: topLabelsContainer.leadingAnchor),
+      wordToGuessInputField.widthAnchor.constraint(equalTo: topLabelsContainer.widthAnchor),
       alphabetButtonsContainer.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor),
       alphabetButtonsContainer.centerXAnchor.constraint(equalTo: centerXAnchor),
-      alphabetButtonsContainer.widthAnchor.constraint(equalTo: wordLettersCountLabel.widthAnchor),
+      alphabetButtonsContainer.widthAnchor.constraint(equalTo: topLabelsContainer.widthAnchor),
       alphabetButtonsContainer.topAnchor.constraint(equalTo: wordToGuessInputField.bottomAnchor, constant: 10),
     ])
   }
@@ -116,6 +128,22 @@ class MainView: UIView {
     letterButton.layer.borderWidth = 1
     letterButton.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
     alphabetButtonsContainer.addSubview(letterButton)
+  }
+
+  private func topLabelsContainerView() -> UIView {
+    topLabelsContainer.translatesAutoresizingMaskIntoConstraints = false
+    topLabelsContainer.addSubview(wordLettersCountLabelView())
+    topLabelsContainer.addSubview(lifesLabelView())
+    return topLabelsContainer
+  }
+
+  private func lifesLabelView() -> UILabel {
+    lifesLabel.translatesAutoresizingMaskIntoConstraints = false
+    lifesLabel.text = "Lifes: \(delegate?.lifes ?? 7)"
+    lifesLabel.font = UIFont.systemFont(ofSize: 30)
+    lifesLabel.textColor = UIColor.white
+    lifesLabel.textAlignment = .right
+    return lifesLabel
   }
 
   @objc private func buttonPressed(_ sender: UIButton) {
