@@ -30,13 +30,12 @@ class MainViewController: UIViewController {
   override func loadView() {
     super.loadView()
     mainView.delegate = self
-    print("delegate set")
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
     view.addSubview(mainView)
-    print("current word: \(currentQuestion!)")
+    print("current word: \(currentQuestion.word)")
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -68,7 +67,7 @@ class MainViewController: UIViewController {
     currentQuestion = questions[questionNumber - 1]
     currentPlaceholder = getPlaceholderString()
     wordLetters = currentQuestion.letters
-    wordPlaceholder = getPlaceholderString()
+    wordPlaceholder = currentPlaceholder
   }
 
   private func checkLetterExistsReturnPosition(letter: Character) -> [String.Index]? {
@@ -98,12 +97,7 @@ class MainViewController: UIViewController {
       currentPlaceholder.insert(Character(letter), at: letterPosition)
       currentDiscoveredLetters.append(letter)
     }
-    wordPlaceholder = currentPlaceholder
-    guard checkWholeWordDiscovered() else {
-      print("whole word discovered, placeholder: \(currentPlaceholder)")
-      return
-    }
-    print("new placeholder \(currentPlaceholder)")
+    guard checkWholeWordDiscovered() else { return }
   }
 
   private func nextWord() {
@@ -112,7 +106,6 @@ class MainViewController: UIViewController {
     setupLevel()
     currentDiscoveredLetters.removeAll()
     wordPlaceholder = currentPlaceholder
-    wordLetters = currentQuestion.letters
     print("next word")
   }
 
@@ -137,5 +130,6 @@ extension MainViewController: MainViewDelegate {
     if text == "next" { nextWord(); return }
     if text == "hint" { hint(); return }
     updateWordPlaceholder(letter: text)
+    wordPlaceholder = currentPlaceholder
   }
 }

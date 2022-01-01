@@ -119,7 +119,6 @@ class MainView: UIView {
   }
 
   @objc private func buttonPressed(_ sender: UIButton) {
-    print("button pressed")
     delegate?.buttonPressed(sender)
   }
 }
