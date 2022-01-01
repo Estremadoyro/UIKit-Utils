@@ -13,4 +13,5 @@ protocol MainViewDelegate: AnyObject {
   var wordPlaceholder: String { get set }
   var wordLetters: Int { get set }
   var lifes: Int { get set }
+  var orientation: UIDeviceOrientation { get }
 }

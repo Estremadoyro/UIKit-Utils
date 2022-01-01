@@ -9,6 +9,8 @@ import UIKit
 
 class MainViewController: UIViewController {
   var _lifes: Int = 7
+  var _orientation: UIDeviceOrientation!
+  var score: Int = 0
   var questions = [Question]()
   var currentQuestion: Question!
   var questionNumber = 1
@@ -35,11 +37,27 @@ class MainViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     view.addSubview(mainView)
-    print("current word: \(currentQuestion.word)")
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
   }
 
   override func viewDidAppear(_ animated: Bool) {
     mainView.generateAlphabetButtons()
+    mainView.wordToGuessInputField.layer.cornerRadius = 15
+  }
+
+  override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+    coordinator.animate(alongsideTransition: { [weak self] _ in
+      if UIDevice.current.orientation.isLandscape {
+        self?._orientation = UIDeviceOrientation.landscapeRight
+        print("landscape mode")
+      } else {
+        self?._orientation = UIDeviceOrientation.portrait
+        print("portrait mode")
+      }
+    })
   }
 
   private func getPlaceholderString() -> String {
@@ -59,17 +77,20 @@ class MainViewController: UIViewController {
         }
         setupLevel()
         lifes = 7
+        score = 0
       }
     }
   }
 
   private func setupLevel() {
+    lifes < 1 ? questions.shuffle() : nil
     questions.shuffle()
     currentQuestion = questions[questionNumber - 1]
     currentPlaceholder = getPlaceholderString()
     wordLetters = currentQuestion.letters
     wordPlaceholder = currentPlaceholder
     currentDiscoveredLetters.removeAll()
+    print("current word: \(currentQuestion.word)")
   }
 
   private func checkLetterExistsReturnPosition(letter: Character) -> [String.Index]? {
@@ -86,19 +107,20 @@ class MainViewController: UIViewController {
   }
 
   private func checkWholeWordDiscovered() -> Bool {
-    let joinedDiscoveredLettersSorted = currentDiscoveredLetters.joined(separator: "").sorted()
-    let currentWordListSorted = currentQuestion.word.sorted()
-    guard joinedDiscoveredLettersSorted == currentWordListSorted else { return false }
+    let discoveredLettersSorted = currentDiscoveredLetters.joined(separator: "").sorted()
+    let currentWordSorted = currentQuestion.word.sorted()
+    guard discoveredLettersSorted == currentWordSorted else { return false }
     return true
   }
 
   private func updateWordPlaceholder(letter: String) {
+    guard !(currentDiscoveredLetters.contains(letter)) else { return }
     guard let letterPositions = checkLetterExistsReturnPosition(letter: Character(letter)) else {
       lifes -= 1
       if lifes < 1 {
-        customAlert(title: "You lost", message: "Better luck next time", actionTitle: "Play Again") { [weak self] _ in
-          self?.lifes = 7
+        customAlert(title: "You lost", message: "Score: \(score)", actionTitle: "Play Again") { [weak self] _ in
           self?.setupLevel()
+          self?.lifes = 7
         }
       }
       return
@@ -108,10 +130,32 @@ class MainViewController: UIViewController {
       currentPlaceholder.insert(Character(letter), at: letterPosition)
       currentDiscoveredLetters.append(letter)
     }
+    wordPlaceholder = currentPlaceholder
     guard checkWholeWordDiscovered() else { return }
+    score += 1
     customAlert(title: "Congrats!", message: "", actionTitle: "Next word") { [weak self] _ in
       self?.nextWord()
     }
+  }
+
+  private func hintAlert() {
+    let ac = UIAlertController(title: "Hint", message: "Getting a hint will cost you 1 life", preferredStyle: .alert)
+    let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+    let hintAction = UIAlertAction(title: "Get hint", style: .default) { [weak self] _ in
+      guard let strongSelf = self else { return }
+      guard let currentQuestion = strongSelf.currentQuestion else { return }
+      strongSelf.lifes -= 1
+      for letter in currentQuestion.word {
+        if !(strongSelf.currentDiscoveredLetters.contains(String(letter))) {
+          strongSelf.updateWordPlaceholder(letter: String(letter))
+          break
+        }
+      }
+    }
+    hintAction.setValue(UIColor.systemPink, forKey: "titleTextColor")
+    ac.addAction(hintAction)
+    ac.addAction(dismissAction)
+    present(ac, animated: true)
   }
 
   private func customAlert(title: String, message: String, actionTitle: String, logic: @escaping (_ action: UIAlertAction) -> Void) {
@@ -125,11 +169,11 @@ class MainViewController: UIViewController {
     if !(questionNumber <= questions.count) { questionNumber = 1 }
     setupLevel()
     wordPlaceholder = currentPlaceholder
-    print("next word")
   }
 
   private func hint() {
-    print("hint")
+    guard lifes > 1 else { return }
+    hintAlert()
   }
 }
 
@@ -157,6 +201,7 @@ extension MainViewController: MainViewDelegate {
     if text == "next" { nextWord(); return }
     if text == "hint" { hint(); return }
     updateWordPlaceholder(letter: text)
-    wordPlaceholder = currentPlaceholder
   }
+
+  var orientation: UIDeviceOrientation { return _orientation }
 }

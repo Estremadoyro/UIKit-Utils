@@ -22,6 +22,7 @@ class MainView: UIView {
     super.init(frame: frame) /// # This, however, is `required`
     backgroundColor = UIColor.black
     viewBuilder()
+    constraintsBuilder()
   }
 
   /// # `*`           -> Applied to all platforms
@@ -32,10 +33,9 @@ class MainView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    constraintsBuilder()
-  }
+//  override func layoutSubviews() {
+//    super.layoutSubviews()
+//  }
 
   private func viewBuilder() {
     addSubview(topLabelsContainerView())
@@ -53,8 +53,7 @@ class MainView: UIView {
       lifesLabel.centerYAnchor.constraint(equalTo: topLabelsContainer.centerYAnchor),
     ])
     NSLayoutConstraint.activate([
-      topLabelsContainer.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-      topLabelsContainer.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
+      topLabelsContainer.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor),
       topLabelsContainer.widthAnchor.constraint(equalTo: layoutMarginsGuide.widthAnchor),
       topLabelsContainer.heightAnchor.constraint(equalTo: layoutMarginsGuide.heightAnchor, multiplier: 0.05),
       topLabelsContainer.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
@@ -93,17 +92,27 @@ class MainView: UIView {
     alphabetButtonsContainer.translatesAutoresizingMaskIntoConstraints = false
     alphabetButtonsContainer.layer.borderWidth = 1
     alphabetButtonsContainer.layer.borderColor = UIColor.white.cgColor
-    alphabetButtonsContainer.setContentHuggingPriority(UILayoutPriority(1), for: .vertical)
+//    alphabetButtonsContainer.setContentHuggingPriority(UILayoutPriority(1), for: .vertical)
     return alphabetButtonsContainer
   }
 
   func generateAlphabetButtons() {
-    let height = alphabetButtonsContainer.bounds.height / 7
-    let width = alphabetButtonsContainer.bounds.width / 4
+    var height = alphabetButtonsContainer.bounds.height / 7
+    var width = alphabetButtonsContainer.bounds.width / 4
+    var rows = 6
+    var columns = 4
     var counter = 0
     let alphabet = Alphabet.letters
-    for row in 0..<6 {
-      for column in 0..<4 {
+
+    if UIDevice.current.orientation.isLandscape {
+      height = alphabetButtonsContainer.bounds.height / 4
+      width = alphabetButtonsContainer.bounds.width / 7
+      rows = 4
+      columns = 6
+      print("landsdcape mode")
+    }
+    for row in 0..<rows {
+      for column in 0..<columns {
         let btnFrame = CGRect(x: width * Double(column), y: height * Double(row), width: width, height: height)
         letterButtonView(letter: String(alphabet[counter]), frame: btnFrame)
         counter += 1
@@ -111,8 +120,8 @@ class MainView: UIView {
     }
     /// # Adding last row
     let lastBtns = ["Hint", "Y", "Z", "Next"]
-    for column in 0..<4 {
-      let btnFrame = CGRect(x: width * Double(column), y: height * 6, width: width, height: height)
+    for column in 0..<columns {
+      let btnFrame = CGRect(x: width * Double(column), y: height * Double(rows), width: width, height: height)
       letterButtonView(letter: lastBtns[column], frame: btnFrame)
     }
   }
