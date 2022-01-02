@@ -10,8 +10,8 @@ import UIKit
 class NavigationVC: UINavigationController {
   private var collectionVC = CollectionVC(collectionViewLayout: UICollectionViewFlowLayout())
 
-  override init(rootViewController: UIViewController) {
-    super.init(rootViewController: rootViewController)
+  init() {
+    super.init(rootViewController: collectionVC)
     print("navigation vc initialized")
   }
 

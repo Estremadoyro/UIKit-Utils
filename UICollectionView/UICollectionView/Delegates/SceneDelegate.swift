@@ -12,8 +12,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     guard let windowScene = (scene as? UIWindowScene) else { return }
-    let collectionVC = CollectionVC(collectionViewLayout: UICollectionViewFlowLayout())
-    let navigationController = NavigationVC(rootViewController: collectionVC)
+    /// # ``Not necessary to be done here``
+//    let layout = UICollectionViewFlowLayout()
+//    layout.scrollDirection = .vertical
+//    let collectionVC = CollectionVC(collectionViewLayout: layout)
+    let navigationController = NavigationVC()
     window = UIWindow(frame: windowScene.coordinateSpace.bounds)
     window?.windowScene = windowScene
     window?.rootViewController = navigationController

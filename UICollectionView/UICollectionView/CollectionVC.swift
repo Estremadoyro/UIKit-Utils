@@ -10,7 +10,11 @@ import UIKit
 private let reuseIdentifier = "Cell"
 
 class CollectionVC: UICollectionViewController {
-  override init(collectionViewLayout layout: UICollectionViewLayout) {
+//  override init(collectionViewLayout layout: UICollectionViewLayout) {
+//    super.init(collectionViewLayout: layout)
+//  }
+  init(collectionViewLayout layout: UICollectionViewFlowLayout) {
+    layout.scrollDirection = .vertical
     super.init(collectionViewLayout: layout)
   }
 
@@ -23,15 +27,9 @@ class CollectionVC: UICollectionViewController {
     super.viewDidLoad()
     navigationItem.title = "Contacts"
     navigationItem.largeTitleDisplayMode = .always
-
-    // Uncomment the following line to preserve selection between presentations
-    // self.clearsSelectionOnViewWillAppear = false
-
     // Register cell classes
     self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
   }
-
-  // MARK: UICollectionViewDataSource
 
   override func numberOfSections(in collectionView: UICollectionView) -> Int {
     return 1
@@ -45,5 +43,11 @@ class CollectionVC: UICollectionViewController {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
     cell.backgroundColor = UIColor.systemBlue
     return cell
+  }
+}
+
+extension CollectionVC: UICollectionViewDelegateFlowLayout {
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    return CGSize(width: collectionView.frame.width / 2.5, height: collectionView.frame.width / 2)
   }
 }
