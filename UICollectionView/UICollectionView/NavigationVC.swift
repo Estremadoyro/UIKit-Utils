@@ -23,9 +23,18 @@ class NavigationVC: UINavigationController {
   override func viewDidLoad() {
     super.viewDidLoad()
     settings()
+    apperance()
   }
 
   private func settings() {
     navigationBar.prefersLargeTitles = true
+  }
+
+  private func apperance() {
+    let appearance = UINavigationBarAppearance()
+    appearance.backgroundColor = UIColor.systemPink
+    UINavigationBar.appearance().standardAppearance = appearance
+    UINavigationBar.appearance().compactAppearance = appearance
+    UINavigationBar.appearance().scrollEdgeAppearance = appearance
   }
 }
