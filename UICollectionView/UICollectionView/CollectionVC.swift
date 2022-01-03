@@ -12,12 +12,11 @@ private let reuseIdentifier = "Cell"
 class CollectionVC: UICollectionViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
   private let picker = UIImagePickerController()
   private var people = [Person]()
-//  override init(collectionViewLayout layout: UICollectionViewLayout) {
-//    super.init(collectionViewLayout: layout)
-//  }
+
   init(collectionViewLayout layout: UICollectionViewFlowLayout) {
     layout.scrollDirection = .vertical
-    layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 0, right: 10)
+    layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 0, right: 20)
+//    layout.collectionView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 //    layout.minimumInteritemSpacing = 0
     super.init(collectionViewLayout: layout)
   }
@@ -34,19 +33,10 @@ class CollectionVC: UICollectionViewController, UIImagePickerControllerDelegate,
     collectionView.register(CollectionCellView.self, forCellWithReuseIdentifier: reuseIdentifier)
     navSettings()
     collectionView()
-    constraintsBuilder()
   }
 
   private func collectionView() {
-    collectionView.translatesAutoresizingMaskIntoConstraints = false
     collectionView.backgroundColor = UIColor.white
-  }
-
-  private func constraintsBuilder() {
-    NSLayoutConstraint.activate([
-      collectionView.widthAnchor.constraint(equalTo: view.widthAnchor),
-      collectionView.heightAnchor.constraint(equalTo: view.heightAnchor),
-    ])
   }
 
   private func navSettings() {
@@ -83,7 +73,7 @@ class CollectionVC: UICollectionViewController, UIImagePickerControllerDelegate,
     print("Image path: \(imagePath)")
 
     /// # Append the `image` to the `Person` model
-    people.append(Person(name: "Unknown", image: imageName))
+    people.append(Person(name: "Unknown", image: imagePath.path))
     print("People: \(people)")
     collectionView.reloadData()
     picker.dismiss(animated: true, completion: nil)
@@ -102,13 +92,38 @@ class CollectionVC: UICollectionViewController, UIImagePickerControllerDelegate,
   }
 
   override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 10
+    return people.count
   }
 
   override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CollectionCellView
-    cell.backgroundColor = UIColor.systemBlue
+//    cell.backgroundColor = UIColor.systemBlue
+    /// # Get `index` Person
+    let person = people[indexPath.item]
+    /// # Set the `label text`
+    cell.pictureName.text = person.name
+    /// # Get the path set to `person.image`
+    cell.picture.image = UIImage(contentsOfFile: person.image)
+
     return cell
+  }
+
+  override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let person = people[indexPath.item]
+    let ac = UIAlertController(title: "Rename picture", message: nil, preferredStyle: .alert)
+    ac.addTextField(configurationHandler: { textField in
+      textField.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+    })
+    let dismissAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+    let renameAction = UIAlertAction(title: "Rename", style: .default) { [weak ac, weak self] _ in
+      guard let newName = ac?.textFields?[0].text else { return }
+      person.name = newName
+      /// # Reload collection view data
+      self?.collectionView.reloadData()
+    }
+    ac.addAction(renameAction)
+    ac.addAction(dismissAction)
+    present(ac, animated: true)
   }
 }
 
