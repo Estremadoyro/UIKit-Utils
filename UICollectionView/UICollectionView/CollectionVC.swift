@@ -14,10 +14,12 @@ class CollectionVC: UICollectionViewController, UIImagePickerControllerDelegate,
   private var people = [Person]()
 
   init(collectionViewLayout layout: UICollectionViewFlowLayout) {
-    layout.scrollDirection = .vertical
-    layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 0, right: 20)
-//    layout.collectionView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-//    layout.minimumInteritemSpacing = 0
+//    layout.scrollDirection = .vertical
+//    layout.sectionInset = UIEdgeInsets(top: 30, left: 20, bottom: 0, right: 20)
+//    layout.minimumInteritemSpacing = 5
+//    layout.minimumLineSpacing = 30
+//    layout.scrollDirection = .vertical
+
     super.init(collectionViewLayout: layout)
   }
 
@@ -37,6 +39,8 @@ class CollectionVC: UICollectionViewController, UIImagePickerControllerDelegate,
 
   private func collectionView() {
     collectionView.backgroundColor = UIColor.white
+    collectionView.alwaysBounceVertical = true
+    collectionView.bounces = true
   }
 
   private func navSettings() {

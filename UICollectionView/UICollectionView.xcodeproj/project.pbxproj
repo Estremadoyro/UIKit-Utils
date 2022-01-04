@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A7115BD62783C334000074BB /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7115BD52783C334000074BB /* TestViewController.swift */; };
 		A72855A9278269CA00100C82 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72855A8278269CA00100C82 /* Person.swift */; };
 		A72855AB2782A04100100C82 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72855AA2782A04100100C82 /* Utils.swift */; };
 		A775257D2781424500338E19 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A775257C2781424500338E19 /* AppDelegate.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A7115BD52783C334000074BB /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		A72855A8278269CA00100C82 /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 		A72855AA2782A04100100C82 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		A77525792781424500338E19 /* UICollectionView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UICollectionView.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,6 +69,7 @@
 				A77525932781711400338E19 /* CollectionVC.swift */,
 				A72855A8278269CA00100C82 /* Person.swift */,
 				A78B262F27821C4200C7600C /* CollectionCellView.swift */,
+				A7115BD52783C334000074BB /* TestViewController.swift */,
 				A72855AA2782A04100100C82 /* Utils.swift */,
 				A77525852781424700338E19 /* Assets.xcassets */,
 				A77525872781424700338E19 /* LaunchScreen.storyboard */,
@@ -156,6 +159,7 @@
 			files = (
 				A775257D2781424500338E19 /* AppDelegate.swift in Sources */,
 				A78B263027821C4200C7600C /* CollectionCellView.swift in Sources */,
+				A7115BD62783C334000074BB /* TestViewController.swift in Sources */,
 				A77525912781534A00338E19 /* NavigationVC.swift in Sources */,
 				A72855A9278269CA00100C82 /* Person.swift in Sources */,
 				A775257F2781424500338E19 /* SceneDelegate.swift in Sources */,

@@ -10,10 +10,12 @@ import UIKit
 class CollectionCellView: UICollectionViewCell {
   let picture: UIImageView = {
     let image = UIImageView()
-    image.clipsToBounds = true
     image.translatesAutoresizingMaskIntoConstraints = false
+    image.clipsToBounds = true
+    image.layer.cornerRadius = 15
     image.contentMode = .scaleAspectFill
     image.image = UIImage(named: "senku.png")
+
     return image
   }()
 
@@ -24,7 +26,7 @@ class CollectionCellView: UICollectionViewCell {
     label.textAlignment = NSTextAlignment.center
     label.textColor = UIColor.white
     label.font = UIFont.systemFont(ofSize: 22)
-    label.backgroundColor = UIColor.black
+//    label.backgroundColor = UIColor.black
     return label
   }()
 
@@ -32,9 +34,6 @@ class CollectionCellView: UICollectionViewCell {
     /// # Used the `constraints/anchors` created to determine the `size & positionsuper.layoutSubviews` of any subview
     super.layoutSubviews()
     self.configureCellView()
-//    contentView.layer.cornerRadius = 15
-
-//    createCustomBorderRadius(corners: [.topLeft, .topRight, .bottomLeft, .bottomRight], radius: 15)
   }
 
   override init(frame: CGRect) {
@@ -45,19 +44,31 @@ class CollectionCellView: UICollectionViewCell {
   }
 
   private func configureCellView() {
-    contentView.layer.masksToBounds = false
-    contentView.clipsToBounds = false
-    contentView.layer.shadowColor = UIColor.systemPink.cgColor
-    contentView.layer.shadowOpacity = 1
-    contentView.layer.shadowOffset = .zero
-    contentView.layer.shadowRadius = 5
-    contentView.layer.cornerRadius = 15
+//    contentView.layer.masksToBounds = false
+//    contentView.clipsToBounds = true
+//    contentView.layer.cornerRadius = 15
+//    contentView.layer.shadowRadius = 7
+//    contentView.layer.shadowOpacity = 1
+//    contentView.layer.shadowOffset = CGSize(width: 3, height: 3)
+//    contentView.layer.shadowColor = UIColor.systemPink.cgColor
+
+    let shadowLayer = CAShapeLayer()
+    shadowLayer.path = UIBezierPath(roundedRect: contentView.bounds, cornerRadius: 15).cgPath
+    shadowLayer.fillColor = UIColor.systemPink.cgColor
+
+    shadowLayer.shadowColor = UIColor.systemPink.cgColor
+    shadowLayer.shadowPath = shadowLayer.path
+    shadowLayer.shadowOffset = CGSize(width: 0.0, height: 0.0)
+    shadowLayer.shadowOpacity = 1
+    shadowLayer.shadowRadius = 5
+    contentView.layer.insertSublayer(shadowLayer, at: 0)
+
     /// # Try to set the `rect` of the view to a `specific value` as shadows are `expensive`
 //    contentView.layer.shadowPath = UIBezierPath(rect: contentView.bounds).cgPath
     /// # Cache the rendered shadow, prevenets `redrawing`
-//    contentView.layer.shouldRasterize = true
+    contentView.layer.shouldRasterize = true
     /// # Make the cached drawing at the `same scale` of the `main screen`, otherwise it will look `pixelated`
-//    contentView.layer.rasterizationScale = UIScreen.main.scale
+    contentView.layer.rasterizationScale = UIScreen.main.scale
   }
 
   private func constraintsBuilder() {

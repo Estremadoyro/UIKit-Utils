@@ -16,10 +16,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //    let layout = UICollectionViewFlowLayout()
 //    layout.scrollDirection = .vertical
 //    let collectionVC = CollectionVC(collectionViewLayout: layout)
-    let navigationController = NavigationVC()
+//    let navigationController = NavigationVC()
     window = UIWindow(frame: windowScene.coordinateSpace.bounds)
     window?.windowScene = windowScene
-    window?.rootViewController = navigationController
+    window?.rootViewController = NavigationVC()
     window?.makeKeyAndVisible()
   }
 
