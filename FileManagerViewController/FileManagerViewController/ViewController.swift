@@ -19,7 +19,7 @@ class ViewController: UITableViewController {
     loadImagesFromBundle()
   }
 
-  private func loadImagesFromBundle() {
+  func loadImagesFromBundle() {
     DispatchQueue.global(qos: .userInteractive).async { [weak self] in
       guard let strongSelf = self else { return }
       /// # `FileManager`, allows to work with the `file system`

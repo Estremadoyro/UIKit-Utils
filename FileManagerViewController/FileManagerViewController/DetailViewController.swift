@@ -10,8 +10,13 @@ import UIKit
 /// # NavigationView's NavigationLinks are `destroyed` after shown
 
 class DetailViewController: UIViewController {
-  /// # `@IBOutlet` indicates a connection of a `View` from `StoryBoard` into code
-  @IBOutlet var imageViwq: UIImageView!
+  var imageViwq: UIImageView = {
+    let image = UIImageView()
+    image.translatesAutoresizingMaskIntoConstraints = false
+    image.clipsToBounds = true
+    image.contentMode = .scaleToFill
+    return image
+  }()
 
   /// # It has to be an `optional`, as it `may or may not` get an init value
   var selectedImage: String?
@@ -20,6 +25,7 @@ class DetailViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    view.addSubview(imageViwq)
     /// # Since both `title` and `selectedImage` are `optionals` there is no need for unwrapping
     /// # But if set to something else, then unwrapping is needed
     if let listOfPictures = picturesList {
@@ -35,6 +41,17 @@ class DetailViewController: UIViewController {
     if let imageToLoad = selectedImage {
       imageViwq.image = UIImage(named: imageToLoad)
     }
+
+    NSLayoutConstraint.activate([
+      imageViwq.widthAnchor.constraint(equalTo: view.widthAnchor),
+      imageViwq.heightAnchor.constraint(equalTo: view.layoutMarginsGuide.heightAnchor),
+      imageViwq.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      imageViwq.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+    ])
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
   }
 
   override func viewWillAppear(_ animated: Bool) {

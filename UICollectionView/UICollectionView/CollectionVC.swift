@@ -14,12 +14,6 @@ class CollectionVC: UICollectionViewController, UIImagePickerControllerDelegate,
   private var people = [Person]()
 
   init(collectionViewLayout layout: UICollectionViewFlowLayout) {
-//    layout.scrollDirection = .vertical
-//    layout.sectionInset = UIEdgeInsets(top: 30, left: 20, bottom: 0, right: 20)
-//    layout.minimumInteritemSpacing = 5
-//    layout.minimumLineSpacing = 30
-//    layout.scrollDirection = .vertical
-
     super.init(collectionViewLayout: layout)
   }
 
@@ -55,6 +49,9 @@ class CollectionVC: UICollectionViewController, UIImagePickerControllerDelegate,
     /// # Image picker set in `properties`
     picker.allowsEditing = true
     picker.delegate = self
+    if UIImagePickerController.isSourceTypeAvailable(.camera) {
+      picker.sourceType = .camera
+    }
     present(picker, animated: true)
   }
 
@@ -112,8 +109,7 @@ class CollectionVC: UICollectionViewController, UIImagePickerControllerDelegate,
     return cell
   }
 
-  override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    let person = people[indexPath.item]
+  private func renamePictureAlert(person: Person) {
     let ac = UIAlertController(title: "Rename picture", message: nil, preferredStyle: .alert)
     ac.addTextField(configurationHandler: { textField in
       textField.autoresizingMask = [.flexibleHeight, .flexibleWidth]
@@ -128,6 +124,25 @@ class CollectionVC: UICollectionViewController, UIImagePickerControllerDelegate,
     ac.addAction(renameAction)
     ac.addAction(dismissAction)
     present(ac, animated: true)
+  }
+
+  private func updatePictureAlert(personPosition: Int) {
+    let ac = UIAlertController(title: "Update", message: "Would you like to change the picture name, or delete it?", preferredStyle: .alert)
+    let deletePictureAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+      self?.people.remove(at: personPosition)
+      self?.collectionView.reloadData()
+    }
+    let editPictureAction = UIAlertAction(title: "Rename", style: .default) { [weak self] _ in
+      guard let person = self?.people[personPosition] else { return }
+      self?.renamePictureAlert(person: person)
+    }
+    ac.addAction(deletePictureAction)
+    ac.addAction(editPictureAction)
+    present(ac, animated: true)
+  }
+
+  override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    updatePictureAlert(personPosition: indexPath.item)
   }
 }
 
