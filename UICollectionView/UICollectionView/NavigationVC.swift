@@ -16,6 +16,7 @@ class NavigationVC: UINavigationController {
     layout.minimumInteritemSpacing = 5
     layout.minimumLineSpacing = 30
     layout.scrollDirection = .vertical
+    let size = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.2), heightDimension: .fractionalHeight(1.0))
     return CollectionVC(collectionViewLayout: layout)
   }()
 
