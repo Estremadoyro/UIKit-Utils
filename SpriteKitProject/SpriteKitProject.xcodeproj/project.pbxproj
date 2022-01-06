@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A77072E42786006C0015BCD5 /* FireParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = A77072E32786006C0015BCD5 /* FireParticles.sks */; };
 		A79587952784F48E00BFE155 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79587942784F48E00BFE155 /* AppDelegate.swift */; };
 		A79587972784F48E00BFE155 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = A79587962784F48E00BFE155 /* GameScene.sks */; };
 		A795879B2784F48E00BFE155 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A795879A2784F48E00BFE155 /* GameScene.swift */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A77072E32786006C0015BCD5 /* FireParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = FireParticles.sks; path = "../../Resources/project11-files/FireParticles.sks"; sourceTree = "<group>"; };
 		A79587912784F48E00BFE155 /* SpriteKitProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpriteKitProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A79587942784F48E00BFE155 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A79587962784F48E00BFE155 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -64,6 +66,7 @@
 				A795879E2784F48E00BFE155 /* Main.storyboard */,
 				A79587A12784F48F00BFE155 /* Assets.xcassets */,
 				A79587A32784F48F00BFE155 /* LaunchScreen.storyboard */,
+				A77072E32786006C0015BCD5 /* FireParticles.sks */,
 			);
 			path = SpriteKitProject;
 			sourceTree = "<group>";
@@ -128,6 +131,7 @@
 			files = (
 				A79587A02784F48E00BFE155 /* Main.storyboard in Resources */,
 				A79587972784F48E00BFE155 /* GameScene.sks in Resources */,
+				A77072E42786006C0015BCD5 /* FireParticles.sks in Resources */,
 				A79587A22784F48F00BFE155 /* Assets.xcassets in Resources */,
 				A79587A52784F48F00BFE155 /* LaunchScreen.storyboard in Resources */,
 			);

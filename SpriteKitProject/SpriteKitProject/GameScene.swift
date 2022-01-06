@@ -5,11 +5,29 @@
 //  Created by Leonardo  on 4/01/22.
 //
 
+import AudioToolbox
 import SpriteKit
 
 /// # All `nodes` should have `names`
 /// # `SKPhysicsContactDelegate` ``Send colission notifications``
 class GameScene: SKScene, SKPhysicsContactDelegate {
+  private let balls: [String] = [
+    "ballBlue",
+    "ballCyan",
+    "ballGreen",
+    "ballGrey",
+    "ballPurple",
+    "ballRed",
+    "ballYellow"
+  ]
+
+  private var ballsLeftLabel = SKLabelNode(fontNamed: "Chalkduster")
+  private var ballsLeft = 5 {
+    didSet {
+      ballsLeftLabel.text = "Balls: \(ballsLeft)"
+    }
+  }
+
   private lazy var scoreLabel = SKLabelNode(fontNamed: "Chalkduster")
   private var score: Int = 0 {
     didSet {
@@ -28,11 +46,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
   }
 
+  private var obstacles = 0
+
   private lazy var background = SKSpriteNode()
   private lazy var boxSprite = SKSpriteNode()
   private lazy var ballSprite = SKSpriteNode()
   private lazy var bouncerSprite = SKSpriteNode()
   private lazy var slotSprite = SKSpriteNode()
+  private var obstacleSprite: SKSpriteNode!
 
   private func setBackground() {
     background = SKSpriteNode(imageNamed: "background")
@@ -52,7 +73,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   }
 
   private func drawBallSprite(position: CGPoint) {
-    ballSprite = SKSpriteNode(imageNamed: "ballRed")
+    let randomBall = Int.random(in: 0 ..< balls.count)
+    ballSprite = SKSpriteNode(imageNamed: balls[randomBall])
     ballSprite.physicsBody = SKPhysicsBody(circleOfRadius: ballSprite.size.width / 2)
     ballSprite.physicsBody?.restitution = 0.5 /// # Bouncines
     /// # `contactBitmask` is `what colissions should be notified?` ``Default to NONE``
@@ -132,20 +154,59 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     addChild(editLabel)
   }
 
+  private func drawBallsLeftLabel() {
+    ballsLeftLabel.text = "Balls 5"
+    ballsLeftLabel.horizontalAlignmentMode = .center
+    ballsLeftLabel.position = CGPoint(x: frame.size.width / 2, y: frame.size.height - 100)
+    addChild(ballsLeftLabel)
+  }
+
+  private func drawObstacleSprite(position: CGPoint) {
+    /// # Create random `size` for `block`
+    let size = CGSize(width: Int.random(in: 0...Int(frame.size.width / 6)), height: 16)
+    /// # Create the `random colors`
+    obstacleSprite = SKSpriteNode(color: UIColor(red: CGFloat.random(in: 0...1), green: CGFloat.random(in: 0...1), blue: CGFloat.random(in: 0...1), alpha: 1), size: size)
+    /// # Define its `initial rotation` (zRotation) ``Radians``
+    obstacleSprite.zRotation = CGFloat.random(in: 0...2)
+    /// # Set its position
+    obstacleSprite.position = position // Tap location
+    /// # Add physics so it can `collide`
+    obstacleSprite.physicsBody = SKPhysicsBody(rectangleOf: obstacleSprite.size)
+    /// # Won't move when collided with
+    obstacleSprite.physicsBody?.isDynamic = false
+    obstacleSprite.name = "obstacle"
+    obstacles += 1
+    addChild(obstacleSprite)
+  }
+
   /// # Remove the `balls` that collide with the `slots (good|bad)`
   private func collisionBetween(ball: SKNode, object: SKNode) {
     /// # If the `ball` hits one of the `bottom platforms`
     if object.name == "good" {
       destroyNode(node: ball)
       score += 1
+      ballsLeft += 1
     } else if object.name == "bad" {
       destroyNode(node: ball)
-      score -= 1
+      score -= (score > 0 ? 1 : 0)
+      if !children.contains(where: { $0.name?.contains("ball") ?? false }) {
+        if ballsLeft < 1 {
+          print("hit bad platform, no lives")
+          playAgainAlert()
+        }
+      }
+    } else if object.name == "obstacle" {
+      destroyNode(node: object)
     }
   }
 
   /// # Remove node
   private func destroyNode(node: SKNode) {
+    /// # Read animation
+    if let fireParticles = SKEmitterNode(fileNamed: "FireParticles") {
+      fireParticles.position = node.position
+      addChild(fireParticles)
+    }
     node.removeFromParent()
   }
 
@@ -170,6 +231,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
   }
 
+  private func playAgainAlert() {
+    let ac = UIAlertController(title: "Game Over", message: "Score: \(score)", preferredStyle: .alert)
+    ac.addAction(UIAlertAction(title: "Play again", style: .cancel) { [weak self] _ in
+      self?.ballsLeft = 5
+      self?.score = 5
+      AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+    })
+    view?.window?.rootViewController?.present(ac, animated: true, completion: nil)
+  }
+
   /// # Scene is presented by the view
   override func didMove(to view: SKView) {
     super.didMove(to: view)
@@ -183,13 +254,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     drawSlotSprites()
     drawScoreLabel()
     drawEditLabel()
+    drawBallsLeftLabel()
   }
 
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     /// # Register first touch
     guard let touch = touches.first else { return }
     /// # Find where the touch was
-    let location = touch.location(in: self)
+    var location = touch.location(in: self)
     /// # Get all nodes at `tap location`
     let objects = nodes(at: location)
     /// # Check if the `editLabel` was tapped
@@ -197,21 +269,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       editingMode.toggle()
     } else {
       if editingMode {
-        /// # Create random `size` for `block`
-        let size = CGSize(width: Int.random(in: 0...Int(frame.size.width / 3)), height: 16)
-        /// # Create the `random colors`
-        let box = SKSpriteNode(color: UIColor(red: CGFloat.random(in: 0...1), green: CGFloat.random(in: 0...1), blue: CGFloat.random(in: 0...1), alpha: 1), size: size)
-        /// # Define its `initial rotation` (zRotation) ``Radians``
-        box.zRotation = CGFloat.random(in: 0...2)
-        /// # Set its position
-        box.position = location // Tap location
-        /// # Add physics so it can `collide`
-        box.physicsBody = SKPhysicsBody(rectangleOf: box.size)
-        /// # Won't move when collided with
-        box.physicsBody?.isDynamic = false
-        addChild(box)
+        drawObstacleSprite(position: location)
       } else {
-        drawBallSprite(position: location)
+        if ballsLeft > 0 {
+          location = CGPoint(x: location.x, y: frame.size.height * 0.9)
+          drawBallSprite(position: location)
+          ballsLeft -= (ballsLeft > 0 ? 1 : 0)
+        }
       }
     }
   }
