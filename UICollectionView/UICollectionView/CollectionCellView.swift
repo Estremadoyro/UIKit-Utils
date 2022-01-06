@@ -44,14 +44,6 @@ class CollectionCellView: UICollectionViewCell {
   }
 
   private func configureCellView() {
-//    contentView.layer.masksToBounds = false
-//    contentView.clipsToBounds = true
-//    contentView.layer.cornerRadius = 15
-//    contentView.layer.shadowRadius = 7
-//    contentView.layer.shadowOpacity = 1
-//    contentView.layer.shadowOffset = CGSize(width: 3, height: 3)
-//    contentView.layer.shadowColor = UIColor.systemPink.cgColor
-
     let shadowLayer = CAShapeLayer()
     shadowLayer.path = UIBezierPath(roundedRect: contentView.bounds, cornerRadius: 15).cgPath
     shadowLayer.fillColor = UIColor.systemPink.cgColor
