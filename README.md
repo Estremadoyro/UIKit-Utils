@@ -42,6 +42,10 @@ class Person: NSObject, NSCoding, NSSecureCoding {
     }
 }
 ```
+And here is a new instance, an array of Person with only one element, example sake
+```swift
+let people = [Person(name: "Leonardo", image: "/Some/User/Image/Path")]
+```
 
 ## Writing to UserDefaults 
 ```swift
@@ -50,7 +54,6 @@ UserDefaults.standard.set(SomeObject, forKey: "custom-key")
 ### JSON Encoder
 Encode the data type into JSON format and then save it in UserDefaults under a key.
 ```swift
-let people = [Person(name: "Leonardo", age: 22)]
 if let data = JSONEncoder().encode(people) {
     UserDefaults.standard.set(data, forKey: "people")
 }
