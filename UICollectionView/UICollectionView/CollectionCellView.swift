@@ -12,9 +12,10 @@ class CollectionCellView: UICollectionViewCell {
     let image = UIImageView()
     image.translatesAutoresizingMaskIntoConstraints = false
     image.clipsToBounds = true
-    image.layer.cornerRadius = 15
+//    image.layer.cornerRadius = 15
     image.contentMode = .scaleAspectFill
     image.image = UIImage(named: "senku.png")
+//    image.backgroundColor =
 
     return image
   }()
@@ -26,14 +27,14 @@ class CollectionCellView: UICollectionViewCell {
     label.textAlignment = NSTextAlignment.center
     label.textColor = UIColor.white
     label.font = UIFont.systemFont(ofSize: 22)
-//    label.backgroundColor = UIColor.black
+    label.backgroundColor = UIColor.black
     return label
   }()
 
   override func layoutSubviews() {
     /// # Used the `constraints/anchors` created to determine the `size & positionsuper.layoutSubviews` of any subview
     super.layoutSubviews()
-    self.configureCellView()
+//    self.configureCellView()
   }
 
   override init(frame: CGRect) {

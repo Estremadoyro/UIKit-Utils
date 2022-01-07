@@ -5,6 +5,28 @@
 - [Modern CollectionViews](https://developer.apple.com/documentation/uikit/views_and_controls/collection_views/implementing_modern_collection_views)
 - [NavigationBar Apperance](https://stackoverflow.com/questions/56910797/ios13-navigation-bar-large-titles-not-covering-status-bar)
 - [RoundedCorner & Shadow](https://medium.com/bytes-of-bits/swift-tips-adding-rounded-corners-and-shadows-to-a-uiview-691f67b83e4a)
+- [UserDefaults](https://cocoacasts.com/ud-9-how-to-save-an-image-in-user-defaults-in-swift)
+
+# User Defaults
+Used for minor data saved in the user's device. Should **not** be used for **large/complex** data, like images, it's bad practice. Models must conform **Codable** in order to code it's data into a JSON type.
+## Writing to UserDefaults with JSON Encoder
+Encode the data type into JSON format and then save it in UserDefaults under a key.
+```swift
+let people = [Person(name: "Leonardo", age: 22)]
+if let data = JSONEncoder().encode(people) {
+    UserDefaults.standard.set(data, forKey: "people")
+}
+```
+## Reading from UserDefaults with JSON Decoder
+Read user defaults by key, then decode it into it's corresponding data-type structure.
+```swift
+if let loadedData = UserDefaults.standard.data(forKey: "people") { 
+    if let decodedData = JSONDecoder().decode([Person].self, from loadedData) {
+        people = decodedData
+    }
+}
+```
+
 # 🚦Grand Central Dispatch (GCD)
 Optimize application support for Multi-core systems, by using different threads, and creating  **4 different QoS (Quality of Service) queues**. Which have different priorities for different multi-thread needs. The **default** queue **higher** than **Utiliy** but **lower** than **User Initiated**. [HackingWithSwift reference](https://www.hackingwithswift.com/read/9/3/gcd-101-async).
 

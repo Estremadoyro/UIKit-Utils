@@ -15,6 +15,7 @@ class CollectionVC: UICollectionViewController, UIImagePickerControllerDelegate,
 
   init(collectionViewLayout layout: UICollectionViewFlowLayout) {
     super.init(collectionViewLayout: layout)
+    loadPeopleModel()
   }
 
   @available(*, unavailable)
@@ -24,7 +25,6 @@ class CollectionVC: UICollectionViewController, UIImagePickerControllerDelegate,
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    loadPeopleModel()
     collectionView.delegate = self
     collectionView.dataSource = self
     collectionView.register(CollectionCellView.self, forCellWithReuseIdentifier: reuseIdentifier)
@@ -76,7 +76,7 @@ class CollectionVC: UICollectionViewController, UIImagePickerControllerDelegate,
 
     /// # Append a `new Person` with the `image directory path`
     people.append(Person(name: "Unknown", image: imagePath.path))
-    print("People: \(people)")
+    print("New person added: \(imagePath.path)")
     collectionView.reloadData()
     /// # Save `people` in `UserDefaults`
     savePeopleModel()
@@ -104,10 +104,13 @@ class CollectionVC: UICollectionViewController, UIImagePickerControllerDelegate,
 //    cell.backgroundColor = UIColor.systemBlue
     /// # Get `index` Person
     let person = people[indexPath.item]
+    print("Loading person view: \(person.image)")
     /// # Set the `label text`
     cell.pictureName.text = person.name
     /// # Get the path set to `person.image`
     cell.picture.image = UIImage(contentsOfFile: person.image)
+//    print("Image trying to load")
+//    print(person.image)
 
     return cell
   }
@@ -121,11 +124,14 @@ class CollectionVC: UICollectionViewController, UIImagePickerControllerDelegate,
     let renameAction = UIAlertAction(title: "Rename", style: .default) { [weak ac, weak self] _ in
       guard let newName = ac?.textFields?[0].text else { return }
       person.name = newName
+      /// # Save people to `UsersDefault`
+      self?.savePeopleModel()
       /// # Reload collection view data
       self?.collectionView.reloadData()
     }
     ac.addAction(renameAction)
     ac.addAction(dismissAction)
+    print(people.map { $0.name })
     present(ac, animated: true)
   }
 
@@ -133,13 +139,14 @@ class CollectionVC: UICollectionViewController, UIImagePickerControllerDelegate,
     let ac = UIAlertController(title: "Update", message: "Would you like to change the picture name, or delete it?", preferredStyle: .alert)
     let deletePictureAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
       self?.people.remove(at: personPosition)
+      /// # Save the new `people`
+      self?.savePeopleModel()
       self?.collectionView.reloadData()
     }
     let editPictureAction = UIAlertAction(title: "Rename", style: .default) { [weak self] _ in
       guard let person = self?.people[personPosition] else { return }
       self?.renamePictureAlert(person: person)
       /// # Save `people` in `UserDefaults`
-      self?.savePeopleModel()
     }
     ac.addAction(deletePictureAction)
     ac.addAction(editPictureAction)
@@ -164,23 +171,41 @@ extension CollectionVC {
     /// # `people` is an `array`, `not` a `data obj.`
     /// # `archivedData` Turns an `object` into a `Data object
     /// # `root obj.` -> `obj. graph` -> ``data obj.``
-
     /// # `requiredSecudeCoding`: Should all `encoded objs.` conform `NSSecureCoding`
     /// # Converts the `array` [People], into a `data obj.`
-    if let savedData = try? NSKeyedArchiver.archivedData(withRootObject: people, requiringSecureCoding: false) {
-      UserDefaults.standard.set(savedData, forKey: "people")
-      print("write: \(savedData)")
+//    if let savedData = try? NSKeyedArchiver.archivedData(withRootObject: people, requiringSecureCoding: false) {
+//      UserDefaults().set(savedData, forKey: "people")
+//      print("write: \(savedData)")
+//    }
+    /// # ``Save as JSON``
+    if let data = try? JSONEncoder().encode(people) {
+      UserDefaults.standard.set(data, forKey: "photos")
     }
   }
 
   func loadPeopleModel() {
     /// # Has an `Any` type by default, gotta cast it to `Data`
-    if let savedPeople = UserDefaults.standard.object(forKey: "people") as? Data {
-      /// # Has a `Person` type, but the `people` saved was of type `[Person]`
-      if let decodedPeople = try? NSKeyedUnarchiver.unarchivedArrayOfObjects(ofClasses: [Person.self], from: savedPeople) as? [Person] {
-        /// # `unarchivedArrayOfObjects` is not working, and `unarchiveTopLevelObjecWithData` will be ``deprecated``
-        print("read \(people)")
-        people = decodedPeople
+//    if let savedPeople = UserDefaults.standard.object(forKey: "people") as? Data {
+//      /// # Has a `Person` type, but the `people` saved was of type `[Person]`
+//      if let decodedPeople = try? NSKeyedUnarchiver.unarchivedArrayOfObjects(ofClasses: [Person.self], from: savedPeople) as? [Person] {
+//        /// # `unarchivedArrayOfObjects` is not working, and `unarchiveTopLevelObjecWithData` will be ``deprecated``
+//        print("read \(people)")
+//        people = decodedPeople
+//      }
+//    }
+//    if let savedPeople = UserDefaults.standard.value(forKey: "people") as? Data {
+//      if let decodedPeople = try? NSKeyedUnarchiver.unarchivedObject(ofClass: Person.self, from: savedPeople) as? [Person] {
+//        people = decodedPeople
+//        print("Decoded people: \(decodedPeople)")
+//      }
+//    }
+    /// # Check if `people exists in UserDefaults`
+    if let savedPeople = UserDefaults.standard.data(forKey: "photos") {
+      if let decodedData = try? JSONDecoder().decode([Person].self, from: savedPeople) {
+        people = decodedData
+        print("decoded data")
+        print(decodedData.map { $0.name })
+        print(decodedData.map { $0.image })
       }
     }
   }
