@@ -8,8 +8,46 @@
 - [UserDefaults](https://cocoacasts.com/ud-9-how-to-save-an-image-in-user-defaults-in-swift)
 
 # 📱 User Defaults
-Used for minor data saved in the user's device. Should **not** be used for **large/complex** data, like images, it's bad practice. Models must conform **Codable** in order to code it's data into a JSON type.
-## Writing to UserDefaults with JSON Encoder
+Used for saving minor data in the user's device. Data is located using a **forKey** as unique id in UserDefaults. It should **not** be used for **large/complex** data, like images, it's bad practice. Models must conform **Codable** in order to code it's data into a JSON type.\
+Writing to UserDefaults can be done in multiple ways for different value-types, but the most common is the **object-type**.\
+For the **JSON** approach, **Person** will have to conform **Codable**
+```swift
+class Person: Codable { 
+    var name: String
+    var image: String
+    init(name: String, image: String) { 
+        self.name = name
+        self.image = image
+    }
+}
+```
+For the **NSSKeyedArchive/Unarchived** approach, **Person** will have to conform **NSObject, NSCoding and NSSecureCoding**. This approach allows **objc compatibility**.
+```swift
+class Person: NSObject, NSCoding, NSSecureCoding { 
+    static var supportSecureCoding: Bool = true
+    var name: String
+    var image: String
+    init(name: String, image: String) { 
+        self.name = name
+        self.image = image
+    }
+    // Required methods to conform the protocols
+    required init?(coder: NSCoder) { 
+        self.name = coder.decodeObject(forKey: "name") as? String ?? ""
+        self.image = coder.decodeObject(forKey: "image") as? String ?? ""
+    }
+    func encode(with coder: NSCoder) { 
+        coder.encode(self.name, forKey: "name")
+        coder.encode(self.image, forKey: "image")
+    }
+}
+```
+
+## Writing to UserDefaults 
+```swift
+UserDefaults.standard.set(SomeObject, forKey: "custom-key")
+```
+### JSON Encoder
 Encode the data type into JSON format and then save it in UserDefaults under a key.
 ```swift
 let people = [Person(name: "Leonardo", age: 22)]
@@ -17,14 +55,32 @@ if let data = JSONEncoder().encode(people) {
     UserDefaults.standard.set(data, forKey: "people")
 }
 ```
-## Reading from UserDefaults with JSON Decoder
+### NSKeyedArchiver
+Will transform any **object value-type** to a **data value-type** in order to safe to UserDefaults
+```swift
+let archive = try NSKeyedArchiver.archiveData(withRootObject: people, requiringSecureCoding: false)
+    UserDefaults.standard.set(archive, forKey: "people")
+```
+## Reading from UserDefaults 
+```swift
+UserDefaults.standard.object(forKey: "people") as? Data
+```
+### JSON Decoder
 Read user defaults by key, then decode it into it's corresponding data-type structure.
 ```swift
 if let loadedData = UserDefaults.standard.data(forKey: "people") { 
     if let decodedData = JSONDecoder().decode([Person].self, from loadedData) {
-        people = decodedData
+        self.people = decodedData
     }
 }
+```
+### NSKeyedUnarchiver
+Find the object in UserDefaults by key, cast it to **Data** and then unarchive it.\
+The **ofClassed** must contain **NSString.self, CustomObject.self, and all other NS types in the model**, or else it will result in console warnings of future deprecation.
+```swift
+let data = UserDefaults.standard.object(forKey: "people") as? Data
+let unarchivedData = NSKeyedUnarchiver.unarchivedObject(ofClasses: [Person.self, NSArray.self, NSString.self], from: data) as? [Person]
+self.people = unarchivedData
 ```
 
 # 🚦 Grand Central Dispatch (GCD)

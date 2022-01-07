@@ -15,7 +15,8 @@ class CollectionVC: UICollectionViewController, UIImagePickerControllerDelegate,
 
   init(collectionViewLayout layout: UICollectionViewFlowLayout) {
     super.init(collectionViewLayout: layout)
-    loadPeopleModel()
+//    loadPeopleModel()
+    loadPeopleModelNSKeyed()
   }
 
   @available(*, unavailable)
@@ -79,7 +80,8 @@ class CollectionVC: UICollectionViewController, UIImagePickerControllerDelegate,
     print("New person added: \(imagePath.path)")
     collectionView.reloadData()
     /// # Save `people` in `UserDefaults`
-    savePeopleModel()
+//    savePeopleModel()
+    savePeopleModelNSKeyed()
     picker.dismiss(animated: true, completion: nil)
   }
 
@@ -125,7 +127,8 @@ class CollectionVC: UICollectionViewController, UIImagePickerControllerDelegate,
       guard let newName = ac?.textFields?[0].text else { return }
       person.name = newName
       /// # Save people to `UsersDefault`
-      self?.savePeopleModel()
+//      self?.savePeopleModel()
+      self?.savePeopleModelNSKeyed()
       /// # Reload collection view data
       self?.collectionView.reloadData()
     }
@@ -140,7 +143,8 @@ class CollectionVC: UICollectionViewController, UIImagePickerControllerDelegate,
     let deletePictureAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
       self?.people.remove(at: personPosition)
       /// # Save the new `people`
-      self?.savePeopleModel()
+//      self?.savePeopleModel()
+      self?.savePeopleModelNSKeyed()
       self?.collectionView.reloadData()
     }
     let editPictureAction = UIAlertAction(title: "Rename", style: .default) { [weak self] _ in
@@ -184,29 +188,40 @@ extension CollectionVC {
   }
 
   func loadPeopleModel() {
-    /// # Has an `Any` type by default, gotta cast it to `Data`
-//    if let savedPeople = UserDefaults.standard.object(forKey: "people") as? Data {
-//      /// # Has a `Person` type, but the `people` saved was of type `[Person]`
-//      if let decodedPeople = try? NSKeyedUnarchiver.unarchivedArrayOfObjects(ofClasses: [Person.self], from: savedPeople) as? [Person] {
-//        /// # `unarchivedArrayOfObjects` is not working, and `unarchiveTopLevelObjecWithData` will be ``deprecated``
-//        print("read \(people)")
-//        people = decodedPeople
-//      }
-//    }
-//    if let savedPeople = UserDefaults.standard.value(forKey: "people") as? Data {
-//      if let decodedPeople = try? NSKeyedUnarchiver.unarchivedObject(ofClass: Person.self, from: savedPeople) as? [Person] {
-//        people = decodedPeople
-//        print("Decoded people: \(decodedPeople)")
-//      }
-//    }
-    /// # Check if `people exists in UserDefaults`
-    if let savedPeople = UserDefaults.standard.data(forKey: "photos") {
+    if let savedPeople = UserDefaults.standard.object(forKey: "photos") as? Data {
       if let decodedData = try? JSONDecoder().decode([Person].self, from: savedPeople) {
         people = decodedData
         print("decoded data")
         print(decodedData.map { $0.name })
         print(decodedData.map { $0.image })
       }
+    }
+  }
+
+  func savePeopleModelNSKeyed() {
+    do {
+      let archive = try NSKeyedArchiver.archivedData(withRootObject: people, requiringSecureCoding: false)
+      UserDefaults.standard.set(archive, forKey: "photos-v1")
+      print("Data saved: \(archive)")
+    } catch {
+      print("Error archiving: \(error)")
+    }
+  }
+
+  func loadPeopleModelNSKeyed() {
+    do {
+      guard let data = UserDefaults.standard.object(forKey: "photos-v1") as? Data else {
+        print("failed to find people in UserDefaults")
+        return
+      }
+      guard let unarchivedData = try NSKeyedUnarchiver.unarchivedObject(ofClasses: [NSString.self, NSArray.self, Person.self], from: data) as? [Person] else {
+        print("failed to unarchive people")
+        return
+      }
+      print("loaded people: \(unarchivedData)")
+      people = unarchivedData
+    } catch {
+      print("Error unarchiving/loading: \(error)")
     }
   }
 }

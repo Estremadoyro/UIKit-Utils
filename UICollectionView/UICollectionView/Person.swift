@@ -10,7 +10,9 @@ import Foundation
 /// # `Model` for the new image selected from the `image picker`
 /// # ``NSObject``: Required in order to use `NSCoding`
 /// # ``NSCoding``: Coding and Decoding for archiving data)
-class Person: Codable {
+class Person: NSObject, NSSecureCoding, NSCoding, Codable {
+  static var supportsSecureCoding: Bool = true
+  
   var name: String
   var image: String
 
@@ -19,17 +21,17 @@ class Person: Codable {
     self.image = image
   }
 
-  /// #``Required to conform NSCoding`` (NOT NEEDED ANYMORE)
+  /// #``Required to conform NSCoding`` (NSKeyedArchive / NSKeyedUnarchive)
 
   /// # `Reading` from `archives`
-//  required init?(coder: NSCoder) {
-//    self.name = coder.decodeObject(forKey: "name") as? String ?? ""
-//    self.image = coder.decodeObject(forKey: "image") as? String ?? ""
-//  }
+  required init?(coder: NSCoder) {
+    self.name = coder.decodeObject(forKey: "name") as? String ?? ""
+    self.image = coder.decodeObject(forKey: "image") as? String ?? ""
+  }
 
   /// # `Writing (Encode)` to archives
-//  func encode(with coder: NSCoder) {
-//    coder.encode(self.name, forKey: "name")
-//    coder.encode(self.image, forKey: "image")
-//  }
+  func encode(with coder: NSCoder) {
+    coder.encode(self.name, forKey: "name")
+    coder.encode(self.image, forKey: "image")
+  }
 }
