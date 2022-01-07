@@ -1,4 +1,4 @@
-#🔗 Useful links
+# 🔗 Useful links
 - [README.md documentation](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
 - [Organize Layout Code](https://dilloncodes.com/how-i-organize-layout-code-in-swift)
 - [CollectionView & Scroll](https://medium.com/@max.codes/programmatic-custom-collectionview-cell-subclass-in-swift-5-xcode-10-291f8d41fdb1)
@@ -7,7 +7,7 @@
 - [RoundedCorner & Shadow](https://medium.com/bytes-of-bits/swift-tips-adding-rounded-corners-and-shadows-to-a-uiview-691f67b83e4a)
 - [UserDefaults](https://cocoacasts.com/ud-9-how-to-save-an-image-in-user-defaults-in-swift)
 
-#📱 User Defaults
+# 📱 User Defaults
 Used for minor data saved in the user's device. Should **not** be used for **large/complex** data, like images, it's bad practice. Models must conform **Codable** in order to code it's data into a JSON type.
 ## Writing to UserDefaults with JSON Encoder
 Encode the data type into JSON format and then save it in UserDefaults under a key.
@@ -27,7 +27,7 @@ if let loadedData = UserDefaults.standard.data(forKey: "people") {
 }
 ```
 
-#🚦 Grand Central Dispatch (GCD)
+# 🚦 Grand Central Dispatch (GCD)
 Optimize application support for Multi-core systems, by using different threads, and creating  **4 different QoS (Quality of Service) queues**. Which have different priorities for different multi-thread needs. The **default** queue **higher** than **Utiliy** but **lower** than **User Initiated**. [HackingWithSwift reference](https://www.hackingwithswift.com/read/9/3/gcd-101-async).
 
 ## 1️⃣ User Interactive
