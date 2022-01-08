@@ -24,6 +24,8 @@
 		A7063A22276315DB00C81FB5 /* nssl0033.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A7063A18276315DB00C81FB5 /* nssl0033.jpg */; };
 		A7063A23276315DB00C81FB5 /* nssl0034.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A7063A19276315DB00C81FB5 /* nssl0034.jpg */; };
 		A73FDF382765CC8400E1CE17 /* senku.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A73FDF372765CC8400E1CE17 /* senku.jpeg */; };
+		A7BB173327891C5300027D74 /* LocalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BB173227891C5300027D74 /* LocalSettings.swift */; };
+		A7BB17352789276A00027D74 /* Picture.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BB17342789276A00027D74 /* Picture.swift */; };
 		A7DBF04C276453F900BE92FF /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DBF04B276453F900BE92FF /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +49,8 @@
 		A7063A18276315DB00C81FB5 /* nssl0033.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = nssl0033.jpg; sourceTree = "<group>"; };
 		A7063A19276315DB00C81FB5 /* nssl0034.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = nssl0034.jpg; sourceTree = "<group>"; };
 		A73FDF372765CC8400E1CE17 /* senku.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = senku.jpeg; sourceTree = "<group>"; };
+		A7BB173227891C5300027D74 /* LocalSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalSettings.swift; sourceTree = "<group>"; };
+		A7BB17342789276A00027D74 /* Picture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Picture.swift; sourceTree = "<group>"; };
 		A7DBF04B276453F900BE92FF /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -83,6 +87,8 @@
 				A70639FB2763145A00C81FB5 /* AppDelegate.swift */,
 				A70639FD2763145A00C81FB5 /* SceneDelegate.swift */,
 				A70639FF2763145A00C81FB5 /* ViewController.swift */,
+				A7BB17342789276A00027D74 /* Picture.swift */,
+				A7BB173227891C5300027D74 /* LocalSettings.swift */,
 				A7DBF04B276453F900BE92FF /* DetailViewController.swift */,
 				A7063A012763145A00C81FB5 /* Main.storyboard */,
 				A7063A042763145D00C81FB5 /* Assets.xcassets */,
@@ -193,6 +199,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7BB17352789276A00027D74 /* Picture.swift in Sources */,
+				A7BB173327891C5300027D74 /* LocalSettings.swift in Sources */,
 				A7063A002763145A00C81FB5 /* ViewController.swift in Sources */,
 				A70639FC2763145A00C81FB5 /* AppDelegate.swift in Sources */,
 				A70639FE2763145A00C81FB5 /* SceneDelegate.swift in Sources */,
@@ -345,6 +353,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M5AB5V73J2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FileManagerViewController/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -373,6 +382,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M5AB5V73J2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FileManagerViewController/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

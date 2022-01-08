@@ -6,9 +6,13 @@
 - [NavigationBar Apperance](https://stackoverflow.com/questions/56910797/ios13-navigation-bar-large-titles-not-covering-status-bar)
 - [RoundedCorner & Shadow](https://medium.com/bytes-of-bits/swift-tips-adding-rounded-corners-and-shadows-to-a-uiview-691f67b83e4a)
 - [UserDefaults](https://cocoacasts.com/ud-9-how-to-save-an-image-in-user-defaults-in-swift)
+- [Communication Patterns](https://betterprogramming.pub/5-ways-to-pass-data-between-view-controllers-18acb467f5ec)
 
 # 📱 User Defaults
-Used for saving minor data in the user's device. Data is located using a **forKey** as unique id in UserDefaults. It should **not** be used for **large/complex** data, like images, it's bad practice. Models must conform **Codable** in order to code it's data into a JSON type.\
+Used for saving minor data in the user's device. Data is located using a **forKey** as unique id in UserDefaults. It should **not** be used for **large/complex/sensitive** data, like images, it's **not secure** will slow the application launch with large data. Keychain is an option though. Models must conform **Codable** in order to code it's data into a JSON type.\
+#### Aimed for:
+✅ User Settings
+✅ Program Settings\
 Writing to UserDefaults can be done in multiple ways for different value-types, but the most common is the **object-type**.\
 For the **JSON** approach, **Person** will have to conform **Codable**
 ```swift
