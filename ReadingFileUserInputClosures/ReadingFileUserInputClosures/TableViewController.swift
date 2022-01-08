@@ -8,8 +8,12 @@
 import UIKit
 
 final class TableViewController: UITableViewController {
+  private let CURRENT_WORD_KEY = "current-word"
+  private let WORD_ATTEMPTS_KEY = "word-attempts"
+
   var allWords = [String]()
   var usedWords = [String]()
+  private var currentWord: String = ""
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -29,12 +33,14 @@ final class TableViewController: UITableViewController {
     if allWords.isEmpty {
       allWords = ["NO_WORDS_LOADED"]
     }
-    startGame()
+    loadGameData()
+    setUpGame()
   }
 
   private func navigationBar() {
     navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promptForAnswer))
-    navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(startGame))
+    navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(restartGame))
+    navigationController?.navigationBar.prefersLargeTitles = true
   }
 
   /// # Method to call when the `bar button item` is pressed
@@ -60,14 +66,24 @@ final class TableViewController: UITableViewController {
     print("TableView controller destroyed")
   }
 
-  @objc private func startGame() {
-    /// # Gets a `random word`
-    title = allWords.randomElement()
-    navigationController?.navigationBar.prefersLargeTitles = true
-    /// # Removes all the words from the loaded file in list
-    usedWords.removeAll(keepingCapacity: true)
-    /// # Reloads `sections` and `rows` of the view
+  @objc private func restartGame() {
+    guard let currentWord = allWords.randomElement() else { return }
+    self.currentWord = currentWord
+    title = self.currentWord
+    usedWords.removeAll()
+    saveGameData(data: usedWords, key: WORD_ATTEMPTS_KEY)
+    saveGameData(data: self.currentWord, key: CURRENT_WORD_KEY)
     tableView.reloadData()
+  }
+
+  private func setUpGame() {
+    /// # Gets a `random word`
+    title = currentWord
+    saveGameData(data: currentWord, key: CURRENT_WORD_KEY)
+    /// # Removes all the words from the loaded file in list
+//    usedWords.removeAll(keepingCapacity: true)
+    /// # Reloads `sections` and `rows` of the view
+//    tableView.reloadData()
   }
 
   private func submitAnswer(answer: String) {
@@ -99,6 +115,7 @@ final class TableViewController: UITableViewController {
   private func insertWordInTable(answer word: String) {
     /// # Insert the `word` at possition `0`
     usedWords.insert(word, at: 0)
+    saveGameData(data: usedWords, key: WORD_ATTEMPTS_KEY)
     /// # New `IndexPath` (List of indexes ``row and section indexes``) which points at the `first row`
     let indexPath = IndexPath(row: 0, section: 0)
     /// # This is needed to display the `animation` of the new `cell` animating from top
@@ -121,8 +138,7 @@ final class TableViewController: UITableViewController {
         /// # If `found` then `remove` it from the `tempWord` list, in order to prevent answer letters passing the test, if those are repeated more times than in the `play word (title)`
         tempWord.remove(at: position)
         /// # Answer letter doesn't exist in the `play word (title)`, so it fails
-      }
-      else {
+      } else {
         return false
       }
     }
@@ -153,6 +169,34 @@ final class TableViewController: UITableViewController {
     var content = cell.defaultContentConfiguration()
     content.text = usedWords[indexPath.row]
     cell.contentConfiguration = content
+    cell.selectionStyle = .none
     return cell
+  }
+
+  private func saveGameData<T>(data: T, key: String) {
+    UserDefaults.standard.set(data, forKey: key)
+    print("saved game data: \(data) @ \(key)")
+  }
+
+  private func loadGameData() {
+    DispatchQueue.global(qos: .userInteractive).async { [weak self] in
+      guard let strongSelf = self else { return }
+      if let currentWord = UserDefaults.standard.string(forKey: strongSelf.CURRENT_WORD_KEY) {
+        strongSelf.currentWord = currentWord
+        print("UD - currentWord: \(currentWord)")
+      } else {
+        if let randomWord = strongSelf.allWords.randomElement() {
+          strongSelf.currentWord = randomWord
+        }
+      }
+      if let usedWords = UserDefaults.standard.array(forKey: strongSelf.WORD_ATTEMPTS_KEY) as? [String] {
+        strongSelf.usedWords = usedWords
+        print("UD - currentWord: \(usedWords)")
+      } else {
+        strongSelf.usedWords.removeAll()
+      }
+    }
+    print("- currentWord: \(UserDefaults.standard.value(forKey: CURRENT_WORD_KEY))")
+    print("- usedWords: \(UserDefaults.standard.value(forKey: WORD_ATTEMPTS_KEY))")
   }
 }
