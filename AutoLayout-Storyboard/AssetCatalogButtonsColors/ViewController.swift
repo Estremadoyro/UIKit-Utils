@@ -19,8 +19,11 @@ class ViewController: UIViewController {
   @IBOutlet var button2: UIButton!
   @IBOutlet var button3: UIButton!
 
+  let HIGHEST_SCORE_KEY = "highest-score"
+
   var countries = [String]()
   var score: Int = 0
+  var highestScore: Int = 0
   var correctAnswer: Int = 0
   var questionsAsked: Int = 0
   var userIsCorrect: Bool = false
@@ -28,6 +31,7 @@ class ViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    loadHighestScore()
     button1.layer.borderWidth = 12
     button2.layer.borderWidth = 12
     button3.layer.borderWidth = 12
@@ -62,7 +66,7 @@ class ViewController: UIViewController {
 
   private func alertToDisplay(numberOfQuestion: Int, sender: UIButton) {
     if numberOfQuestion == numberOfQuestions {
-      showFinalScoreAlert()
+      showFinalScoreAlert(sender: sender)
     } else {
       showResultAlert(sender: sender)
     }
@@ -72,11 +76,18 @@ class ViewController: UIViewController {
     var title: String
     var message: String
     let wrongSelectedFlagMsg: String = "That's the flag of \(countries[sender.tag].uppercased())"
-    if sender.tag == correctAnswer {
+
+    if checkAnswer(sender: sender) {
       title = "Correct"
       score += 1
       message = "Your score is \(score)"
-      userIsCorrect = true
+      if score > highestScore {
+        saveHighestScore()
+        message = """
+        New highest score!
+        Score: \(score)
+        """
+      }
     } else {
       title = "Wrong"
       score = (score > 0 ? score - 1 : score)
@@ -84,9 +95,7 @@ class ViewController: UIViewController {
       \(wrongSelectedFlagMsg)
       Your score is \(score)
       """
-      userIsCorrect = false
     }
-
     /// # Create an alert message showing if the player was `Correct` or `Wrong`
     let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
     /// # The handler can be either a `closure` or a `function`
@@ -95,8 +104,16 @@ class ViewController: UIViewController {
     present(ac, animated: true)
   }
 
-  private func showFinalScoreAlert() {
-    let title: String = "\(userIsCorrect ? "Correct" : "Incorrect")"
+  private func checkAnswer(sender: UIButton) -> Bool {
+    print("Sender tag: \(sender.tag) | Correct answer: \(correctAnswer)")
+    guard sender.tag == correctAnswer else {
+      return false
+    }
+    return true
+  }
+
+  private func showFinalScoreAlert(sender: UIButton) {
+    let title: String = "\(checkAnswer(sender: sender) ? "Correct" : "Incorrect")"
     let message: String =
       """
       All questions answered (\(questionsAsked))
@@ -120,5 +137,17 @@ class ViewController: UIViewController {
     ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: nil))
     /// # `completion` is an optional action to be executed after the `UIAlertAction` has been dismissed
     present(ac, animated: true, completion: nil)
+  }
+
+  private func saveHighestScore() {
+    UserDefaults.standard.set(score, forKey: HIGHEST_SCORE_KEY)
+    print("new highest score: \(score)")
+  }
+
+  private func loadHighestScore() {
+    if UserDefaults.standard.value(forKey: HIGHEST_SCORE_KEY) != nil {
+      highestScore = UserDefaults.standard.integer(forKey: HIGHEST_SCORE_KEY)
+      print("loaded highest score from UserDefaults: \(highestScore)")
+    }
   }
 }
