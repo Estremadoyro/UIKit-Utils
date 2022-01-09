@@ -20,7 +20,7 @@ window?.makeKeyAndVisible()
 # 📱 User Defaults
 Used for saving minor data in the user's device. Data is located using a **forKey** as unique id in UserDefaults. It should **not** be used for **large/complex/sensitive** data, like images, it's **not secure** will slow the application launch with large data. Keychain is an option though. Models must conform **Codable** in order to code it's data into a JSON type.\
 #### Aimed for:
-✅ User Settings
+✅ User Settings\
 ✅ Program Settings\
 Writing to UserDefaults can be done in multiple ways for different value-types, but the most common is the **object-type**.\
 For the **JSON** approach, **Person** will have to conform **Codable**
