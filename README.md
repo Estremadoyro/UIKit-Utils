@@ -12,7 +12,7 @@
 ```swift
 guard let windowScene = (scene as? UIWindowScene) else { return }
 window = UIWindow(frame: windowScene.coordinateSpace.bounds)
-window?.scene = windowScene
+window?.windowScene = windowScene
 window?.rootViewController = ViewController()
 window?.makeKeyAndVisible()
 ```

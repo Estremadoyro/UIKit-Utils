@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UINavigationController {
+class NavigationViewController: UINavigationController {
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .systemPink
