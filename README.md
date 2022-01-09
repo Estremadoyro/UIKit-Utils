@@ -8,7 +8,7 @@
 - [UserDefaults](https://cocoacasts.com/ud-9-how-to-save-an-image-in-user-defaults-in-swift)
 - [Communication Patterns](https://betterprogramming.pub/5-ways-to-pass-data-between-view-controllers-18acb467f5ec)
 
-# Setup without Storyboards
+# 📋 Setup without Storyboards
 ```swift
 guard let windowScene = (scene as? UIWindowScene) else { return }
 window = UIWindow(frame: windowScene.coordinateSpace.bounds)
