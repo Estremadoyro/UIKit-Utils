@@ -8,6 +8,15 @@
 - [UserDefaults](https://cocoacasts.com/ud-9-how-to-save-an-image-in-user-defaults-in-swift)
 - [Communication Patterns](https://betterprogramming.pub/5-ways-to-pass-data-between-view-controllers-18acb467f5ec)
 
+# Setup without Storyboards
+```swift
+guard let windowScene = (scene as? UIWindowScene) else { return }
+window = UIWindow(frame: windowScene.coordinateSpace.bounds)
+window?.scene = windowScene
+window?.rootViewController = ViewController()
+window?.makeKeyAndVisible()
+```
+
 # 📱 User Defaults
 Used for saving minor data in the user's device. Data is located using a **forKey** as unique id in UserDefaults. It should **not** be used for **large/complex/sensitive** data, like images, it's **not secure** will slow the application launch with large data. Keychain is an option though. Models must conform **Codable** in order to code it's data into a JSON type.\
 #### Aimed for:
