@@ -7,9 +7,18 @@
 
 import UIKit
 
-class NavigationViewController: UINavigationController {
+class NavigationVC: UINavigationController {
+  init() {
+    super.init(rootViewController: TableVC())
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
-    view.backgroundColor = .systemPink
+    view.backgroundColor = UIColor.systemGray6
+  }
+
+  @available(*, unavailable)
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 }
