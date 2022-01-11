@@ -8,7 +8,33 @@
 - [UserDefaults](https://cocoacasts.com/ud-9-how-to-save-an-image-in-user-defaults-in-swift)
 - [Communication Patterns](https://betterprogramming.pub/5-ways-to-pass-data-between-view-controllers-18acb467f5ec)
 
-# 📋 Setup without Storyboards
+# 📝 Info.plist 
+| Key | Value | Meaning |
+| --- | --- | --- |
+| Supported interface orientations (iPhone) | Portrait (bottom home button) | Set portrait mode only |
+| Privacy - Camera Usage Description | *Reason* | Access device camera
+# 📐 CGShapeLayer
+### Add corner radius and shadow to a view
+Should be called inside **viewDidLayoutSubviews** in a VC, but if not, an **async** call will do it in a **UIView** subclass.
+```swift
+    DispatchQueue.main.async { [weak self] in
+      guard let strongSelf = self else { return }
+      strongSelf.shadowLayer = CAShapeLayer()
+      strongSelf.shadowLayer.path = UIBezierPath(roundedRect: strongSelf.cellContainer.bounds, cornerRadius: 10).cgPath
+      strongSelf.shadowLayer.fillColor = UIColor.white.cgColor
+      strongSelf.shadowLayer.shadowColor = UIColor.black.cgColor
+      strongSelf.shadowLayer.shadowPath = strongSelf.shadowLayer.path
+      strongSelf.shadowLayer.shadowOffset = .zero
+      strongSelf.shadowLayer.shadowOpacity = 0.2
+      strongSelf.shadowLayer.shadowRadius = strongSelf.shadowRadius
+      strongSelf.cellContainer.layer.insertSublayer(strongSelf.shadowLayer, at: 0)
+    }
+
+```
+# 📋 TableView
+## TableViewCell
+Comes with an embeded **contentView** inside the **cell**, it's size must not be edited, as it is done manually by the API.
+# 💻 Setup without Storyboards
 ```swift
 guard let windowScene = (scene as? UIWindowScene) else { return }
 window = UIWindow(frame: windowScene.coordinateSpace.bounds)

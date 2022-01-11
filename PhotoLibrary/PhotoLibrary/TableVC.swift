@@ -49,6 +49,10 @@ extension TableVC {
     }
     return cell
   }
+
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return 80
+  }
 }
 
 class TableVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -80,6 +84,7 @@ class TableVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
   }
 
   private func setupTableView() {
+    tableView.separatorStyle = .none
     view.addSubview(tableView)
     NSLayoutConstraint.activate([
       tableView.topAnchor.constraint(equalTo: view.topAnchor),
