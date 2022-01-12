@@ -7,6 +7,8 @@
 - [RoundedCorner & Shadow](https://medium.com/bytes-of-bits/swift-tips-adding-rounded-corners-and-shadows-to-a-uiview-691f67b83e4a)
 - [UserDefaults](https://cocoacasts.com/ud-9-how-to-save-an-image-in-user-defaults-in-swift)
 - [Communication Patterns](https://betterprogramming.pub/5-ways-to-pass-data-between-view-controllers-18acb467f5ec)
+- [View Controller Heirarchy](https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/TheViewControllerHierarchy.html)
+- [Font Size Guidelines](https://learnui.design/blog/ios-font-size-guidelines.html)
 
 # 📝 Info.plist 
 | Key | Value | Meaning |

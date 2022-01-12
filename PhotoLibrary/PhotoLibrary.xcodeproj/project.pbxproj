@@ -16,6 +16,8 @@
 		A74B85A8278B4E0C00811E6F /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74B85A7278B4E0C00811E6F /* Photo.swift */; };
 		A74B85AA278B625F00811E6F /* PhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74B85A9278B625F00811E6F /* PhotoPicker.swift */; };
 		A74B85AE278B7FD400811E6F /* PhotoPickerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74B85AD278B7FD400811E6F /* PhotoPickerDelegate.swift */; };
+		A7CBF175278E10D700D18A6F /* PhotoFormVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CBF174278E10D700D18A6F /* PhotoFormVC.swift */; };
+		A7CBF177278EA3D000D18A6F /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CBF176278EA3D000D18A6F /* Utils.swift */; };
 		A7E1DE58278C009100837781 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E1DE57278C009100837781 /* CellView.swift */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +33,8 @@
 		A74B85A7278B4E0C00811E6F /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		A74B85A9278B625F00811E6F /* PhotoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPicker.swift; sourceTree = "<group>"; };
 		A74B85AD278B7FD400811E6F /* PhotoPickerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPickerDelegate.swift; sourceTree = "<group>"; };
+		A7CBF174278E10D700D18A6F /* PhotoFormVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoFormVC.swift; sourceTree = "<group>"; };
+		A7CBF176278EA3D000D18A6F /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		A7E1DE57278C009100837781 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -69,6 +73,8 @@
 				A74B85A5278A963400811E6F /* TableVC.swift */,
 				A74B85A9278B625F00811E6F /* PhotoPicker.swift */,
 				A7E1DE57278C009100837781 /* CellView.swift */,
+				A7CBF174278E10D700D18A6F /* PhotoFormVC.swift */,
+				A7CBF176278EA3D000D18A6F /* Utils.swift */,
 				A74B85A7278B4E0C00811E6F /* Photo.swift */,
 				A74B859A278A8E3200811E6F /* Assets.xcassets */,
 				A74B859C278A8E3200811E6F /* LaunchScreen.storyboard */,
@@ -158,9 +164,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				A74B8596278A8E3200811E6F /* NavigationVC.swift in Sources */,
+				A7CBF175278E10D700D18A6F /* PhotoFormVC.swift in Sources */,
 				A74B85AE278B7FD400811E6F /* PhotoPickerDelegate.swift in Sources */,
 				A74B85A6278A963400811E6F /* TableVC.swift in Sources */,
 				A74B85AA278B625F00811E6F /* PhotoPicker.swift in Sources */,
+				A7CBF177278EA3D000D18A6F /* Utils.swift in Sources */,
 				A7E1DE58278C009100837781 /* CellView.swift in Sources */,
 				A74B8592278A8E3200811E6F /* AppDelegate.swift in Sources */,
 				A74B8594278A8E3200811E6F /* SceneDelegate.swift in Sources */,

@@ -8,7 +8,7 @@
 import PhotosUI
 import UIKit
 
-class PhotoPicker: PHPickerViewControllerDelegate {
+class PhotoPicker: UIViewController, PHPickerViewControllerDelegate {
   weak var photoPickerDelegate: PhotoPickerDelegate?
 
   func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
@@ -39,6 +39,7 @@ class PhotoPicker: PHPickerViewControllerDelegate {
   func setupPicker(_ presentingVC: UIViewController) {
     let vc = PHPickerViewController(configuration: configurePicker())
     vc.delegate = self
+    vc.modalPresentationStyle = .fullScreen
     presentingVC.present(vc, animated: true, completion: nil)
   }
 }

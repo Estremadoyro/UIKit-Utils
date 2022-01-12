@@ -9,7 +9,12 @@ import UIKit
 
 extension TableVC: PhotoPickerDelegate {
   func didSelectPhoto(image: UIImage) {
-    print(image)
+    DispatchQueue.main.async { [weak self] in
+      guard let strongSelf = self else { return }
+      print("finished selecting image")
+      strongSelf.photoFormVC.photo = image
+      strongSelf.navigationController?.pushViewController(strongSelf.photoFormVC, animated: true)
+    }
   }
 }
 
@@ -57,6 +62,7 @@ extension TableVC {
 
 class TableVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
   let photoPicker = PhotoPicker()
+  lazy var photoFormVC = PhotoFormVC()
 
   private var photos = [Photo]()
   private let CELL_ID: String = "CELL_ID"
@@ -72,6 +78,7 @@ class TableVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     tableView.delegate = self
     tableView.dataSource = self
     tableView.translatesAutoresizingMaskIntoConstraints = false
+    tableView.separatorStyle = .none
     tableView.register(CellView.self, forCellReuseIdentifier: CELL_ID)
     return tableView
   }()
@@ -80,12 +87,11 @@ class TableVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     super.viewDidLoad()
     photoPicker.photoPickerDelegate = self
     navigationBarSettings()
-    setupTableView()
+    view.addSubview(tableView)
+    constraintsBuilder()
   }
 
-  private func setupTableView() {
-    tableView.separatorStyle = .none
-    view.addSubview(tableView)
+  private func constraintsBuilder() {
     NSLayoutConstraint.activate([
       tableView.topAnchor.constraint(equalTo: view.topAnchor),
       tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
