@@ -10,6 +10,7 @@
 - [Communication Patterns](https://betterprogramming.pub/5-ways-to-pass-data-between-view-controllers-18acb467f5ec)
 - [View Controller Heirarchy](https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/TheViewControllerHierarchy.html)
 - [Font Size Guidelines](https://learnui.design/blog/ios-font-size-guidelines.html)
+- [ScrollView tricks](https://useyourloaf.com/blog/easier-scrolling-with-layout-guides/)
 
 # 📝 Info.plist 
 | Key | Value | Meaning |
