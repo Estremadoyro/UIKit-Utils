@@ -5,6 +5,7 @@
 - [Modern CollectionViews](https://developer.apple.com/documentation/uikit/views_and_controls/collection_views/implementing_modern_collection_views)
 - [NavigationBar Apperance](https://stackoverflow.com/questions/56910797/ios13-navigation-bar-large-titles-not-covering-status-bar)
 - [RoundedCorner & Shadow](https://medium.com/bytes-of-bits/swift-tips-adding-rounded-corners-and-shadows-to-a-uiview-691f67b83e4a)
+- [Corner masking](https://sarunw.com/posts/how-to-set-corner-radius-for-some-corners/)
 - [UserDefaults](https://cocoacasts.com/ud-9-how-to-save-an-image-in-user-defaults-in-swift)
 - [Communication Patterns](https://betterprogramming.pub/5-ways-to-pass-data-between-view-controllers-18acb467f5ec)
 - [View Controller Heirarchy](https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/TheViewControllerHierarchy.html)
@@ -16,6 +17,10 @@
 | Supported interface orientations (iPhone) | Portrait (bottom home button) | Set portrait mode only |
 | Privacy - Camera Usage Description | *Reason* | Access device camera
 # 📐 CGShapeLayer
+### Set corner radius to some edges
+```swift
+view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner] // Top corners round
+```
 ### Add corner radius and shadow to a view
 Should be called inside **viewDidLayoutSubviews** in a VC, but if not, an **async** call will do it in a **UIView** subclass.
 ```swift

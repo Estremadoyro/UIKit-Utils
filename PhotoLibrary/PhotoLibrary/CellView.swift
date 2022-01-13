@@ -10,12 +10,24 @@ import UIKit
 class CellView: UITableViewCell {
   private var shadowLayer: CAShapeLayer!
   private var shadowRadius: CGFloat = 3.0
+
+  private let photoThumbnail: UIImageView = {
+    let imageView = UIImageView()
+    imageView.translatesAutoresizingMaskIntoConstraints = false
+    imageView.clipsToBounds = true
+    imageView.image = UIImage(named: "no-image-found.jpeg")
+    imageView.contentMode = .scaleAspectFill
+    imageView.layer.cornerRadius = 10
+    imageView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+    return imageView
+  }()
+
   private let photoNameLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.text = "Byakuya"
     label.textColor = UIColor.black.withAlphaComponent(0.8)
-    label.font = UIFont.preferredFont(forTextStyle: .title3)
+    label.font = UIFont.boldSystemFont(ofSize: 18)
     return label
   }()
 
@@ -32,6 +44,7 @@ class CellView: UITableViewCell {
   private lazy var cellContainer: UIView = {
     let view = UIView()
     view.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(photoThumbnail)
     view.addSubview(stackView)
     return view
   }()
@@ -79,7 +92,13 @@ class CellView: UITableViewCell {
       cellContainer.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
       cellContainer.topAnchor.constraint(equalTo: topAnchor, constant: 5),
       cellContainer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
-      stackView.leadingAnchor.constraint(equalTo: cellContainer.leadingAnchor, constant: 10),
+
+      photoThumbnail.leadingAnchor.constraint(equalTo: cellContainer.leadingAnchor),
+      photoThumbnail.topAnchor.constraint(equalTo: cellContainer.topAnchor),
+      photoThumbnail.bottomAnchor.constraint(equalTo: cellContainer.bottomAnchor),
+      photoThumbnail.widthAnchor.constraint(equalTo: cellContainer.widthAnchor, multiplier: 0.2),
+
+      stackView.leadingAnchor.constraint(equalTo: photoThumbnail.trailingAnchor, constant: 10),
       stackView.trailingAnchor.constraint(equalTo: cellContainer.trailingAnchor, constant: -10),
       stackView.centerYAnchor.constraint(equalTo: cellContainer.centerYAnchor)
     ])

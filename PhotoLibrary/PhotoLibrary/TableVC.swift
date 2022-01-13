@@ -35,7 +35,8 @@ extension TableVC {
 extension TableVC {
   private func navigationBarSettings() {
     navigationItem.title = "Photo Library"
-    navigationController?.navigationBar.prefersLargeTitles = true
+    navigationController?.navigationBar.prefersLargeTitles = false
+    navigationItem.largeTitleDisplayMode = .never
     let camera = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(takePhoto))
     let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPhoto))
     navigationItem.rightBarButtonItems = [camera]
