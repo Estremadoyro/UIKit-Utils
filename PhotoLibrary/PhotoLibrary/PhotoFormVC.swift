@@ -13,15 +13,24 @@ class PhotoFormVC: UIViewController {
       guard let text = titleFieldView.text else { return "" }
       return text
     }
+    set { titleFieldView.text = newValue }
+  }
+
+  var photoDescription: String {
+    get {
+      guard let text = descriptionFieldView.text else { return "" }
+      return text
+    }
     set {
-      titleFieldView.text = newValue
+      descriptionFieldView.text = photoDescriptionPlaceholder
+      descriptionFieldView.textColor = photoDescriptionPlaceholderColor
     }
   }
 
-  var photoDescription: String = ""
   var photo: UIImage?
 
   let photoDescriptionPlaceholder: String = "Description"
+  let photoDescriptionPlaceholderColor = UIColor.lightGray.withAlphaComponent(0.7)
 
   private var shadowLayer: CAShapeLayer!
   private var gestureRecognizer: UITapGestureRecognizer!
@@ -30,16 +39,9 @@ class PhotoFormVC: UIViewController {
     let scroll = UIScrollView()
     scroll.translatesAutoresizingMaskIntoConstraints = false
     scroll.alwaysBounceVertical = true
-    scroll.addSubview(containerView)
+    scroll.addSubview(fullStackView)
+    scroll.delaysContentTouches = true
     return scroll
-  }()
-
-  private lazy var containerView: UIView = {
-    let view = UIView()
-    view.translatesAutoresizingMaskIntoConstraints = false
-    view.addSubview(fullStackView)
-//    view.addSubview(saveButton)
-    return view
   }()
 
   private lazy var fullStackView: UIStackView = {
@@ -81,7 +83,7 @@ class PhotoFormVC: UIViewController {
     let textView = UITextView()
     textView.translatesAutoresizingMaskIntoConstraints = false
     textView.font = UIFont.preferredFont(forTextStyle: .title3)
-    textView.textColor = UIColor.lightGray
+    textView.textColor = photoDescriptionPlaceholderColor
     textView.layer.cornerRadius = 15
     textView.layer.borderColor = UIColor.black.cgColor
     textView.layer.borderWidth = 2
@@ -122,16 +124,6 @@ class PhotoFormVC: UIViewController {
     return button
   }()
 
-  init() {
-    super.init(nibName: nil, bundle: nil)
-    titleFieldView.text = ""
-  }
-
-  @available(*, unavailable)
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
   override func viewDidLoad() {
     super.viewDidLoad()
     print("form load")
@@ -141,6 +133,13 @@ class PhotoFormVC: UIViewController {
     subViewsBuilder()
     constraintsBuilder()
     setupGestures()
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    photoTitle = ""
+    photoDescription = ""
+    titleFieldView.becomeFirstResponder()
   }
 
   private func viewControllerSettings() {
@@ -155,8 +154,6 @@ class PhotoFormVC: UIViewController {
   private func subViewsBuilder() {
     view.addSubview(scrollView)
     view.addSubview(saveButtonContainerView)
-//    view.addSubview(fullStackView)
-//    view.addSubview(saveButton)
   }
 
   private func constraintsBuilder() {
@@ -166,12 +163,10 @@ class PhotoFormVC: UIViewController {
       scrollView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
       scrollView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
 
-      containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+      fullStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+      fullStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.6),
 
-      fullStackView.topAnchor.constraint(equalTo: containerView.topAnchor),
-      fullStackView.heightAnchor.constraint(equalTo: scrollView.heightAnchor, multiplier: 0.6),
-      fullStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-      fullStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+      fullStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
       photoImageView.heightAnchor.constraint(equalTo: fullStackView.heightAnchor, multiplier: 0.6, constant: -10),
       stackView.heightAnchor.constraint(equalTo: fullStackView.heightAnchor, multiplier: 0.4),
@@ -179,31 +174,15 @@ class PhotoFormVC: UIViewController {
       titleFieldView.heightAnchor.constraint(equalTo: stackView.heightAnchor, multiplier: 0.2),
       descriptionFieldView.heightAnchor.constraint(equalTo: stackView.heightAnchor, multiplier: 0.8, constant: -10),
 
-      saveButtonContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      saveButtonContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      saveButtonContainerView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+      saveButtonContainerView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
       saveButtonContainerView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
       saveButtonContainerView.heightAnchor.constraint(equalTo: scrollView.heightAnchor, multiplier: 0.09),
 
-      saveButton.leadingAnchor.constraint(equalTo: saveButtonContainerView.layoutMarginsGuide.leadingAnchor),
-      saveButton.trailingAnchor.constraint(equalTo: saveButtonContainerView.layoutMarginsGuide.trailingAnchor),
+      saveButton.leadingAnchor.constraint(equalTo: saveButtonContainerView.leadingAnchor),
+      saveButton.trailingAnchor.constraint(equalTo: saveButtonContainerView.trailingAnchor),
       saveButton.topAnchor.constraint(equalTo: saveButtonContainerView.topAnchor, constant: 5),
       saveButton.bottomAnchor.constraint(equalTo: saveButtonContainerView.bottomAnchor, constant: -25),
-
-//      fullStackView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
-//      fullStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.6),
-//      fullStackView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-//      fullStackView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-//
-//      photoImageView.heightAnchor.constraint(equalTo: fullStackView.heightAnchor, multiplier: 0.6, constant: -10),
-//      stackView.heightAnchor.constraint(equalTo: fullStackView.heightAnchor, multiplier: 0.4),
-//
-//      titleFieldView.heightAnchor.constraint(equalTo: stackView.heightAnchor, multiplier: 0.2),
-//      descriptionFieldView.heightAnchor.constraint(equalTo: stackView.heightAnchor, multiplier: 0.8, constant: -10),
-//
-//      saveButton.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-//      saveButton.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-//      saveButton.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
-//      saveButton.heightAnchor.constraint(equalTo: view.layoutMarginsGuide.heightAnchor, multiplier: 0.07),
     ])
   }
 }
@@ -212,7 +191,7 @@ extension PhotoFormVC {
   @objc private func saveNewPhoto() {
     guard let title = titleFieldView.text else { return }
     guard let description = descriptionFieldView.text else { return }
-    guard !title.isEmpty || !description.isEmpty else { return }
+    guard !title.isEmpty, !description.isEmpty else { return }
     photoTitle = title
     photoDescription = description
     print("Title: \(photoTitle)")
@@ -222,7 +201,8 @@ extension PhotoFormVC {
 
 extension PhotoFormVC: UITextViewDelegate {
   func textViewDidBeginEditing(_ textView: UITextView) {
-    if descriptionFieldView.textColor == UIColor.lightGray {
+    if descriptionFieldView.textColor == photoDescriptionPlaceholderColor {
+      print("began editing")
       descriptionFieldView.text = ""
       descriptionFieldView.textColor = UIColor.black
     }
@@ -231,7 +211,7 @@ extension PhotoFormVC: UITextViewDelegate {
   func textViewDidEndEditing(_ textView: UITextView) {
     if descriptionFieldView.text.isEmpty {
       descriptionFieldView.text = photoDescriptionPlaceholder
-      descriptionFieldView.textColor = UIColor.lightGray
+      descriptionFieldView.textColor = photoDescriptionPlaceholderColor
     }
   }
 }
