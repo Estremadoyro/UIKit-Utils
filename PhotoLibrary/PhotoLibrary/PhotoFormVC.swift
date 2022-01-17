@@ -22,17 +22,14 @@ class PhotoFormVC: UIViewController {
       return text
     }
     set {
-      descriptionFieldView.text = photoDescriptionPlaceholder
-      descriptionFieldView.textColor = photoDescriptionPlaceholderColor
+      descriptionFieldView.text = newValue
     }
   }
 
+  private var saveButtonLayer: CAShapeLayer!
+
   var photo: UIImage?
 
-  let photoDescriptionPlaceholder: String = "Description"
-  let photoDescriptionPlaceholderColor = UIColor.lightGray.withAlphaComponent(0.7)
-
-  private var shadowLayer: CAShapeLayer!
   private var gestureRecognizer: UITapGestureRecognizer!
 
   private lazy var scrollView: UIScrollView = {
@@ -60,16 +57,35 @@ class PhotoFormVC: UIViewController {
     stack.translatesAutoresizingMaskIntoConstraints = false
     stack.axis = .vertical
     stack.distribution = .fill
-    stack.spacing = 10
+    stack.spacing = 5
+    stack.addArrangedSubview(titleLabel)
     stack.addArrangedSubview(titleFieldView)
+    stack.addArrangedSubview(descriptionLabel)
     stack.addArrangedSubview(descriptionFieldView)
     return stack
+  }()
+
+  private let titleLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.text = "Title"
+    label.textColor = UIColor.black
+    label.font = UIFont.boldSystemFont(ofSize: 18)
+    return label
+  }()
+
+  private let descriptionLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.text = "Description"
+    label.textColor = UIColor.black
+    label.font = UIFont.boldSystemFont(ofSize: 18)
+    return label
   }()
 
   private let titleFieldView: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
-    textField.placeholder = "Title"
     textField.font = UIFont.preferredFont(forTextStyle: .title3)
     textField.textColor = UIColor.black
     textField.layer.cornerRadius = 15
@@ -83,11 +99,10 @@ class PhotoFormVC: UIViewController {
     let textView = UITextView()
     textView.translatesAutoresizingMaskIntoConstraints = false
     textView.font = UIFont.preferredFont(forTextStyle: .title3)
-    textView.textColor = photoDescriptionPlaceholderColor
+    textView.textColor = UIColor.black
     textView.layer.cornerRadius = 15
     textView.layer.borderColor = UIColor.black.cgColor
     textView.layer.borderWidth = 2
-    textView.text = photoDescriptionPlaceholder
     textView.textContainerInset = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
     return textView
   }()
@@ -97,7 +112,6 @@ class PhotoFormVC: UIViewController {
     image.translatesAutoresizingMaskIntoConstraints = false
     image.contentMode = .scaleAspectFill
     image.clipsToBounds = true
-    image.image = UIImage(named: "no-image-found.jpeg")
     image.layer.borderColor = UIColor.black.cgColor
     image.layer.borderWidth = 2
     image.layer.cornerRadius = 15
@@ -118,16 +132,13 @@ class PhotoFormVC: UIViewController {
     button.setTitle("Save", for: .normal)
     button.setTitleColor(UIColor.white, for: .normal)
     button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 22)
-    button.backgroundColor = UIColor.systemBlue
-    button.layer.cornerRadius = 15
     button.addTarget(self, action: #selector(saveNewPhoto), for: .touchUpInside)
     return button
   }()
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    print("form load")
-    descriptionFieldView.delegate = self
+    print("view did load")
     viewControllerSettings()
     navigationBarSettings()
     subViewsBuilder()
@@ -139,7 +150,26 @@ class PhotoFormVC: UIViewController {
     super.viewWillAppear(animated)
     photoTitle = ""
     photoDescription = ""
-    titleFieldView.becomeFirstResponder()
+    guard let photo = self.photo else {
+      photoImageView.image = UIImage(named: "no-image-found.jpeg")
+      return
+    }
+    photoImageView.image = photo
+  }
+
+  /// # Only lays out the `view's siblings`
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    applyLayers()
+  }
+
+  private func applyLayers() {
+    if saveButtonLayer == nil {
+      /// # Force to update the layout inmediatly
+      saveButton.superview?.layoutIfNeeded()
+      saveButtonLayer = saveButton.addShadowAndCorners(fillColor: UIColor.systemBlue.cgColor, cornerRadius: 15, shadowColor: UIColor.systemBlue.cgColor, shadowOffset: .zero, shadowOpacity: 0.8, shadowRadius: 3.0)
+      saveButton.layer.insertSublayer(saveButtonLayer, at: 0)
+    }
   }
 
   private func viewControllerSettings() {
@@ -154,6 +184,7 @@ class PhotoFormVC: UIViewController {
   private func subViewsBuilder() {
     view.addSubview(scrollView)
     view.addSubview(saveButtonContainerView)
+    print("subviews added to heirarchy")
   }
 
   private func constraintsBuilder() {
@@ -165,14 +196,16 @@ class PhotoFormVC: UIViewController {
 
       fullStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
       fullStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.6),
-
       fullStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
       photoImageView.heightAnchor.constraint(equalTo: fullStackView.heightAnchor, multiplier: 0.6, constant: -10),
       stackView.heightAnchor.constraint(equalTo: fullStackView.heightAnchor, multiplier: 0.4),
 
+      titleLabel.heightAnchor.constraint(equalTo: stackView.heightAnchor, multiplier: 0.1),
       titleFieldView.heightAnchor.constraint(equalTo: stackView.heightAnchor, multiplier: 0.2),
-      descriptionFieldView.heightAnchor.constraint(equalTo: stackView.heightAnchor, multiplier: 0.8, constant: -10),
+
+      descriptionLabel.heightAnchor.constraint(equalTo: stackView.heightAnchor, multiplier: 0.1),
+      descriptionFieldView.heightAnchor.constraint(equalTo: stackView.heightAnchor, multiplier: 0.6, constant: -15),
 
       saveButtonContainerView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
       saveButtonContainerView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
@@ -196,23 +229,6 @@ extension PhotoFormVC {
     photoDescription = description
     print("Title: \(photoTitle)")
     print("Description: \(photoDescription)")
-  }
-}
-
-extension PhotoFormVC: UITextViewDelegate {
-  func textViewDidBeginEditing(_ textView: UITextView) {
-    if descriptionFieldView.textColor == photoDescriptionPlaceholderColor {
-      print("began editing")
-      descriptionFieldView.text = ""
-      descriptionFieldView.textColor = UIColor.black
-    }
-  }
-
-  func textViewDidEndEditing(_ textView: UITextView) {
-    if descriptionFieldView.text.isEmpty {
-      descriptionFieldView.text = photoDescriptionPlaceholder
-      descriptionFieldView.textColor = photoDescriptionPlaceholderColor
-    }
   }
 }
 

@@ -9,12 +9,21 @@ import UIKit
 
 extension TableVC: PhotoPickerDelegate {
   func didSelectPhoto(image: UIImage) {
-    DispatchQueue.main.async { [weak self] in
-      guard let strongSelf = self else { return }
-      print("finished selecting image")
-      strongSelf.photoFormVC.photo = image
-      strongSelf.navigationController?.pushViewController(strongSelf.photoFormVC, animated: true)
-    }
+    photoFormVC.photo = image
+    navigationController?.pushViewController(photoFormVC, animated: true)
+    print("finished selecting image")
+    print(image)
+  }
+}
+
+extension TableVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+  func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+    guard let image = info[.editedImage] as? UIImage else { return }
+    photoFormVC.photo = image
+    navigationController?.pushViewController(photoFormVC, animated: true)
+    print("photo taken")
+    print(image)
+    picker.dismiss(animated: true, completion: nil)
   }
 }
 
@@ -71,6 +80,7 @@ class TableVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
   private lazy var imagePicker: UIImagePickerController = {
     let picker = UIImagePickerController()
     picker.allowsEditing = true
+    picker.delegate = self
     return picker
   }()
 

@@ -8,7 +8,7 @@
 import PhotosUI
 import UIKit
 
-class PhotoPicker: UIViewController, PHPickerViewControllerDelegate {
+class PhotoPicker: PHPickerViewControllerDelegate {
   weak var photoPickerDelegate: PhotoPickerDelegate?
 
   func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
@@ -21,7 +21,9 @@ class PhotoPicker: UIViewController, PHPickerViewControllerDelegate {
         guard let image = reading as? UIImage, error == nil else {
           return
         }
-        self?.photoPickerDelegate?.didSelectPhoto(image: image)
+        DispatchQueue.main.async {
+          self?.photoPickerDelegate?.didSelectPhoto(image: image)
+        }
       }
     }
   }
@@ -41,5 +43,9 @@ class PhotoPicker: UIViewController, PHPickerViewControllerDelegate {
     vc.delegate = self
     vc.modalPresentationStyle = .fullScreen
     presentingVC.present(vc, animated: true, completion: nil)
+  }
+
+  deinit {
+    print("photo picker deinitialized")
   }
 }

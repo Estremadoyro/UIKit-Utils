@@ -11,6 +11,7 @@
 - [View Controller Heirarchy](https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/TheViewControllerHierarchy.html)
 - [Font Size Guidelines](https://learnui.design/blog/ios-font-size-guidelines.html)
 - [ScrollView tricks](https://useyourloaf.com/blog/easier-scrolling-with-layout-guides/)
+- [Memory Leaks debugging](https://doordash.engineering/2019/05/22/ios-memory-leaks-and-retain-cycle-detection-using-xcodes-memory-graph-debugger/)
 
 # 📝 Info.plist 
 | Key | Value | Meaning |

@@ -8,7 +8,7 @@
 import UIKit
 
 class CellView: UITableViewCell {
-  private var shadowLayer: CAShapeLayer!
+  private var cellContainerLayer: CAShapeLayer!
 
   private let photoThumbnail: UIImageView = {
     let imageView = UIImageView()
@@ -63,6 +63,7 @@ class CellView: UITableViewCell {
     setupCell()
     setupContentView()
     constraintsBuilder()
+    applyLayers()
   }
 
   private func setupCell() {
@@ -89,11 +90,14 @@ class CellView: UITableViewCell {
       stackView.trailingAnchor.constraint(equalTo: cellContainer.trailingAnchor, constant: -10),
       stackView.centerYAnchor.constraint(equalTo: cellContainer.centerYAnchor)
     ])
+  }
 
-//    contentView.layoutSubviews()
-
+  private func applyLayers() {
     DispatchQueue.main.async { [weak self] in
-      self?.cellContainer.addShadowAndCorners(fillColor: UIColor.white.cgColor, cornerRadius: 10, shadowColor: UIColor.black.cgColor, shadowOffset: .zero, shadowOpacity: 0.2, shadowRadius: 3.0)
+      guard let strongSelf = self else { return }
+      strongSelf.cellContainerLayer = strongSelf.cellContainer.addShadowAndCorners(fillColor: UIColor.white.cgColor, cornerRadius: 10, shadowColor: UIColor.black.cgColor, shadowOffset: .zero, shadowOpacity: 0.2, shadowRadius: 3.0)
+      strongSelf.cellContainer.layer.insertSublayer(strongSelf.cellContainerLayer, at: 0)
+      print("applied sub layer")
     }
   }
 
