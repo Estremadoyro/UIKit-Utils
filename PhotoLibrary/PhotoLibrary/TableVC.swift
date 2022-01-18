@@ -32,19 +32,6 @@ extension TableVC: PhotoPickerDelegate, PhotoPickerDataSource {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     print("table did appear")
-
-//    addNewPhotoToTable()
-  }
-
-  func addNewPhotoToTable() {
-    if library.photos.count > currentPhotos {
-      print("did save new photo")
-      print("Library count: \(library.photos.count)")
-      print("Current photos reference: \(currentPhotos)")
-      let indexPath = IndexPath(row: library.photos.count - 1, section: 0)
-      tableView.insertRows(at: [indexPath], with: .automatic)
-      currentPhotos = (library.photos.count - currentPhotos)
-    }
   }
 
   func didSelectPhoto(image: UIImage) {
@@ -111,7 +98,6 @@ extension TableVC {
 
 class TableVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
   lazy var photoPicker = PhotoPicker()
-  private lazy var currentPhotos = library.photos.count
 
   private var library = Library(photos: [Photo]())
   private let CELL_ID: String = "CELL_ID"

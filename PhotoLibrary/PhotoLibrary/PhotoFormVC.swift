@@ -32,6 +32,7 @@ class PhotoFormVC: UIViewController {
 
   private var saveButtonLayer: CAShapeLayer!
   private var gestureRecognizer: UITapGestureRecognizer!
+  private var createdNewPhoto: Photo?
 
   private lazy var scrollView: UIScrollView = {
     let scroll = UIScrollView()
@@ -171,8 +172,10 @@ class PhotoFormVC: UIViewController {
 
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
-    photoImageView.image = nil
-    print("view did disappear")
+    if let createdNewPhoto = self.createdNewPhoto {
+      photoPickerDelegate?.didCreateNewPhoto(photo: createdNewPhoto)
+    }
+    print("\(self) view did disappear")
   }
 
   deinit {
@@ -257,7 +260,8 @@ extension PhotoFormVC {
     print("Url: \(newPhoto.url)")
     guard let library = photoPickerDataSource?.getLibrary() else { return }
     library.photos.append(newPhoto)
-    photoPickerDelegate?.didCreateNewPhoto(photo: newPhoto)
+//    photoPickerDelegate?.didCreateNewPhoto(photo: newPhoto)
+    createdNewPhoto = newPhoto
     navigationController?.popViewController(animated: true)
   }
 }
