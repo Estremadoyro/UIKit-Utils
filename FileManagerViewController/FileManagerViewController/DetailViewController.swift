@@ -80,4 +80,7 @@ class DetailViewController: UIViewController {
     vc.isModalInPresentation = true
     present(vc, animated: true, completion: nil)
   }
+  deinit {
+    print("deinited \(self)")
+  }
 }

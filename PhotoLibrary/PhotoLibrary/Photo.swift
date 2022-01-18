@@ -18,3 +18,11 @@ class Photo: Codable {
     self.url = url
   }
 }
+
+class Library: Codable {
+  var photos: [Photo]
+
+  init(photos: [Photo]) {
+    self.photos = photos
+  }
+}

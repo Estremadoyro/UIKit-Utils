@@ -8,6 +8,10 @@
 import UIKit
 
 class PhotoFormVC: UIViewController {
+  weak var photoPickerDelegate: PhotoPickerDelegate?
+  weak var photoPickerDataSource: PhotoPickerDataSource?
+
+  var photo: UIImage?
   var photoTitle: String {
     get {
       guard let text = titleFieldView.text else { return "" }
@@ -27,9 +31,6 @@ class PhotoFormVC: UIViewController {
   }
 
   private var saveButtonLayer: CAShapeLayer!
-
-  var photo: UIImage?
-
   private var gestureRecognizer: UITapGestureRecognizer!
 
   private lazy var scrollView: UIScrollView = {
@@ -148,8 +149,6 @@ class PhotoFormVC: UIViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    photoTitle = ""
-    photoDescription = ""
     guard let photo = self.photo else {
       photoImageView.image = UIImage(named: "no-image-found.jpeg")
       return
@@ -161,6 +160,23 @@ class PhotoFormVC: UIViewController {
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     applyLayers()
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    photoTitle = ""
+    photoDescription = ""
+    print("view will disappear")
+  }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    photoImageView.image = nil
+    print("view did disappear")
+  }
+
+  deinit {
+    print("deinit \(self)")
   }
 
   private func applyLayers() {
@@ -224,11 +240,25 @@ extension PhotoFormVC {
   @objc private func saveNewPhoto() {
     guard let title = titleFieldView.text else { return }
     guard let description = descriptionFieldView.text else { return }
+    guard let photo = photo else { return }
     guard !title.isEmpty, !description.isEmpty else { return }
     photoTitle = title
     photoDescription = description
-    print("Title: \(photoTitle)")
-    print("Description: \(photoDescription)")
+    let imagePathName = UUID().uuidString
+    let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    let imagePath = documentsPath.appendingPathComponent(imagePathName)
+    if let jpegData = photo.jpegData(compressionQuality: 0.85) {
+      /// # White to the created path
+      try? jpegData.write(to: imagePath)
+    }
+    let newPhoto = Photo(name: photoTitle, caption: photoDescription, url: imagePath.path)
+    print("Title: \(newPhoto.name)")
+    print("Description: \(newPhoto.caption)")
+    print("Url: \(newPhoto.url)")
+    guard let library = photoPickerDataSource?.getLibrary() else { return }
+    library.photos.append(newPhoto)
+    photoPickerDelegate?.didCreateNewPhoto(photo: newPhoto)
+    navigationController?.popViewController(animated: true)
   }
 }
 

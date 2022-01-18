@@ -7,29 +7,62 @@
 
 import UIKit
 
-extension TableVC: PhotoPickerDelegate {
-  func didSelectPhoto(image: UIImage) {
-    photoFormVC.photo = image
+extension TableVC {
+  private func handleSelectedPhoto(photo: UIImage) {
+    print("photo: \(photo)")
+    let photoFormVC = PhotoFormVC()
+    photoFormVC.photoPickerDataSource = self
+    photoFormVC.photoPickerDelegate = self
+    photoFormVC.photo = photo
     navigationController?.pushViewController(photoFormVC, animated: true)
-    print("finished selecting image")
-    print(image)
+  }
+}
+
+extension TableVC: PhotoPickerDelegate, PhotoPickerDataSource {
+  func getLibrary() -> Library {
+    return library
+  }
+
+  func didCreateNewPhoto(photo: Photo) {
+    print("did create new photo: \(photo)")
+    let indexPath = IndexPath(row: library.photos.count - 1, section: 0)
+    tableView.insertRows(at: [indexPath], with: .automatic)
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    print("table did appear")
+
+//    addNewPhotoToTable()
+  }
+
+  func addNewPhotoToTable() {
+    if library.photos.count > currentPhotos {
+      print("did save new photo")
+      print("Library count: \(library.photos.count)")
+      print("Current photos reference: \(currentPhotos)")
+      let indexPath = IndexPath(row: library.photos.count - 1, section: 0)
+      tableView.insertRows(at: [indexPath], with: .automatic)
+      currentPhotos = (library.photos.count - currentPhotos)
+    }
+  }
+
+  func didSelectPhoto(image: UIImage) {
+    handleSelectedPhoto(photo: image)
   }
 }
 
 extension TableVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
   func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-    guard let image = info[.editedImage] as? UIImage else { return }
-    photoFormVC.photo = image
-    navigationController?.pushViewController(photoFormVC, animated: true)
-    print("photo taken")
-    print(image)
     picker.dismiss(animated: true, completion: nil)
+    guard let image = info[.editedImage] as? UIImage else { return }
+    handleSelectedPhoto(photo: image)
   }
 }
 
 extension TableVC {
   @objc private func addPhoto() {
-    photoPicker.setupPicker(self)
+    present(photoPicker.photoPickerVC, animated: true, completion: nil)
   }
 
   @objc private func takePhoto() {
@@ -46,6 +79,7 @@ extension TableVC {
     navigationItem.title = "Photo Library"
     navigationController?.navigationBar.prefersLargeTitles = false
     navigationItem.largeTitleDisplayMode = .never
+
     let camera = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(takePhoto))
     let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPhoto))
     navigationItem.rightBarButtonItems = [camera]
@@ -55,13 +89,18 @@ extension TableVC {
 
 extension TableVC {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 20
+    return library.photos.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: CELL_ID, for: indexPath) as? CellView else {
       fatalError("Could not cast custom cell")
     }
+    let photo = library.photos[indexPath.row]
+    cell.photoNameLabel.text = photo.name
+    cell.photoCaptionLabel.text = photo.caption
+    cell.photoThumbnail.image = UIImage(contentsOfFile: photo.url)
+    print(cell)
     return cell
   }
 
@@ -71,10 +110,10 @@ extension TableVC {
 }
 
 class TableVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
-  let photoPicker = PhotoPicker()
-  lazy var photoFormVC = PhotoFormVC()
+  lazy var photoPicker = PhotoPicker()
+  private lazy var currentPhotos = library.photos.count
 
-  private var photos = [Photo]()
+  private var library = Library(photos: [Photo]())
   private let CELL_ID: String = "CELL_ID"
 
   private lazy var imagePicker: UIImagePickerController = {
@@ -109,5 +148,9 @@ class TableVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
       tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
     ])
+  }
+
+  deinit {
+    print("deinit \(self)")
   }
 }

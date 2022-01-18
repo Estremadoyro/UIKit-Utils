@@ -9,31 +9,31 @@ import UIKit
 
 class CellView: UITableViewCell {
   private var cellContainerLayer: CAShapeLayer!
+//  let noPhoto = Photo(name: "Byakuya",
+//                      caption: " 'If you are serious, you can accomplish anything throught dilligent application of science'",
+//                      url: "no-image-found.jpeg")
 
-  private let photoThumbnail: UIImageView = {
+  let photoThumbnail: UIImageView = {
     let imageView = UIImageView()
     imageView.translatesAutoresizingMaskIntoConstraints = false
     imageView.clipsToBounds = true
-    imageView.image = UIImage(named: "no-image-found.jpeg")
     imageView.contentMode = .scaleAspectFill
     imageView.layer.cornerRadius = 10
     imageView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
     return imageView
   }()
 
-  private let photoNameLabel: UILabel = {
+  lazy var photoNameLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
-    label.text = "Byakuya"
     label.textColor = UIColor.black.withAlphaComponent(0.8)
     label.font = UIFont.boldSystemFont(ofSize: 18)
     return label
   }()
 
-  private let photoCaptionLabel: UILabel = {
+  let photoCaptionLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
-    label.text = "'If you are serious, you can accomplish anything throught dilligent application of science'"
     label.textColor = UIColor.gray.withAlphaComponent(0.8)
     label.font = UIFont.italicSystemFont(ofSize: 13)
     label.numberOfLines = 3
@@ -97,12 +97,15 @@ class CellView: UITableViewCell {
       guard let strongSelf = self else { return }
       strongSelf.cellContainerLayer = strongSelf.cellContainer.addShadowAndCorners(fillColor: UIColor.white.cgColor, cornerRadius: 10, shadowColor: UIColor.black.cgColor, shadowOffset: .zero, shadowOpacity: 0.2, shadowRadius: 3.0)
       strongSelf.cellContainer.layer.insertSublayer(strongSelf.cellContainerLayer, at: 0)
-      print("applied sub layer")
     }
   }
 
   @available(*, unavailable)
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  deinit {
+    print("deinit \(self)")
   }
 }

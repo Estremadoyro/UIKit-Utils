@@ -10,6 +10,12 @@ import UIKit
 
 class PhotoPicker: PHPickerViewControllerDelegate {
   weak var photoPickerDelegate: PhotoPickerDelegate?
+  lazy var photoPickerVC: PHPickerViewController = {
+    let photoPickerVC = PHPickerViewController(configuration: configurePicker())
+    photoPickerVC.delegate = self
+    photoPickerVC.modalPresentationStyle = .fullScreen
+    return photoPickerVC
+  }()
 
   func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
     picker.dismiss(animated: true, completion: nil)
@@ -38,14 +44,7 @@ class PhotoPicker: PHPickerViewControllerDelegate {
     return config
   }
 
-  func setupPicker(_ presentingVC: UIViewController) {
-    let vc = PHPickerViewController(configuration: configurePicker())
-    vc.delegate = self
-    vc.modalPresentationStyle = .fullScreen
-    presentingVC.present(vc, animated: true, completion: nil)
-  }
-
   deinit {
-    print("photo picker deinitialized")
+    print("deinit \(self)")
   }
 }
