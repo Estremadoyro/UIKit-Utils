@@ -20,9 +20,17 @@ class Photo: Codable {
 }
 
 class Library: Codable {
-  var photos: [Photo]
+  var photos: [Photo] {
+    didSet {
+      Local.writeLibrary(library: self)
+    }
+  }
 
   init(photos: [Photo]) {
     self.photos = photos
+  }
+
+  init() {
+    self.photos = Local.readLibrary().photos
   }
 }

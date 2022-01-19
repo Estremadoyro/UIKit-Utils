@@ -9,7 +9,6 @@ import UIKit
 
 extension TableVC {
   private func handleSelectedPhoto(photo: UIImage) {
-    print("photo: \(photo)")
     let photoFormVC = PhotoFormVC()
     photoFormVC.photoPickerDataSource = self
     photoFormVC.photoPickerDelegate = self
@@ -25,13 +24,13 @@ extension TableVC: PhotoPickerDelegate, PhotoPickerDataSource {
 
   func didCreateNewPhoto(photo: Photo) {
     print("did create new photo: \(photo)")
-    let indexPath = IndexPath(row: library.photos.count - 1, section: 0)
+    print("did create name: \(photo.name)")
+    let indexPath = IndexPath(row: 0, section: 0)
     tableView.insertRows(at: [indexPath], with: .automatic)
   }
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    print("table did appear")
   }
 
   func didSelectPhoto(image: UIImage) {
@@ -87,7 +86,6 @@ extension TableVC {
     cell.photoNameLabel.text = photo.name
     cell.photoCaptionLabel.text = photo.caption
     cell.photoThumbnail.image = UIImage(contentsOfFile: photo.url)
-    print(cell)
     return cell
   }
 
@@ -96,10 +94,50 @@ extension TableVC {
   }
 }
 
-class TableVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+extension TableVC: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    let deleteAction = UIContextualAction(style: .normal, title: "Delete", handler: { [weak self] _, _, completion in
+      self?.library.photos.remove(at: indexPath.row)
+      tableView.deleteRows(at: [indexPath], with: .left)
+      completion(true)
+    })
+    /// # `Icon` and `text` will always be white
+    deleteAction.image = UIImage(systemName: "trash")
+    deleteAction.backgroundColor = UIColor.systemPink
+    deleteAction.title = "Delete"
+
+    let editAction = UIContextualAction(style: .destructive, title: "Edit", handler: { _, _, completion in
+      completion(true)
+    })
+    editAction.image = UIImage(systemName: "square.and.pencil")
+    editAction.backgroundColor = UIColor.systemBlue
+
+    let swipeConfig = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+    swipeConfig.performsFirstActionWithFullSwipe = false
+    return swipeConfig
+  }
+
+  func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    let metaDataInfo = UIContextualAction(style: .normal, title: "") { _, _, completion in
+      print("accessed meta info")
+      completion(true)
+    }
+    metaDataInfo.image = UIImage(systemName: "info.circle")
+    metaDataInfo.backgroundColor = UIColor.lightGray
+    return UISwipeActionsConfiguration(actions: [metaDataInfo])
+  }
+
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let photo = library.photos[indexPath.row]
+    let detailVC = DetailVC(photo: photo)
+    navigationController?.pushViewController(detailVC, animated: true)
+  }
+}
+
+class TableVC: UIViewController, UITableViewDataSource {
   lazy var photoPicker = PhotoPicker()
 
-  private var library = Library(photos: [Photo]())
+  private var library = Library()
   private let CELL_ID: String = "CELL_ID"
 
   private lazy var imagePicker: UIImagePickerController = {

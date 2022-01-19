@@ -12,23 +12,6 @@ class PhotoFormVC: UIViewController {
   weak var photoPickerDataSource: PhotoPickerDataSource?
 
   var photo: UIImage?
-  var photoTitle: String {
-    get {
-      guard let text = titleFieldView.text else { return "" }
-      return text
-    }
-    set { titleFieldView.text = newValue }
-  }
-
-  var photoDescription: String {
-    get {
-      guard let text = descriptionFieldView.text else { return "" }
-      return text
-    }
-    set {
-      descriptionFieldView.text = newValue
-    }
-  }
 
   private var saveButtonLayer: CAShapeLayer!
   private var gestureRecognizer: UITapGestureRecognizer!
@@ -165,8 +148,6 @@ class PhotoFormVC: UIViewController {
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    photoTitle = ""
-    photoDescription = ""
     print("view will disappear")
   }
 
@@ -203,7 +184,6 @@ class PhotoFormVC: UIViewController {
   private func subViewsBuilder() {
     view.addSubview(scrollView)
     view.addSubview(saveButtonContainerView)
-    print("subviews added to heirarchy")
   }
 
   private func constraintsBuilder() {
@@ -245,23 +225,21 @@ extension PhotoFormVC {
     guard let description = descriptionFieldView.text else { return }
     guard let photo = photo else { return }
     guard !title.isEmpty, !description.isEmpty else { return }
-    photoTitle = title
-    photoDescription = description
     let imagePathName = UUID().uuidString
     let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     let imagePath = documentsPath.appendingPathComponent(imagePathName)
-    if let jpegData = photo.jpegData(compressionQuality: 0.85) {
-      /// # White to the created path
-      try? jpegData.write(to: imagePath)
+
+    let newPhoto = Photo(name: title.capitalizingFirstLetter(), caption: description, url: imagePath.path)
+
+    DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+      guard let strongSelf = self else { return }
+      if let jpegData = photo.jpegData(compressionQuality: 0.70) {
+        try? jpegData.write(to: imagePath)
+      }
+      guard let library = strongSelf.photoPickerDataSource?.getLibrary() else { return }
+      library.photos.insert(newPhoto, at: 0)
+      strongSelf.createdNewPhoto = newPhoto
     }
-    let newPhoto = Photo(name: photoTitle, caption: photoDescription, url: imagePath.path)
-    print("Title: \(newPhoto.name)")
-    print("Description: \(newPhoto.caption)")
-    print("Url: \(newPhoto.url)")
-    guard let library = photoPickerDataSource?.getLibrary() else { return }
-    library.photos.append(newPhoto)
-//    photoPickerDelegate?.didCreateNewPhoto(photo: newPhoto)
-    createdNewPhoto = newPhoto
     navigationController?.popViewController(animated: true)
   }
 }
