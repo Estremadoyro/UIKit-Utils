@@ -23,6 +23,7 @@ class DetailVC: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    view.backgroundColor = UIColor.white
     setupNavBar()
     setupViews()
     setupConstraints()

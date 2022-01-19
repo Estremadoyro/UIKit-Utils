@@ -16,6 +16,12 @@
 -[Reducing memory footprint for UIImages](https://swiftsenpai.com/development/reduce-uiimage-memory-footprint/)
 -[Fix Massive View Controllers](https://www.hackingwithswift.com/articles/86/how-to-move-data-sources-and-delegates-out-of-your-view-controllers)
 
+# Tips
+Prevent sloppy trainsitions when pushing/popping VCs by setting the background color.
+```swift
+view.backgroundColor = UIColor.white
+```
+
 # 📝 Info.plist 
 | Key | Value | Meaning |
 | --- | --- | --- |

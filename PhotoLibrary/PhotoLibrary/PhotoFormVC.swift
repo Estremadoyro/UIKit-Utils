@@ -124,6 +124,7 @@ class PhotoFormVC: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     print("view did load")
+    view.backgroundColor = UIColor.white
     viewControllerSettings()
     navigationBarSettings()
     subViewsBuilder()
