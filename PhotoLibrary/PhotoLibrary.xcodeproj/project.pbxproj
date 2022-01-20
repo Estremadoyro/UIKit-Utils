@@ -58,39 +58,8 @@
 		A72C0C602797C342002D9FB8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A7E1DE57278C009100837781 /* CellView.swift */,
-				A74B85A9278B625F00811E6F /* PhotoPicker.swift */,
 			);
 			name = Views;
-			sourceTree = "<group>";
-		};
-		A72C0C612797C361002D9FB8 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				A74B8595278A8E3200811E6F /* NavigationVC.swift */,
-				A74B85A5278A963400811E6F /* TableVC.swift */,
-				A7CBF174278E10D700D18A6F /* PhotoFormVC.swift */,
-				A72C0C642797C3BA002D9FB8 /* TableVC+Edit.swift */,
-				A72C0C662797DF34002D9FB8 /* DetailVC.swift */,
-			);
-			name = Controllers;
-			sourceTree = "<group>";
-		};
-		A72C0C622797C376002D9FB8 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				A7262EA62797ABA200008735 /* Local.swift */,
-				A7CBF176278EA3D000D18A6F /* Utils.swift */,
-			);
-			name = Utils;
-			sourceTree = "<group>";
-		};
-		A72C0C632797C382002D9FB8 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				A74B85A7278B4E0C00811E6F /* Photo.swift */,
-			);
-			name = Models;
 			sourceTree = "<group>";
 		};
 		A74B8585278A8E3200811E6F = {
@@ -112,11 +81,12 @@
 		A74B8590278A8E3200811E6F /* PhotoLibrary */ = {
 			isa = PBXGroup;
 			children = (
-				A72C0C632797C382002D9FB8 /* Models */,
-				A72C0C622797C376002D9FB8 /* Utils */,
-				A72C0C612797C361002D9FB8 /* Controllers */,
+				A7B47FBF279928E8002E900B /* Delegates */,
+				A7B47FBE279928DA002E900B /* Views */,
+				A7B47FBD279928CF002E900B /* Controllers */,
+				A7B47FBC279928C4002E900B /* Utils */,
+				A7B47FBB279928B6002E900B /* Models */,
 				A72C0C602797C342002D9FB8 /* Views */,
-				A74B85AC278B7FAD00811E6F /* Delegates */,
 				A74B859A278A8E3200811E6F /* Assets.xcassets */,
 				A74B859C278A8E3200811E6F /* LaunchScreen.storyboard */,
 				A74B859F278A8E3200811E6F /* Info.plist */,
@@ -124,7 +94,45 @@
 			path = PhotoLibrary;
 			sourceTree = "<group>";
 		};
-		A74B85AC278B7FAD00811E6F /* Delegates */ = {
+		A7B47FBB279928B6002E900B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A74B85A7278B4E0C00811E6F /* Photo.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A7B47FBC279928C4002E900B /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A7262EA62797ABA200008735 /* Local.swift */,
+				A7CBF176278EA3D000D18A6F /* Utils.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		A7B47FBD279928CF002E900B /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				A74B8595278A8E3200811E6F /* NavigationVC.swift */,
+				A74B85A5278A963400811E6F /* TableVC.swift */,
+				A7CBF174278E10D700D18A6F /* PhotoFormVC.swift */,
+				A72C0C642797C3BA002D9FB8 /* TableVC+Edit.swift */,
+				A72C0C662797DF34002D9FB8 /* DetailVC.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		A7B47FBE279928DA002E900B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A7E1DE57278C009100837781 /* CellView.swift */,
+				A74B85A9278B625F00811E6F /* PhotoPicker.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		A7B47FBF279928E8002E900B /* Delegates */ = {
 			isa = PBXGroup;
 			children = (
 				A74B8591278A8E3200811E6F /* AppDelegate.swift */,
