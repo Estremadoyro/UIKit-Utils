@@ -55,13 +55,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A72C0C602797C342002D9FB8 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Views;
-			sourceTree = "<group>";
-		};
 		A74B8585278A8E3200811E6F = {
 			isa = PBXGroup;
 			children = (
@@ -81,12 +74,11 @@
 		A74B8590278A8E3200811E6F /* PhotoLibrary */ = {
 			isa = PBXGroup;
 			children = (
-				A7B47FBF279928E8002E900B /* Delegates */,
-				A7B47FBE279928DA002E900B /* Views */,
+				A7B47FC127992965002E900B /* Views */,
+				A7B47FC027992957002E900B /* Delegates */,
 				A7B47FBD279928CF002E900B /* Controllers */,
 				A7B47FBC279928C4002E900B /* Utils */,
 				A7B47FBB279928B6002E900B /* Models */,
-				A72C0C602797C342002D9FB8 /* Views */,
 				A74B859A278A8E3200811E6F /* Assets.xcassets */,
 				A74B859C278A8E3200811E6F /* LaunchScreen.storyboard */,
 				A74B859F278A8E3200811E6F /* Info.plist */,
@@ -123,23 +115,23 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
-		A7B47FBE279928DA002E900B /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				A7E1DE57278C009100837781 /* CellView.swift */,
-				A74B85A9278B625F00811E6F /* PhotoPicker.swift */,
-			);
-			name = Views;
-			sourceTree = "<group>";
-		};
-		A7B47FBF279928E8002E900B /* Delegates */ = {
+		A7B47FC027992957002E900B /* Delegates */ = {
 			isa = PBXGroup;
 			children = (
 				A74B8591278A8E3200811E6F /* AppDelegate.swift */,
 				A74B8593278A8E3200811E6F /* SceneDelegate.swift */,
 				A74B85AD278B7FD400811E6F /* PhotoPickerDelegate.swift */,
 			);
-			name = Delegates;
+			path = Delegates;
+			sourceTree = "<group>";
+		};
+		A7B47FC127992965002E900B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A7E1DE57278C009100837781 /* CellView.swift */,
+				A74B85A9278B625F00811E6F /* PhotoPicker.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
