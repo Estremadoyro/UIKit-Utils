@@ -38,7 +38,7 @@ class MainVC: UIViewController {
   private let imageView: UIImageView = {
     let image = UIImageView()
     image.translatesAutoresizingMaskIntoConstraints = false
-    image.backgroundColor = UIColor.systemPink
+//    image.backgroundColor = UIColor.systemPink
     image.contentMode = .scaleAspectFit
     image.clipsToBounds = true
     return image
@@ -111,6 +111,11 @@ class MainVC: UIViewController {
     configNavbar()
     setupSubViews()
     setupConstraints()
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    if picker != nil { picker = nil }
   }
 }
 

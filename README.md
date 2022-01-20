@@ -38,6 +38,12 @@ private var picker: PHPicker? // initial nil reference to picker
 func didSelectPicture(picture: UIImage) {
   picker = nil // picker deallocated
 }
+// On root VC
+override func viewWillAppear(_ animated: Bool) {
+  super.viewWillAppear(animated: animated)
+  // In case user didn't pick a picture, there is no PHPicker delegate for that
+  self.picker != nil { self.picker = nil }
+}
 ```
 
 # 📝 Info.plist 
