@@ -14,6 +14,8 @@
 		A7B47FAF279921F6002E900B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7B47FAE279921F6002E900B /* Assets.xcassets */; };
 		A7B47FB2279921F6002E900B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7B47FB0279921F6002E900B /* LaunchScreen.storyboard */; };
 		A7B47FBA279924BF002E900B /* NavigationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B47FB9279924BF002E900B /* NavigationVC.swift */; };
+		A7B47FC32799357A002E900B /* PHPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B47FC22799357A002E900B /* PHPicker.swift */; };
+		A7B47FC627993809002E900B /* PickerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B47FC527993809002E900B /* PickerDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		A7B47FB1279921F6002E900B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A7B47FB3279921F6002E900B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7B47FB9279924BF002E900B /* NavigationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationVC.swift; sourceTree = "<group>"; };
+		A7B47FC22799357A002E900B /* PHPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPicker.swift; sourceTree = "<group>"; };
+		A7B47FC527993809002E900B /* PickerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,9 +62,9 @@
 		A7B47FA4279921F5002E900B /* CoreImageSlider */ = {
 			isa = PBXGroup;
 			children = (
-				A7B47FA5279921F5002E900B /* AppDelegate.swift */,
-				A7B47FA7279921F5002E900B /* SceneDelegate.swift */,
+				A7B47FC4279937F3002E900B /* Delegates */,
 				A7B47FA9279921F5002E900B /* MainVC.swift */,
+				A7B47FC22799357A002E900B /* PHPicker.swift */,
 				A7B47FB9279924BF002E900B /* NavigationVC.swift */,
 				A7B47FAB279921F5002E900B /* Main.storyboard */,
 				A7B47FAE279921F6002E900B /* Assets.xcassets */,
@@ -68,6 +72,16 @@
 				A7B47FB3279921F6002E900B /* Info.plist */,
 			);
 			path = CoreImageSlider;
+			sourceTree = "<group>";
+		};
+		A7B47FC4279937F3002E900B /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				A7B47FA5279921F5002E900B /* AppDelegate.swift */,
+				A7B47FA7279921F5002E900B /* SceneDelegate.swift */,
+				A7B47FC527993809002E900B /* PickerDelegate.swift */,
+			);
+			path = Delegates;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -141,10 +155,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7B47FC627993809002E900B /* PickerDelegate.swift in Sources */,
 				A7B47FAA279921F5002E900B /* MainVC.swift in Sources */,
 				A7B47FA6279921F5002E900B /* AppDelegate.swift in Sources */,
 				A7B47FBA279924BF002E900B /* NavigationVC.swift in Sources */,
 				A7B47FA8279921F5002E900B /* SceneDelegate.swift in Sources */,
+				A7B47FC32799357A002E900B /* PHPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

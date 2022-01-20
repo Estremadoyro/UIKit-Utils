@@ -16,10 +16,28 @@
 -[Reducing memory footprint for UIImages](https://swiftsenpai.com/development/reduce-uiimage-memory-footprint/)
 -[Fix Massive View Controllers](https://www.hackingwithswift.com/articles/86/how-to-move-data-sources-and-delegates-out-of-your-view-controllers)
 
-# Tips
+# 📌 Tips
 Prevent sloppy trainsitions when pushing/popping VCs by setting the background color.
 ```swift
 view.backgroundColor = UIColor.white
+```
+Don't forget to **deinit** View Controllers when not used/seen on screen
+```swift
+private var picker: PHPicker? // initial nil reference to picker
+
+// Calling picker
+@objc private func importPicture() {
+  picker = Picker() // picker allocated
+  picker?.pickerDelegate = self
+  let pickerVC = picker?.photoPickerVC
+  guard let pickerVC = pickerVC else { return }
+  present(pickerVC, animated: true, completion: nil)
+}
+
+// Delegate method
+func didSelectPicture(picture: UIImage) {
+  picker = nil // picker deallocated
+}
 ```
 
 # 📝 Info.plist 
