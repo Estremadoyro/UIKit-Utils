@@ -68,7 +68,7 @@ class PhotoFormVC: UIViewController {
     return label
   }()
 
-  private let titleFieldView: UITextField = {
+  private lazy var titleFieldView: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.font = UIFont.preferredFont(forTextStyle: .title3)
@@ -76,6 +76,7 @@ class PhotoFormVC: UIViewController {
     textField.layer.cornerRadius = 15
     textField.layer.borderColor = UIColor.black.cgColor
     textField.layer.borderWidth = 2
+    textField.delegate = self
     textField.setHorizontalPadding(amount: 10)
     return textField
   }()
@@ -89,6 +90,7 @@ class PhotoFormVC: UIViewController {
     textView.layer.borderColor = UIColor.black.cgColor
     textView.layer.borderWidth = 2
     textView.textContainerInset = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
+    textView.delegate = self
     return textView
   }()
 
@@ -264,5 +266,34 @@ extension PhotoFormVC {
     navigationItem.largeTitleDisplayMode = .always
     let backBtn = UIBarButtonItem(image: UIImage(systemName: "chevron.backward.2"), style: .plain, target: self, action: #selector(dismissForm))
     navigationItem.leftBarButtonItems = [backBtn]
+  }
+}
+
+extension PhotoFormVC: UITextFieldDelegate {
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    descriptionFieldView.becomeFirstResponder()
+    return true
+  }
+}
+
+extension PhotoFormVC: UITextViewDelegate {
+  func textViewDidBeginEditing(_ textView: UITextView) {
+    var point = textView.frame.origin
+    navigationItem.largeTitleDisplayMode = .never
+    print("text view: \(textView)")
+    print("point: \(point)")
+    point.y = point.y - 100
+    scrollView.setContentOffset(point, animated: true)
+    print("new point: \(point)")
+    print("editing description")
+  }
+
+  func textViewDidEndEditing(_ textView: UITextView) {
+    var point = textView.frame.origin
+    print("text view: \(textView)")
+    print("point: \(point)")
+    point.y = point.y - 200
+    scrollView.setContentOffset(point, animated: true)
+    print("end editing description")
   }
 }

@@ -106,25 +106,15 @@ extension TableVC: UITableViewDelegate {
     deleteAction.backgroundColor = UIColor.systemPink
     deleteAction.title = "Delete"
 
-    let editAction = UIContextualAction(style: .destructive, title: "Edit", handler: { _, _, completion in
-      completion(true)
-    })
-    editAction.image = UIImage(systemName: "square.and.pencil")
-    editAction.backgroundColor = UIColor.systemBlue
+//    let editAction = UIContextualAction(style: .destructive, title: "Edit", handler: { _, _, completion in
+//      completion(true)
+//    })
+//    editAction.image = UIImage(systemName: "square.and.pencil")
+//    editAction.backgroundColor = UIColor.systemBlue
 
-    let swipeConfig = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
-    swipeConfig.performsFirstActionWithFullSwipe = false
+    let swipeConfig = UISwipeActionsConfiguration(actions: [deleteAction])
+    swipeConfig.performsFirstActionWithFullSwipe = true
     return swipeConfig
-  }
-
-  func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-    let metaDataInfo = UIContextualAction(style: .normal, title: "") { _, _, completion in
-      print("accessed meta info")
-      completion(true)
-    }
-    metaDataInfo.image = UIImage(systemName: "info.circle")
-    metaDataInfo.backgroundColor = UIColor.lightGray
-    return UISwipeActionsConfiguration(actions: [metaDataInfo])
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

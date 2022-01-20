@@ -67,11 +67,17 @@ extension DetailVC {
 extension DetailVC {
   private func setupNavBar() {
     navigationController?.navigationBar.prefersLargeTitles = false
-    let shareBtn = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .done, target: self, action: #selector(dismissVC))
+    let shareBtn = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .done, target: self, action: #selector(sharePhoto))
     navigationItem.rightBarButtonItems = [shareBtn]
   }
 
-  @objc private func dismissVC() {
-    print("sharing content")
+  @objc private func sharePhoto() {
+    let photo = UIImage(contentsOfFile: self.photo.url) ?? UIImage(named: "no-image-found.jpeg")
+    let activityVC = UIActivityViewController(activityItems: [photo!], applicationActivities: nil)
+    // Prevents from crashing on iPad
+    popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+
+//    activityVC.isModalInPresentation = true
+    present(activityVC, animated: true, completion: nil)
   }
 }
