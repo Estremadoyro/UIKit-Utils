@@ -5,10 +5,14 @@
 //  Created by Leonardo  on 19/01/22.
 //
 
+import CoreImage
 import UIKit
 
 class MainVC: UIViewController {
   private var picker: PHPicker?
+  var context: CIContext!
+  var currentFilter: CIFilter!
+
   var currentPicture: UIImage? {
     didSet {
       imageView.image = currentPicture
@@ -38,7 +42,8 @@ class MainVC: UIViewController {
   private let imageView: UIImageView = {
     let image = UIImageView()
     image.translatesAutoresizingMaskIntoConstraints = false
-//    image.backgroundColor = UIColor.systemPink
+    image.image = UIImage(systemName: "photo")
+    image.tintColor = UIColor.systemBlue.withAlphaComponent(0.2)
     image.contentMode = .scaleAspectFit
     image.clipsToBounds = true
     return image
@@ -67,8 +72,8 @@ class MainVC: UIViewController {
   private let intensitySlider: UISlider = {
     let slider = UISlider()
     slider.translatesAutoresizingMaskIntoConstraints = false
-    slider.minimumValue = 0
-    slider.maximumValue = 100
+    slider.minimumValue = 0.1
+    slider.maximumValue = 1
     slider.isContinuous = true
     slider.addTarget(self, action: #selector(sliderValueDidChange), for: .valueChanged)
     return slider
@@ -92,6 +97,7 @@ class MainVC: UIViewController {
     btn.setTitleColor(UIColor.systemBlue, for: .normal)
     btn.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.2)
     btn.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title3)
+    btn.addTarget(self, action: #selector(changeFilter), for: .touchUpInside)
     return btn
   }()
 
@@ -102,6 +108,7 @@ class MainVC: UIViewController {
     btn.setTitleColor(UIColor.systemBlue, for: .normal)
     btn.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.2)
     btn.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title3)
+    btn.addTarget(self, action: #selector(saveImage), for: .touchUpInside)
     return btn
   }()
 
@@ -111,6 +118,7 @@ class MainVC: UIViewController {
     configNavbar()
     setupSubViews()
     setupConstraints()
+    configCI()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -155,6 +163,7 @@ extension MainVC {
 extension MainVC {
   @objc private func sliderValueDidChange(_ sender: UISlider!) {
     print("slider value: \(sender.value)")
+    applyProcessing()
   }
 }
 
@@ -168,9 +177,98 @@ extension MainVC: PickerDelegate {
   }
 
   func didSelectPicture(picture: UIImage) {
-    picker = nil
-    print("picture: \(picture)")
-    currentPicture = picture
     // Deallocating PHPicker after picture has been selected
+    picker = nil
+    currentPicture = picture
+    intensitySlider.value = 0
+    print("picture: \(picture)")
+    guard let currentPicture = self.currentPicture else { return }
+    let beginImage = CIImage(image: currentPicture)
+    currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
+  }
+}
+
+extension MainVC {
+  private func configCI() {
+    // Creating context is computational expensive
+    context = CIContext()
+    currentFilter = CIFilter(name: "CISepiaTone") // initial filter
+  }
+
+  private func applyProcessing() {
+    guard let ciImage = currentFilter.outputImage else { return }
+    let inputKeys = currentFilter.inputKeys // all available filter input parameters
+    // Filters support different settings, not all of them support Intensity
+    if inputKeys.contains(kCIInputIntensityKey) {
+      currentFilter.setValue(intensitySlider.value, forKey: kCIInputIntensityKey)
+    }
+    if inputKeys.contains(kCIInputRadiusKey) {
+      currentFilter.setValue(intensitySlider.value * 200, forKey: kCIInputRadiusKey)
+    }
+    if inputKeys.contains(kCIInputScaleKey) {
+      currentFilter.setValue(intensitySlider.value * 10, forKey: kCIInputScaleKey)
+    }
+    if inputKeys.contains(kCIInputCenterKey) {
+      currentFilter.setValue(CIVector(x: currentPicture!.size.width / 2, y: currentPicture!.size.height / 2), forKey: kCIInputCenterKey)
+    }
+
+    if let cgImage = context.createCGImage(ciImage, from: ciImage.extent) {
+      let processedImage = UIImage(cgImage: cgImage)
+      imageView.image = processedImage
+    }
+  }
+
+  @objc private func changeFilter(_ sender: UIButton) {
+    let ac = UIAlertController(title: "Choose filter", message: nil, preferredStyle: .actionSheet)
+    ac.addAction(UIAlertAction(title: "CIBumpDistortion", style: .default, handler: setFilter))
+    ac.addAction(UIAlertAction(title: "CIGaussianBlur", style: .default, handler: setFilter))
+    ac.addAction(UIAlertAction(title: "CIPixellate", style: .default, handler: setFilter))
+    ac.addAction(UIAlertAction(title: "CISepiaTone", style: .default, handler: setFilter))
+    ac.addAction(UIAlertAction(title: "CITwirlDistortion", style: .default, handler: setFilter))
+    ac.addAction(UIAlertAction(title: "CIUnsharpMask", style: .default, handler: setFilter))
+    ac.addAction(UIAlertAction(title: "CIVignette", style: .default, handler: setFilter))
+    ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+    // iPad support
+    if let popoverController = ac.popoverPresentationController {
+      popoverController.sourceView = sender
+      popoverController.sourceRect = sender.bounds
+    }
+    present(ac, animated: true, completion: { [weak self] in
+      self?.intensitySlider.value = 0.1
+    })
+  }
+
+  private func setFilter(action: UIAlertAction) {
+    // Make sure there is a valid picture
+    guard let currentPicture = self.currentPicture else { return }
+    // Read alert action's title
+    guard let actionTitle = action.title else { return }
+    // Set new title
+    currentFilter = CIFilter(name: actionTitle)
+
+    // Set UIImage to CIImage
+    let ciImage = CIImage(image: currentPicture)
+    currentFilter.setValue(ciImage, forKey: kCIInputImageKey) // key to use the input image
+    applyProcessing()
+  }
+
+  @objc
+  private func saveImage() {
+    guard let picture = imageView.image else { return }
+    // Save image to photos album
+    UIImageWriteToSavedPhotosAlbum(picture, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+  }
+
+  @objc
+  private func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+    var alertTitle = "Success"
+    var alertMessage = "Edited picture saved to library"
+    if let error = error {
+      alertTitle = "Error"
+      alertMessage = "\(error.localizedDescription)"
+    }
+    let ac = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+    ac.addAction(UIAlertAction(title: "Done", style: .default, handler: nil))
+    present(ac, animated: true, completion: nil)
   }
 }
