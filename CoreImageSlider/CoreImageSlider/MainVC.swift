@@ -33,6 +33,7 @@ class MainVC: UIViewController {
   var currentPicture: UIImage? {
     didSet {
       imageView.image = currentPicture
+      imageView.alpha = 0
       intensitySlider.isUserInteractionEnabled = validatePicture(photo: imageView.image)
       radiusSlider.isUserInteractionEnabled = validatePicture(photo: imageView.image)
       intensitySlider.value = 0.1
@@ -254,6 +255,7 @@ extension MainVC: PickerDelegate {
     // Deallocating PHPicker after picture has been selected
     picker = nil
     currentPicture = picture
+    UIView.animate(withDuration: 1, delay: 0, options: [], animations: { self.imageView.alpha = 1 }, completion: nil)
     if currentFilter == nil {
       currentFilter = CIFilter(name: "CISepiaTone")
       changeFilterBtn.setTitle(currentFilter?.name, for: .normal)
