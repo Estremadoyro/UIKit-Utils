@@ -128,6 +128,15 @@ class ViewController: UIViewController {
 
   @IBAction func buttonTapped(_ sender: UIButton) {
     alertToDisplay(numberOfQuestion: questionsAsked, sender: sender)
+    let customAnimation: () -> Void = {
+      sender.transform = CGAffineTransform(translationX: 0, y: 5)
+    }
+    let completion: (Bool) -> Void = { _ in
+      UIView.animate(withDuration: 0.5, delay: 0, options: [], animations: {
+        sender.transform = CGAffineTransform(translationX: 0, y: -5)
+      }, completion: nil)
+    }
+    UIView.animate(withDuration: 0.5, delay: 0, options: [], animations: customAnimation, completion: completion)
   }
 
   @objc private func navigationShowScore() {
