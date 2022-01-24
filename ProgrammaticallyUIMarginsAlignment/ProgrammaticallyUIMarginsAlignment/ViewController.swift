@@ -153,7 +153,13 @@ class ViewController: UIViewController {
     /// # Active btn on tap
     activatedButtons.append(sender)
     /// # Hide btn after tapped
-    sender.isHidden = true
+//    sender.isHidden = true
+
+    let customAnimation: () -> Void = {
+      sender.alpha = 0
+    }
+
+    UIView.animate(withDuration: 0.5, delay: 0, options: [], animations: customAnimation, completion: nil)
   }
 
   @objc func submitTapped(_ sender: UIButton) {
@@ -210,7 +216,8 @@ class ViewController: UIViewController {
     currentAnswer.text? = ""
     /// # Reset active buttons
     for btn in activatedButtons {
-      btn.isHidden = false
+//      btn.isHidden = false
+      UIView.animate(withDuration: 0.5, delay: 0, options: [], animations: { btn.alpha = 1 }, completion: nil)
     }
     activatedButtons.removeAll()
   }
