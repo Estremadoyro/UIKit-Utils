@@ -1,0 +1,84 @@
+{
+  "countries": [
+    {
+      "name": "peru",
+      "capital": "lima",
+      "population": 33000000,
+      "currency": "sol",
+      "flag": "https://www.countryflags.com/wp-content/uploads/peru-flag-png-large.png",
+      "area_km": 1285000
+    },
+    {
+      "name": "argentina",
+      "capital": "buenos aires",
+      "population": 45380000,
+      "currency": "peso argentino",
+      "flag": "https://www.countryflags.com/wp-content/uploads/flag-jpg-xl-7-1536x963.jpg",
+      "area_km": 2780000
+    },
+    {
+      "name": "brasil",
+      "capital": "brasilia",
+      "population": 212600000,
+      "currency": "Real",
+      "flag": "https://www.countryflags.com/wp-content/uploads/brazil-flag-png-large.png",
+      "area_km": 8516000
+    },
+    {
+      "name": "chile",
+      "capital": "santiago",
+      "population": 19120000,
+      "currency": "peso chileno",
+      "flag": "https://www.countryflags.com/wp-content/uploads/chile-flag-png-large.png",
+      "area_km": 756000
+    },
+    {
+      "name": "ecuador",
+      "capital": "quito",
+      "population": 17640000,
+      "currency": "dolar",
+      "flag": "https://www.countryflags.com/wp-content/uploads/ecuador-flag-png-large.png",
+      "area_km": 283560
+    },
+    {
+      "name": "venezuela",
+      "capital": "caracas",
+      "population": 28440000,
+      "currency": "bolivar",
+      "flag": "https://www.countryflags.com/wp-content/uploads/venezuela-flag-png-large.png",
+      "area_km": 916000
+    },
+    {
+      "name": "uruguay",
+      "capital": "montevideo",
+      "population": 3474000,
+      "currency": "peso uruguayo",
+      "flag": "https://www.countryflags.com/wp-content/uploads/uruguay-flag-png-large.png",
+      "area_km": 176215
+    },
+    {
+      "name": "bolivia",
+      "capital": "la paz",
+      "population": 1167000,
+      "currency": "boliviano",
+      "flag": "https://www.countryflags.com/wp-content/uploads/flag-jpg-xl-1536x1050.jpg",
+      "area_km": 1099000
+    },
+    {
+      "name": "colombia",
+      "capital": "bogota",
+      "population": 50880000,
+      "currency": "peso colombiano",
+      "flag": "https://www.countryflags.com/wp-content/uploads/colombia-flag-png-large.png",
+      "area_km": 2070000
+    },
+    {
+      "name": "paraguay",
+      "capital": "asuncion",
+      "population": 7133000,
+      "currency": "guarani",
+      "flag": "https://www.countryflags.com/wp-content/uploads/paraguay-flag-png-large.png",
+      "area_km": 406752
+    }
+  ]
+}

@@ -8,12 +8,13 @@
 import UIKit
 
 class TableVC: UIViewController {
+  private lazy var countries = Countries()
   private lazy var tableView: UITableView = {
     let tableView = UITableView()
     tableView.translatesAutoresizingMaskIntoConstraints = false
     tableView.delegate = self
     tableView.dataSource = self
-    tableView.register(CountryCell.self, forCellReuseIdentifier: "\(CountryCell.self)")
+    tableView.register(CountryCellView.self, forCellReuseIdentifier: "\(CountryCellView.self)")
     tableView.rowHeight = 80.0
 //    tableView.layer.borderColor = UIColor.systemPink.cgColor
 //    tableView.layer.borderWidth = 2
@@ -57,13 +58,15 @@ extension TableVC {
 extension TableVC: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     // Calls the init(style, reuseIdentifier) when dequeing, or call reuse if there was an existing cell available
-    guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(CountryCell.self)") as? CountryCell else {
+    guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(CountryCellView.self)") as? CountryCellView else {
       fatalError("Error dequeing cell")
     }
+    let country = countries.countries[indexPath.row]
+    cell.country = country
     return cell
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 10
+    return countries.countries.count
   }
 }

@@ -7,7 +7,13 @@
 
 import UIKit
 
-class CountryCell: UITableViewCell {
+class CountryCellView: UITableViewCell {
+  var country: Country? {
+    didSet {
+      countryName.text = country?.name.capitalizingFirstLetter()
+    }
+  }
+
   private lazy var countryName: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
@@ -31,7 +37,7 @@ class CountryCell: UITableViewCell {
   }
 }
 
-extension CountryCell {
+extension CountryCellView {
   private func configureCell() {
     selectionStyle = .none
   }
