@@ -5,10 +5,10 @@
 //  Created by Leonardo  on 25/01/22.
 //
 
-import Foundation
+import UIKit
 
 class Local {
-  static func loadJSON(file: String) {
+  static func loadJSON(file: String) -> Countries {
     // find file in Bundle
     guard let path = Bundle.main.url(forResource: file, withExtension: nil) else {
       fatalError("Failed to locate: \(file)")
@@ -17,12 +17,15 @@ class Local {
     do {
       let data = try Data(contentsOf: path)
       let decodedData = try JSONDecoder().decode(Countries.self, from: data)
-      print("Decoded json data")
+
       decodedData.countries.forEach { country in
-        print("country: \(country.name)")
+        print("country: \(country.flag)")
       }
+
+      return decodedData
     } catch {
       print("Error: \(error)")
+      return Countries(countries: [Country]())
     }
   }
 }
