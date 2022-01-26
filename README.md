@@ -17,6 +17,21 @@
 -[Fix Massive View Controllers](https://www.hackingwithswift.com/articles/86/how-to-move-data-sources-and-delegates-out-of-your-view-controllers)
 
 # 📌 Tips
+Read JSON file from Bundle
+```swift
+guard let url = Bundle.main.url(forResource: "countries.json", withExtension: nil) else {
+  return
+}
+do { 
+  let data = try Data(contentsOf: url) 
+  let decodedData = try JSONDecoder().decode(Countries.self, from: data)
+  return decodedData
+  
+} catch {
+  print(error)
+  return Countries(countries: [Country]())
+}
+```
 Prevent sloppy trainsitions when pushing/popping VCs by setting the background color.
 ```swift
 view.backgroundColor = UIColor.white
