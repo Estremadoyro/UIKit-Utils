@@ -17,12 +17,8 @@ class Local {
     do {
       let data = try Data(contentsOf: path)
       let decodedData = try JSONDecoder().decode(Countries.self, from: data)
-
-      decodedData.countries.forEach { country in
-        print("country: \(country.flag)")
-      }
-
       return decodedData
+
     } catch {
       print("Error: \(error)")
       return Countries(countries: [Country]())

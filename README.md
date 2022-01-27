@@ -17,6 +17,42 @@
 -[Fix Massive View Controllers](https://www.hackingwithswift.com/articles/86/how-to-move-data-sources-and-delegates-out-of-your-view-controllers)
 
 # 📌 Tips
+Get image from URL with URLSession
+```swift
+func fetchImageFromURL(url: URL?) {
+    guard let url = url else { return }
+
+    // Its completion handler already runs in a background thread
+    URLSession.shared.dataTask(with: url, completionHandler: { data, response, error in
+      if let anError = error {
+        debugPrint("Data task error: \(anError.localizedDescription)")
+      }
+      guard let aData = data, let image = UIImage(data: aData) else {
+        return
+      }
+      if let httpResponse = response as? HTTPURLResponse {
+        debugPrint("Network response: \(httpResponse.statusCode)")
+      }
+      DispatchQueue.main.async { [weak self] in
+        self?.image = image
+      }
+    }).resume()
+  }
+```
+Get image from URL from Data object
+```swift
+func fetchImageFromURL(url: URL?) { 
+  DispatchQueue.global(qos: .userInitiated).async {
+    if let data = try? Data(contentsOf: url) {
+      if let image = UIImage(data: data) {
+        DispatchQueue.main.async { [weak self] in
+          self?.image = image
+        }
+      }
+    }
+  }
+}
+```
 Read JSON file from Bundle
 ```swift
 guard let url = Bundle.main.url(forResource: "countries.json", withExtension: nil) else {
