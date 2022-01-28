@@ -26,16 +26,16 @@ extension UIImageView {
       return
     }
     // Its completion handler already runs in a background thread
-    URLSession.shared.dataTask(with: url, completionHandler: { data, response, error in
+    URLSession.shared.dataTask(with: url, completionHandler: { data, _, error in
       if let anError = error {
         debugPrint("Data task error: \(anError.localizedDescription)")
       }
       guard let aData = data, let image = UIImage(data: aData) else {
         return
       }
-      if let httpResponse = response as? HTTPURLResponse {
-        debugPrint("Network response: \(httpResponse.statusCode)")
-      }
+//      if let httpResponse = response as? HTTPURLResponse {
+//         debugPrint("Network response: \(httpResponse.statusCode)")
+//      }
       DispatchQueue.main.async { [weak self] in
         imageCache.setObject(image, forKey: url as NSURL)
         self?.image = image

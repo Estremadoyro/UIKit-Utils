@@ -24,4 +24,26 @@ class Local {
       return Countries(countries: [Country]())
     }
   }
+
+  static func fetchImageFromURL(url: URL, updateImage: @escaping (UIImage) -> Void) {
+    if let image = imageCache.object(forKey: url as NSURL) as? UIImage {
+      print("image from cache")
+      updateImage(image)
+      return
+    }
+    // Its completion handler already runs in a background thread
+    URLSession.shared.dataTask(with: url, completionHandler: { data, response, error in
+      if let anError = error {
+        debugPrint("Data task error: \(anError.localizedDescription)")
+      }
+      guard let aData = data, let image = UIImage(data: aData) else {
+        return
+      }
+      if let httpResponse = response as? HTTPURLResponse {
+        print("HTTP response: \(httpResponse.statusCode)")
+      }
+      imageCache.setObject(image, forKey: url as NSURL)
+      updateImage(image)
+    }).resume()
+  }
 }

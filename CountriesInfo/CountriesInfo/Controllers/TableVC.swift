@@ -9,6 +9,8 @@ import UIKit
 
 class TableVC: UIViewController {
   private lazy var countries = Countries()
+  private var detailVC: DetailVC?
+
   private lazy var tableView: UITableView = {
     let tableView = UITableView()
     tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -18,8 +20,6 @@ class TableVC: UIViewController {
     tableView.separatorStyle = .none
     tableView.rowHeight = 80.0
     tableView.backgroundColor = UIColor.systemGray6
-//    tableView.layer.borderColor = UIColor.systemPink.cgColor
-//    tableView.layer.borderWidth = 2
     return tableView
   }()
 }
@@ -34,13 +34,15 @@ extension TableVC {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    let visibleCells = tableView.visibleCells
-    let invisibleCells: [UITableViewCell] = visibleCells.map { $0.alpha = 0; return $0 }
+    if isBeingPresented || isMovingToParent {
+      let visibleCells = tableView.visibleCells
+      let invisibleCells: [UITableViewCell] = visibleCells.map { $0.alpha = 0; return $0 }
 
-    invisibleCells.enumerated().forEach { index, invisibleCell in
-      UIView.animate(withDuration: 0.5, delay: 0.05 * Double(index), options: [], animations: {
-        invisibleCell.alpha = 1
-      })
+      invisibleCells.enumerated().forEach { index, invisibleCell in
+        UIView.animate(withDuration: 0.5, delay: 0.05 * Double(index), options: [], animations: {
+          invisibleCell.alpha = 1
+        })
+      }
     }
   }
 }
@@ -66,13 +68,6 @@ extension TableVC {
     view.backgroundColor = UIColor.systemGray6
     navigationController?.navigationBar.prefersLargeTitles = true
     navigationItem.largeTitleDisplayMode = .always
-
-//    let appearance = UINavigationBarAppearance()
-//    appearance.backgroundColor = UIColor.red
-//
-//    UINavigationBar.appearance().standardAppearance = appearance
-//    UINavigationBar.appearance().scrollEdgeAppearance = appearance
-//    UINavigationBar.appearance().compactAppearance = appearance
   }
 }
 
@@ -80,9 +75,13 @@ extension TableVC: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     // Calls the init(style, reuseIdentifier) when dequeing, or call reuse if there was an existing cell available
     guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(CountryCellView.self)") as? CountryCellView else {
-      fatalError("Error dequeing cell")
+      fatalError("Error dequeuing cell")
     }
+
     let country = countries.countries[indexPath.row]
+    Local.fetchImageFromURL(url: country.flag, updateImage: { fetchedImage in
+      cell.countryFlagImage = fetchedImage
+    })
     cell.country = country
     return cell
   }
@@ -93,7 +92,6 @@ extension TableVC: UITableViewDelegate, UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     // animate
-    print("row: \(indexPath.row)")
     if indexPath.row > countries.countries.count - 4 {
       let rotationTransform = CATransform3DTranslate(CATransform3DIdentity, 0, -100, 0)
       cell.layer.transform = rotationTransform
@@ -103,5 +101,14 @@ extension TableVC: UITableViewDelegate, UITableViewDataSource {
         cell.alpha = 1
       })
     }
+  }
+
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let country = countries.countries[indexPath.row]
+    guard let currentCell = tableView.cellForRow(at: indexPath) as? CountryCellView else { return }
+    detailVC = DetailVC(country: country, flagImage: currentCell.countryFlagImage)
+    guard let detailVC = detailVC else { return }
+    navigationController?.pushViewController(detailVC, animated: true)
+    self.detailVC = nil
   }
 }

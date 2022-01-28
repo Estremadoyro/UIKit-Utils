@@ -19,6 +19,7 @@
 		A7B729AA27A1018B00A48DC7 /* Local.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B729A927A1018B00A48DC7 /* Local.swift */; };
 		A7B729AC27A120CD00A48DC7 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B729AB27A120CD00A48DC7 /* Extensions.swift */; };
 		A7B729AE27A1235A00A48DC7 /* CountryCellImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B729AD27A1235A00A48DC7 /* CountryCellImageView.swift */; };
+		A7FB97DA27A3A13000EE34C9 /* DetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FB97D927A3A13000EE34C9 /* DetailVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		A7B729A927A1018B00A48DC7 /* Local.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Local.swift; sourceTree = "<group>"; };
 		A7B729AB27A120CD00A48DC7 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		A7B729AD27A1235A00A48DC7 /* CountryCellImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCellImageView.swift; sourceTree = "<group>"; };
+		A7FB97D927A3A13000EE34C9 /* DetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 			children = (
 				A7868F1B279FC73800BE31A1 /* NavigationVC.swift */,
 				A7868F0B279F773000BE31A1 /* TableVC.swift */,
+				A7FB97D927A3A13000EE34C9 /* DetailVC.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -201,6 +204,7 @@
 				A7B729AA27A1018B00A48DC7 /* Local.swift in Sources */,
 				A7B729AE27A1235A00A48DC7 /* CountryCellImageView.swift in Sources */,
 				A7B729AC27A120CD00A48DC7 /* Extensions.swift in Sources */,
+				A7FB97DA27A3A13000EE34C9 /* DetailVC.swift in Sources */,
 				A7868F1E279FD21200BE31A1 /* CountryCellView.swift in Sources */,
 				A7868F1C279FC73800BE31A1 /* NavigationVC.swift in Sources */,
 				A7B729A727A0FBFB00A48DC7 /* Country.swift in Sources */,

@@ -12,7 +12,14 @@ class CountryCellView: UITableViewCell {
     didSet {
       guard let country = country else { return }
       countryName.text = country.name.capitalizingFirstLetter()
-      countryFlag.fetchImageFromURL(url: country.flag)
+    }
+  }
+
+  var countryFlagImage: UIImage? {
+    didSet {
+      DispatchQueue.main.async { [weak self] in
+        self?.countryFlag.image = self?.countryFlagImage
+      }
     }
   }
 
