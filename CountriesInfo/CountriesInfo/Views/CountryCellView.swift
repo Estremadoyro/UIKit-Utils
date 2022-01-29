@@ -11,7 +11,7 @@ class CountryCellView: UITableViewCell {
   var country: Country? {
     didSet {
       guard let country = country else { return }
-      countryName.text = country.name.capitalizingFirstLetter()
+      countryName.text = country.name
     }
   }
 

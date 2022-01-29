@@ -16,7 +16,11 @@ class Local {
     // cast to Data type
     do {
       let data = try Data(contentsOf: path)
-      let decodedData = try JSONDecoder().decode(Countries.self, from: data)
+      let decodedData: Countries = try JSONDecoder().decode(Countries.self, from: data)
+      decodedData.countries = decodedData.countries.map { country in
+        country.name = country.name.capitalizingFirstLetter()
+        return country
+      }
       return decodedData
 
     } catch {

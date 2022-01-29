@@ -17,6 +17,10 @@
 -[Fix Massive View Controllers](https://www.hackingwithswift.com/articles/86/how-to-move-data-sources-and-delegates-out-of-your-view-controllers)
 
 # 📌 Tips
+Set navigation back button, must be done on the NavigationVC pushing
+```swift
+self.navigationItem.backBarButtonItem = UIBarButtonItem(title:style:target:action)
+```
 Get image from URL with URLSession
 ```swift
 func fetchImageFromURL(url: URL?) {
