@@ -19,6 +19,7 @@
 		A7B729AA27A1018B00A48DC7 /* Local.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B729A927A1018B00A48DC7 /* Local.swift */; };
 		A7B729AC27A120CD00A48DC7 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B729AB27A120CD00A48DC7 /* Extensions.swift */; };
 		A7B729AE27A1235A00A48DC7 /* CountryCellImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B729AD27A1235A00A48DC7 /* CountryCellImageView.swift */; };
+		A7DCF75027A7625A007E6493 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DCF74F27A7625A007E6493 /* Constants.swift */; };
 		A7FB97DA27A3A13000EE34C9 /* DetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FB97D927A3A13000EE34C9 /* DetailVC.swift */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +38,7 @@
 		A7B729A927A1018B00A48DC7 /* Local.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Local.swift; sourceTree = "<group>"; };
 		A7B729AB27A120CD00A48DC7 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		A7B729AD27A1235A00A48DC7 /* CountryCellImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCellImageView.swift; sourceTree = "<group>"; };
+		A7DCF74F27A7625A007E6493 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A7FB97D927A3A13000EE34C9 /* DetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -88,6 +90,7 @@
 			children = (
 				A7B729A927A1018B00A48DC7 /* Local.swift */,
 				A7B729AB27A120CD00A48DC7 /* Extensions.swift */,
+				A7DCF74F27A7625A007E6493 /* Constants.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -200,6 +203,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7868F0C279F773000BE31A1 /* TableVC.swift in Sources */,
+				A7DCF75027A7625A007E6493 /* Constants.swift in Sources */,
 				A7868F08279F773000BE31A1 /* AppDelegate.swift in Sources */,
 				A7B729AA27A1018B00A48DC7 /* Local.swift in Sources */,
 				A7B729AE27A1235A00A48DC7 /* CountryCellImageView.swift in Sources */,

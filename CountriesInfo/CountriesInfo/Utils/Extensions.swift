@@ -33,13 +33,26 @@ extension UIImageView {
       guard let aData = data, let image = UIImage(data: aData) else {
         return
       }
-//      if let httpResponse = response as? HTTPURLResponse {
-//         debugPrint("Network response: \(httpResponse.statusCode)")
-//      }
       DispatchQueue.main.async { [weak self] in
         imageCache.setObject(image, forKey: url as NSURL)
         self?.image = image
       }
     }).resume()
+  }
+}
+
+extension UIView {
+  func addShadowAndCorners(fillColor: UIColor, cornerRadius: CGFloat, shadowColor: CGColor, shadowOffset: CGSize, shadowOpacity: Float, shadowRadius: CGFloat) {
+    let shadowLayer = CAShapeLayer()
+    shadowLayer.path = UIBezierPath(roundedRect: self.bounds, cornerRadius: cornerRadius).cgPath
+    shadowLayer.fillColor = fillColor.cgColor
+    shadowLayer.shadowColor = shadowColor
+    shadowLayer.shadowPath = shadowLayer.path
+    shadowLayer.shadowOffset = shadowOffset
+    shadowLayer.shadowOpacity = shadowOpacity
+    shadowLayer.shadowRadius = shadowRadius
+    shadowLayer.shouldRasterize = true
+    shadowLayer.rasterizationScale = 0.8
+    self.layer.insertSublayer(shadowLayer, at: 0)
   }
 }

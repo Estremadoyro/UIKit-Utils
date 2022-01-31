@@ -26,11 +26,11 @@ class CountryCellView: UITableViewCell {
   private lazy var cellContainer: UIView = {
     let view = UIView()
     view.translatesAutoresizingMaskIntoConstraints = false
-    view.layer.cornerRadius = 15
+//    view.layer.cornerRadius = 15
     view.addSubview(countryFlag)
     view.addSubview(countryName)
     view.addSubview(indicatorImage)
-    view.backgroundColor = UIColor.white
+//    view.backgroundColor = UIColor.white
     return view
   }()
 
@@ -48,11 +48,10 @@ class CountryCellView: UITableViewCell {
     let imageView = UIImageView()
     imageView.translatesAutoresizingMaskIntoConstraints = false
     imageView.contentMode = .scaleAspectFill
-//    imageView.image = UIImage(named: "peru.png")
     imageView.clipsToBounds = true
     imageView.layer.cornerRadius = 15
     imageView.layer.borderWidth = 2
-    imageView.layer.borderColor = UIColor.lightGray.cgColor
+    imageView.layer.borderColor = UIColor.black.withAlphaComponent(0.2).cgColor
     return imageView
   }()
 
@@ -62,7 +61,7 @@ class CountryCellView: UITableViewCell {
     imageView.image = UIImage(systemName: "chevron.right")
     imageView.contentMode = .scaleAspectFit
     imageView.clipsToBounds = true
-    imageView.layer.borderColor = UIColor.systemPink.cgColor
+//    imageView.layer.borderColor = UIColor.systemPink.cgColor
 //    imageView.layer.borderWidth = 2
     return imageView
   }()
@@ -72,6 +71,7 @@ class CountryCellView: UITableViewCell {
     configureCell()
     buildSubViews()
     buildConstraints()
+    buildLayers()
   }
 
   @available(*, unavailable)
@@ -83,7 +83,8 @@ class CountryCellView: UITableViewCell {
 extension CountryCellView {
   private func configureCell() {
     selectionStyle = .none
-    contentView.backgroundColor = UIColor.systemGray6
+    contentView.backgroundColor = UIColor.white
+//    contentView.backgroundColor = UIColor.systemGray6
   }
 
   private func buildSubViews() {
@@ -94,8 +95,8 @@ extension CountryCellView {
     NSLayoutConstraint.activate([
       cellContainer.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
       cellContainer.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
-      cellContainer.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 3),
-      cellContainer.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -3),
+      cellContainer.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 10),
+      cellContainer.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -10),
 
       countryFlag.centerYAnchor.constraint(equalTo: cellContainer.centerYAnchor),
       countryFlag.heightAnchor.constraint(equalTo: cellContainer.heightAnchor, multiplier: 0.6),
@@ -111,5 +112,12 @@ extension CountryCellView {
       indicatorImage.topAnchor.constraint(equalTo: cellContainer.layoutMarginsGuide.topAnchor),
       indicatorImage.bottomAnchor.constraint(equalTo: cellContainer.layoutMarginsGuide.bottomAnchor),
     ])
+  }
+
+  private func buildLayers() {
+    cellContainer.superview?.needsUpdateConstraints()
+    DispatchQueue.main.async { [weak self] in
+      self?.cellContainer.addShadowAndCorners(fillColor: UIColor.white, cornerRadius: 15, shadowColor: UIColor.black.cgColor, shadowOffset: .zero, shadowOpacity: 0.2, shadowRadius: 3)
+    }
   }
 }

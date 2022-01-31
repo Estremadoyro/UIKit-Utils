@@ -18,8 +18,9 @@ class TableVC: UIViewController {
     tableView.dataSource = self
     tableView.register(CountryCellView.self, forCellReuseIdentifier: "\(CountryCellView.self)")
     tableView.separatorStyle = .none
-    tableView.rowHeight = 80.0
-    tableView.backgroundColor = UIColor.systemGray6
+    tableView.rowHeight = 100.0
+//    tableView.backgroundColor = UIColor.systemGray6
+    tableView.backgroundColor = UIColor.white
     return tableView
   }()
 }
@@ -55,7 +56,7 @@ extension TableVC {
   private func buildConstraints() {
     NSLayoutConstraint.activate([
       tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-      tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+      tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
       tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
     ])
@@ -65,7 +66,8 @@ extension TableVC {
 extension TableVC {
   private func setupVC() {
     title = "Countries"
-    view.backgroundColor = UIColor.systemGray6
+//    view.backgroundColor = UIColor.systemGray6
+    view.backgroundColor = UIColor.white
     navigationController?.navigationBar.prefersLargeTitles = true
     navigationItem.largeTitleDisplayMode = .always
   }

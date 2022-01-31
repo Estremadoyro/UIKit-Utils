@@ -19,13 +19,15 @@ class Local {
       let decodedData: Countries = try JSONDecoder().decode(Countries.self, from: data)
       decodedData.countries = decodedData.countries.map { country in
         country.name = country.name.capitalizingFirstLetter()
+        country.capital = country.capital.capitalizingFirstLetter()
+        country.currency = country.currency.capitalizingFirstLetter()
         return country
       }
       return decodedData
 
     } catch {
-      print("Error: \(error)")
-      return Countries(countries: [Country]())
+      debugPrint("Error: \(error)")
+      fatalError("Error loading Countries JSON")
     }
   }
 
