@@ -13,6 +13,7 @@
 		A71AB44927A905B000A33466 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A71AB44827A905B000A33466 /* Assets.xcassets */; };
 		A71AB44C27A905B000A33466 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A71AB44A27A905B000A33466 /* LaunchScreen.storyboard */; };
 		A71AB45427A905D000A33466 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71AB45327A905D000A33466 /* MainVC.swift */; };
+		A71AB45627AB7E5000A33466 /* Capital.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71AB45527AB7E5000A33466 /* Capital.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		A71AB44B27A905B000A33466 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A71AB44D27A905B000A33466 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A71AB45327A905D000A33466 /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
+		A71AB45527AB7E5000A33466 /* Capital.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capital.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 				A71AB44127A905AF00A33466 /* SceneDelegate.swift */,
 				A71AB44327A905AF00A33466 /* NavigationVC.swift */,
 				A71AB45327A905D000A33466 /* MainVC.swift */,
+				A71AB45527AB7E5000A33466 /* Capital.swift */,
 				A71AB44827A905B000A33466 /* Assets.xcassets */,
 				A71AB44A27A905B000A33466 /* LaunchScreen.storyboard */,
 				A71AB44D27A905B000A33466 /* Info.plist */,
@@ -141,6 +144,7 @@
 				A71AB45427A905D000A33466 /* MainVC.swift in Sources */,
 				A71AB44027A905AF00A33466 /* AppDelegate.swift in Sources */,
 				A71AB44227A905AF00A33466 /* SceneDelegate.swift in Sources */,
+				A71AB45627AB7E5000A33466 /* Capital.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

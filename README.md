@@ -17,6 +17,15 @@
 -[Fix Massive View Controllers](https://www.hackingwithswift.com/articles/86/how-to-move-data-sources-and-delegates-out-of-your-view-controllers)
 
 # 📌 Tips
+MapKit annotation components
+| Name | Type |
+| --- | --- | 
+| Title | String |
+| Subtitle | String |
+| Position | CLLocationCoordinate2D |
+
+- Title
+- Subtitle: String
 Set navigation back button, must be done on the NavigationVC pushing
 ```swift
 self.navigationItem.backBarButtonItem = UIBarButtonItem(title:style:target:action)
