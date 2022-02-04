@@ -14,6 +14,8 @@
 		A71AB44C27A905B000A33466 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A71AB44A27A905B000A33466 /* LaunchScreen.storyboard */; };
 		A71AB45427A905D000A33466 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71AB45327A905D000A33466 /* MainVC.swift */; };
 		A71AB45627AB7E5000A33466 /* Capital.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71AB45527AB7E5000A33466 /* Capital.swift */; };
+		A7E77C4B27ACE29000579F1B /* MapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E77C4A27ACE29000579F1B /* MapVC.swift */; };
+		A7E77C4D27AD02E900579F1B /* DetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E77C4C27AD02E900579F1B /* DetailVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		A71AB44D27A905B000A33466 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A71AB45327A905D000A33466 /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
 		A71AB45527AB7E5000A33466 /* Capital.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capital.swift; sourceTree = "<group>"; };
+		A7E77C4A27ACE29000579F1B /* MapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapVC.swift; sourceTree = "<group>"; };
+		A7E77C4C27AD02E900579F1B /* DetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +46,8 @@
 		A71AB43327A905AF00A33466 = {
 			isa = PBXGroup;
 			children = (
+				A7E77C4C27AD02E900579F1B /* DetailVC.swift */,
+				A7E77C4A27ACE29000579F1B /* MapVC.swift */,
 				A71AB43E27A905AF00A33466 /* MapKitLibrary */,
 				A71AB43D27A905AF00A33466 /* Products */,
 			);
@@ -141,10 +147,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				A71AB44427A905AF00A33466 /* NavigationVC.swift in Sources */,
+				A7E77C4B27ACE29000579F1B /* MapVC.swift in Sources */,
 				A71AB45427A905D000A33466 /* MainVC.swift in Sources */,
 				A71AB44027A905AF00A33466 /* AppDelegate.swift in Sources */,
 				A71AB44227A905AF00A33466 /* SceneDelegate.swift in Sources */,
 				A71AB45627AB7E5000A33466 /* Capital.swift in Sources */,
+				A7E77C4D27AD02E900579F1B /* DetailVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
