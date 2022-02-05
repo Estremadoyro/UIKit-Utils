@@ -16,7 +16,7 @@ class MainVC: UIViewController {
     let map = MKMapView()
     map.translatesAutoresizingMaskIntoConstraints = false
     map.mapType = .mutedStandard
-    map.layer.borderColor = UIColor.systemGray6.cgColor
+    map.layer.borderColor = UIColor.systemGray6.withAlphaComponent(0.8).cgColor
     map.layer.borderWidth = 2
     map.layer.cornerRadius = 40
     return map
@@ -93,7 +93,7 @@ extension MainVC: MKMapViewDelegate {
     // Cast the annotation view as a Capital
     guard let annotation = view.annotation as? Capital else { return }
     let placeName = annotation.title
-    let placeInfo = annotation.info
+//    let placeInfo = annotation.info
 
     // show AC when .detailDisclosure btn is tapped
 //    let ac = UIAlertController(title: placeName, message: placeInfo, preferredStyle: .alert)
