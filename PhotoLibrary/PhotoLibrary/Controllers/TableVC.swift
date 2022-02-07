@@ -48,7 +48,9 @@ extension TableVC: UIImagePickerControllerDelegate, UINavigationControllerDelega
 
 extension TableVC {
   @objc private func addPhoto() {
-    present(photoPicker.photoPickerVC, animated: true, completion: nil)
+    photoPicker = PhotoPicker()
+    photoPicker?.photoPickerDelegate = self
+    present(photoPicker!.photoPickerVC, animated: true, completion: nil)
   }
 
   @objc private func takePhoto() {
@@ -102,8 +104,12 @@ extension TableVC: UITableViewDelegate {
       completion(true)
     })
     /// # `Icon` and `text` will always be white
-    deleteAction.image = UIImage(systemName: "trash")
-    deleteAction.backgroundColor = UIColor.systemPink
+    
+    let iconImage = UIImage(systemName: "trash")?.withRenderingMode(.alwaysOriginal)
+    iconImage?.withTintColor(UIColor.systemPink)
+    
+    deleteAction.image = iconImage
+    deleteAction.backgroundColor = UIColor.white
     deleteAction.title = "Delete"
 
 //    let editAction = UIContextualAction(style: .destructive, title: "Edit", handler: { _, _, completion in
@@ -125,7 +131,7 @@ extension TableVC: UITableViewDelegate {
 }
 
 class TableVC: UIViewController, UITableViewDataSource {
-  lazy var photoPicker = PhotoPicker()
+  var photoPicker: PhotoPicker?
 
   private var library = Library()
   private let CELL_ID: String = "CELL_ID"
@@ -149,7 +155,7 @@ class TableVC: UIViewController, UITableViewDataSource {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    photoPicker.photoPickerDelegate = self
+//    photoPicker.photoPickerDelegate = self
     navigationBarSettings()
     view.addSubview(tableView)
     constraintsBuilder()

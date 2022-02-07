@@ -20,6 +20,7 @@ class DetailViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    assert(selectedImage != nil, "[Error] Selected image is nil")
     guard let picturesCount = picturesCount else { return }
 
     /// # Since both `title` and `selectedImage` are `optionals` there is no need for unwrapping
