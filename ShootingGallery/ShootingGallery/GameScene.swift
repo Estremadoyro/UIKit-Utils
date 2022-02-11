@@ -14,8 +14,9 @@ enum TargetType: String {
 }
 
 final class GameScene: SKScene {
+  private let GAME_TIME: Int = 10
   private var rows = [CGFloat]()
-  private lazy var gameTimeLeft: Int = 30 {
+  private lazy var gameTimeLeft: Int = GAME_TIME {
     didSet {
       guard let timeLabel = self.timeLabel else { return }
       timeLabel.text = "Time: \(gameTimeLeft)s"
@@ -40,6 +41,7 @@ final class GameScene: SKScene {
 
   private var timeLabel: SKLabelNode!
   private var scoreLabel: SKLabelNode!
+  private var playAgainLabel: SKLabelNode!
 
   override func didMove(to view: SKView) {
     createTimeLabel()
@@ -82,7 +84,8 @@ final class GameScene: SKScene {
     let speed = (target.targetType == TargetType.fast ? 1.5 * 0.5 : 1.5)
 
     targetNode.name = target.targetType.rawValue
-    targetNode.position = CGPoint(x: 0, y: rows[randomRow])
+    targetNode.alpha = 1
+    targetNode.position = CGPoint(x: randomRow == 1 ? frame.size.width : 0, y: rows[randomRow])
     targetNode.strokeColor = UIColor.black
     targetNode.glowWidth = 10
     targetNode.fillColor = target.color
@@ -94,8 +97,14 @@ final class GameScene: SKScene {
     targetNode.physicsBody?.contactTestBitMask = 1
 
     addChild(targetNode)
-    let moveToRight = SKAction.moveBy(x: (frame.size.width) + targetNode.frame.width / 2, y: 0, duration: speed)
-    targetNode.run(moveToRight)
+    var distance: CGFloat = frame.size.width + (targetNode.frame.width / 2)
+
+    if randomRow == 1 {
+      distance = distance * -1
+    }
+
+    let moveToDirection = SKAction.moveBy(x: distance, y: 0, duration: speed)
+    targetNode.run(moveToDirection)
   }
 
   @objc
@@ -107,6 +116,40 @@ final class GameScene: SKScene {
 
       targetTimer = nil
       gameTimer = nil
+      removeAllTargetNodes(animated: true)
+      restartGameLabel()
+    }
+  }
+
+  private func restartGameLabel() {
+    playAgainLabel = SKLabelNode()
+    playAgainLabel.name = "play-again"
+    playAgainLabel.text = "Play again"
+    playAgainLabel.color = UIColor.white
+    playAgainLabel.position = CGPoint(x: frame.size.width / 2, y: frame.size.height / 2)
+    playAgainLabel.zPosition = 2
+    playAgainLabel.fontSize = 72
+    addChild(playAgainLabel)
+  }
+
+  private func restartGame() {
+    playAgainLabel.removeFromParent()
+    targetTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(createTarget), userInfo: nil, repeats: true)
+    gameTimer = CADisplayLink(target: self, selector: #selector(handleTime))
+    gameTimer?.preferredFramesPerSecond = 1
+    gameTimer?.add(to: .current, forMode: .common)
+    gameTimeLeft = GAME_TIME
+    score = 0
+  }
+
+  private func getAllTargets() -> [SKNode] {
+    return children.filter { $0.name == TargetType.good.rawValue || $0.name == TargetType.fast.rawValue || $0.name == TargetType.bad.rawValue }
+  }
+
+  private func removeAllTargetNodes(animated: Bool) {
+    let targets = getAllTargets()
+    targets.forEach {
+      animated ? deleteTarget(targetNode: $0) : $0.removeFromParent()
     }
   }
 
@@ -116,16 +159,17 @@ final class GameScene: SKScene {
     let rowMiddleY = rowHeight / 2
 
     let row2positionY = (sceneHeight / 2) - rowMiddleY
-    createRow(position: CGPoint(x: 0, y: sceneHeight))
-    createRow(position: CGPoint(x: 0, y: row2positionY))
-    createRow(position: CGPoint(x: 0, y: 0))
+    createRow(position: CGPoint(x: 0, y: sceneHeight), name: "row1")
+    createRow(position: CGPoint(x: 0, y: row2positionY), name: "row2")
+    createRow(position: CGPoint(x: 0, y: 0), name: "row3")
     rows.append(sceneHeight - rowMiddleY)
     rows.append(sceneHeight / 2)
     rows.append(rowMiddleY)
   }
 
-  private func createRow(position: CGPoint) {
+  private func createRow(position: CGPoint, name: String) {
     let row = SKShapeNode()
+    row.name = name
     row.path = UIBezierPath(rect: CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height / 3)).cgPath
     row.position = position
     row.fillColor = UIColor.systemGray6.withAlphaComponent(0.2)
@@ -137,8 +181,14 @@ final class GameScene: SKScene {
 
 extension GameScene {
   override func update(_ currentTime: TimeInterval) {
-    for node in children {
-      if node.name == TargetType.good.rawValue || node.name == TargetType.fast.rawValue || node.name == TargetType.bad.rawValue {
+    let targetNodes = getAllTargets()
+    for node in targetNodes {
+      let rowHeight = frame.size.height / 3
+      if node.position.y > rowHeight, node.position.y < frame.size.height - rowHeight {
+        if node.position.x < 0 {
+          node.removeFromParent()
+        }
+      } else {
         if node.position.x > frame.size.width {
           node.removeFromParent()
         }
@@ -155,7 +205,14 @@ extension GameScene {
 
   private func handleTap(tappedNode: SKNode) {
     guard let nodeName = tappedNode.name else { return }
+    if nodeName == "play-again" {
+      restartGame()
+      return
+    }
+
     guard let targetType = TargetType(rawValue: nodeName) else { return }
+
+    deleteTarget(targetNode: tappedNode)
 
     switch targetType {
       case .good:
@@ -165,12 +222,11 @@ extension GameScene {
       case .bad:
         score -= (score > 0 ? 1 : 0)
     }
-    deleteTarget(targetNode: tappedNode)
   }
 
   private func deleteTarget(targetNode: SKNode) {
-    let fade = SKAction.fadeOut(withDuration: 1)
-    targetNode.run(fade)
-    targetNode.removeFromParent()
+    targetNode.isUserInteractionEnabled = false // not necessary, as targets are not properties
+    let actions = [SKAction.fadeOut(withDuration: 0.2), SKAction.removeFromParent()]
+    targetNode.run(SKAction.sequence(actions))
   }
 }
