@@ -7,7 +7,6 @@
 
 import MobileCoreServices
 import UIKit
-import UniformTypeIdentifiers
 
 class ActionViewController: UIViewController {
   @IBOutlet var imageView: UIImageView!
@@ -19,8 +18,13 @@ class ActionViewController: UIViewController {
     if let inputItem = extensionContext?.inputItems.first as? NSExtensionItem {
       // Get the first attachtment from the item attachments
       if let itemProvider = inputItem.attachments?.first {
-        // Provide the actual inputItem
-        itemProvider.loadItem(forTypeIdentifier: kUTTypePropertyList as String) { _, _ in
+        // Data recieved from the extension, could be anything Apple wants
+        itemProvider.loadItem(forTypeIdentifier: kUTTypePropertyList as String) { [weak self] dict, _ in
+          // Parse the extension data to an NSDictionary
+          guard let itemDictionary = dict as? NSDictionary else { return }
+          // Dict from Target.js, so you can get data from unique Keys
+          guard let javaScriptValues = itemDictionary[NSExtensionJavaScriptPreprocessingResultsKey] as? NSDictionary else { return }
+          print(javaScriptValues)
         }
       }
     }
