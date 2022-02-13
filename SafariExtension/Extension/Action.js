@@ -10,7 +10,9 @@ run: function(parameters) {
   
 // called after the extension has been ran
 finalize: function(parameters){
-  
+  var customJavaScript = parameters["customJavaScript"];
+  // execute js
+  eval(customJavaScript);
 }
   
 };
