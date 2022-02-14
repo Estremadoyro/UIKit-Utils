@@ -10,16 +10,22 @@ import UIKit
 
 class ActionViewController: UIViewController {
   @IBOutlet var script: UITextView!
-
+  var codeSnippets = CodeSnippets()
   var pageTitle: String = ""
   var pageURL: String = ""
+  let snippets: [String: String] = [
+    "Hello Word": Snippets.alertHelloWorld,
+    "Date": Snippets.alertDate,
+  ]
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    view.backgroundColor = UIColor.systemPink
+//    UserDefaults.standard.removeObject(forKey: DefaultKeys.CODE_SNIPPETS_KEY.value)
+//    print("After", UserDefaults.standard.bool(forKey: DefaultKeys.CODE_SNIPPETS_KEY.value))
     handleKeyboardNotifications()
 
     navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
+    navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Snippets", style: .plain, target: self, action: #selector(selectSnippet))
     // extensionContext -> how the extension interacts with the app
     // Get items (NSExtensionItem) the app is sending to the extension
     if let inputItem = extensionContext?.inputItems.first as? NSExtensionItem {
@@ -27,26 +33,43 @@ class ActionViewController: UIViewController {
       if let itemProvider = inputItem.attachments?.first {
         // Data recieved from the extension, could be anything Apple wants
         itemProvider.loadItem(forTypeIdentifier: kUTTypePropertyList as String) { [weak self] dict, _ in
+          guard let strongSelf = self else { return }
           // Parse the extension data to an NSDictionary
           guard let itemDictionary = dict as? NSDictionary else { return }
           // Dict from Target.js, so you can get data from unique Keys
           // Values to pass to the run method in Action.js
           guard let javaScriptValues = itemDictionary[NSExtensionJavaScriptPreprocessingResultsKey] as? NSDictionary else { return }
-          self?.pageTitle = javaScriptValues["title"] as? String ?? ""
-          self?.pageURL = javaScriptValues["URL"] as? String ?? ""
+          strongSelf.pageTitle = javaScriptValues["title"] as? String ?? ""
+          strongSelf.pageURL = javaScriptValues["URL"] as? String ?? ""
 
           DispatchQueue.main.async {
+            let snippetForHost = strongSelf.codeSnippets.snippets.first(where: { $0.pageURL.host == URL(string: strongSelf.pageURL)?.host })
+            print("Snippet loaded: \(snippetForHost?.snippet) from \(snippetForHost?.pageURL.host)")
             self?.title = self?.pageTitle
+            strongSelf.script.text = snippetForHost?.snippet
           }
         }
       }
     }
+  }
+
+  deinit {
+    print("\(self) deinited")
   }
 }
 
 extension ActionViewController {
   @objc
   private func done() {
+    // save script to user defaults
+    let codeSnippet = CodeSnippet(title: "Test Snippet", snippet: script?.text, pageURL: URL(string: pageURL))
+    if let codeByHostIndex = codeSnippets.snippets.firstIndex(where: { $0.pageURL.host == URL(string: self.pageURL)?.host }) {
+      codeSnippets.snippets[codeByHostIndex] = codeSnippet 
+      print("Updating to \(codeSnippets.snippets[codeByHostIndex].snippet)")
+    } else {
+      codeSnippets.snippets.append(codeSnippet)
+      print("Saving \(codeSnippet.snippet)")
+    }
     // the same as getting the extension items, but in reverse, now providing from the extension to the app
     let item = NSExtensionItem()
     let argument: NSDictionary = ["customJavaScript": script.text ?? ""]
@@ -88,5 +111,45 @@ extension ActionViewController {
     let selectedRange = script.selectedRange
     // Scroll so the Selected Range is always visible
     script.scrollRangeToVisible(selectedRange)
+  }
+}
+
+// DataSource is necessary to tell UIPicker the # of rows, components, etc. To send data.
+extension ActionViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+  func numberOfComponents(in pickerView: UIPickerView) -> Int {
+    return 1
+  }
+
+  func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    return snippets.count
+  }
+
+  func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    return Array(snippets)[row].key
+  }
+
+  @objc
+  private func selectSnippet() {
+    let vc = UIViewController()
+    vc.preferredContentSize = CGSize(width: 250, height: 100)
+    let pickerView = UIPickerView(frame: CGRect(x: 0, y: -80, width: 250, height: 200))
+    pickerView.delegate = self
+    pickerView.dataSource = self
+    vc.view.addSubview(pickerView)
+
+    let ac = UIAlertController(title: "Snippets", message: "", preferredStyle: .alert)
+    let didSelectSnippet: (UIAlertAction) -> Void = { [unowned self, unowned pickerView] _ in
+      let selectedSnippetIndex = pickerView.selectedRow(inComponent: 0)
+      let codeSnippet: String = Array(self.snippets)[selectedSnippetIndex].value
+      self.script.text = codeSnippet
+    }
+
+    let doneAction = UIAlertAction(title: "Done", style: .default, handler: didSelectSnippet)
+    let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+    ac.setValue(vc, forKey: "contentViewController") // adds a vc inside the AlertVC
+    ac.addAction(doneAction)
+    ac.addAction(dismissAction)
+
+    present(ac, animated: true, completion: nil)
   }
 }
