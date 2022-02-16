@@ -136,6 +136,10 @@
 		A74B7C0F27B63C5A00DD4E09 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				A74B7C1027B63C5A00DD4E09 /* Media.xcassets */,
+				A74B7C1427B63C5A00DD4E09 /* MainInterface.storyboard */,
+				A74B7C1727B63C5A00DD4E09 /* Info.plist */,
+				A74B7C1F27B7801500DD4E09 /* Action.js */,
 				A7E7750F27BCD6B7002CFF3C /* Delegates */,
 				A7E7750E27BCD6A4002CFF3C /* Utils */,
 				A7E7750D27BCD694002CFF3C /* Controllers */,
@@ -156,10 +160,6 @@
 		A7E7750C27BCD66B002CFF3C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				A74B7C1027B63C5A00DD4E09 /* Media.xcassets */,
-				A74B7C1427B63C5A00DD4E09 /* MainInterface.storyboard */,
-				A74B7C1727B63C5A00DD4E09 /* Info.plist */,
-				A74B7C1F27B7801500DD4E09 /* Action.js */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
