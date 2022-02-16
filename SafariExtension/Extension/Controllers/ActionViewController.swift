@@ -10,6 +10,8 @@ import UIKit
 
 class ActionViewController: UIViewController {
   @IBOutlet var script: UITextView!
+  @IBOutlet var scriptName: UITextField!
+
   var codeSnippets = CodeSnippets()
   var pageTitle: String = ""
   var pageURL: String = ""
@@ -17,15 +19,20 @@ class ActionViewController: UIViewController {
     "Hello Word": Snippets.alertHelloWorld,
     "Date": Snippets.alertDate,
   ]
+  var gestureRecognizer: UIGestureRecognizer!
+  var snippetDelegate: SnippetDelegate?
+  var snippetsListTableVC: SnippetsListTableVC?
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    setupGestures()
+    modalPresentationStyle = .fullScreen
 //    UserDefaults.standard.removeObject(forKey: DefaultKeys.CODE_SNIPPETS_KEY.value)
 //    print("After", UserDefaults.standard.bool(forKey: DefaultKeys.CODE_SNIPPETS_KEY.value))
     handleKeyboardNotifications()
 
     navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
-    navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Snippets", style: .plain, target: self, action: #selector(selectSnippet))
+    navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Samples", style: .plain, target: self, action: #selector(selectSnippet))
     // extensionContext -> how the extension interacts with the app
     // Get items (NSExtensionItem) the app is sending to the extension
     if let inputItem = extensionContext?.inputItems.first as? NSExtensionItem {
@@ -44,9 +51,10 @@ class ActionViewController: UIViewController {
 
           DispatchQueue.main.async {
             let snippetForHost = strongSelf.codeSnippets.snippets.first(where: { $0.pageURL.host == URL(string: strongSelf.pageURL)?.host })
-            print("Snippet loaded: \(snippetForHost?.snippet) from \(snippetForHost?.pageURL.host)")
+            print("Snippet loaded: \(snippetForHost?.snippet ?? "") from \(snippetForHost?.pageURL.host ?? "")")
             self?.title = self?.pageTitle
             strongSelf.script.text = snippetForHost?.snippet
+            strongSelf.scriptName.text = snippetForHost?.title
           }
         }
       }
@@ -62,9 +70,9 @@ extension ActionViewController {
   @objc
   private func done() {
     // save script to user defaults
-    let codeSnippet = CodeSnippet(title: "Test Snippet", snippet: script?.text, pageURL: URL(string: pageURL))
+    let codeSnippet = CodeSnippet(title: scriptName.text ?? "Nameless Snippet", snippet: script?.text, pageURL: URL(string: pageURL))
     if let codeByHostIndex = codeSnippets.snippets.firstIndex(where: { $0.pageURL.host == URL(string: self.pageURL)?.host }) {
-      codeSnippets.snippets[codeByHostIndex] = codeSnippet 
+      codeSnippets.snippets[codeByHostIndex] = codeSnippet
       print("Updating to \(codeSnippets.snippets[codeByHostIndex].snippet)")
     } else {
       codeSnippets.snippets.append(codeSnippet)
@@ -151,5 +159,33 @@ extension ActionViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     ac.addAction(dismissAction)
 
     present(ac, animated: true, completion: nil)
+  }
+}
+
+extension ActionViewController {
+  private func setupGestures() {
+    gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardTouchOutside))
+    gestureRecognizer.cancelsTouchesInView = false
+    view.addGestureRecognizer(gestureRecognizer)
+  }
+
+  @objc
+  private func dismissKeyboardTouchOutside() {
+    view.endEditing(true)
+  }
+}
+
+extension ActionViewController: SnippetDelegate {
+  @IBAction func selectSnippetButtonTapped(_ sender: UIButton) {
+    snippetsListTableVC = storyboard?.instantiateViewController(withIdentifier: "SNIPPETS_LIST_VC") as? SnippetsListTableVC
+    snippetsListTableVC?.snippetDelegate = self
+    navigationController?.pushViewController(snippetsListTableVC!, animated: true)
+  }
+
+  func didSelectNewSnippet(snippetName: String, snippet: String) {
+    print("snippet selected: \(snippetName)")
+    scriptName.text = snippetName
+    script.text = snippet
+    snippetsListTableVC = nil
   }
 }

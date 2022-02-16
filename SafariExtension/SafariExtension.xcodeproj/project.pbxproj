@@ -22,6 +22,8 @@
 		A7B3662927B9B6C2002E929E /* Snippets.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B3662827B9B6C2002E929E /* Snippets.swift */; };
 		A7B3662B27B9C3FF002E929E /* CodeSnippet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B3662A27B9C3FF002E929E /* CodeSnippet.swift */; };
 		A7B3662D27B9C92B002E929E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B3662C27B9C92B002E929E /* Extensions.swift */; };
+		A7E7750827BCBA1F002CFF3C /* SnippetsListTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E7750727BCBA1F002CFF3C /* SnippetsListTableVC.swift */; };
+		A7E7750A27BCCA4A002CFF3C /* SnippetDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E7750927BCCA4A002CFF3C /* SnippetDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +69,8 @@
 		A7B3662827B9B6C2002E929E /* Snippets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snippets.swift; sourceTree = "<group>"; };
 		A7B3662A27B9C3FF002E929E /* CodeSnippet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeSnippet.swift; sourceTree = "<group>"; };
 		A7B3662C27B9C92B002E929E /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		A7E7750727BCBA1F002CFF3C /* SnippetsListTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetsListTableVC.swift; sourceTree = "<group>"; };
+		A7E7750927BCCA4A002CFF3C /* SnippetDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,16 +136,58 @@
 		A74B7C0F27B63C5A00DD4E09 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				A7E7750F27BCD6B7002CFF3C /* Delegates */,
+				A7E7750E27BCD6A4002CFF3C /* Utils */,
+				A7E7750D27BCD694002CFF3C /* Controllers */,
+				A7E7750C27BCD66B002CFF3C /* Resources */,
+				A7E7750B27BCD658002CFF3C /* Models */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		A7E7750B27BCD658002CFF3C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A7B3662A27B9C3FF002E929E /* CodeSnippet.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A7E7750C27BCD66B002CFF3C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
 				A74B7C1027B63C5A00DD4E09 /* Media.xcassets */,
-				A74B7C1227B63C5A00DD4E09 /* ActionViewController.swift */,
 				A74B7C1427B63C5A00DD4E09 /* MainInterface.storyboard */,
 				A74B7C1727B63C5A00DD4E09 /* Info.plist */,
 				A74B7C1F27B7801500DD4E09 /* Action.js */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A7E7750D27BCD694002CFF3C /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				A74B7C1227B63C5A00DD4E09 /* ActionViewController.swift */,
+				A7E7750727BCBA1F002CFF3C /* SnippetsListTableVC.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		A7E7750E27BCD6A4002CFF3C /* Utils */ = {
+			isa = PBXGroup;
+			children = (
 				A7B3662827B9B6C2002E929E /* Snippets.swift */,
-				A7B3662A27B9C3FF002E929E /* CodeSnippet.swift */,
 				A7B3662C27B9C92B002E929E /* Extensions.swift */,
 			);
-			path = Extension;
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		A7E7750F27BCD6B7002CFF3C /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				A7E7750927BCCA4A002CFF3C /* SnippetDelegate.swift */,
+			);
+			path = Delegates;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,8 +306,10 @@
 			files = (
 				A7B3662B27B9C3FF002E929E /* CodeSnippet.swift in Sources */,
 				A7B3662D27B9C92B002E929E /* Extensions.swift in Sources */,
+				A7E7750A27BCCA4A002CFF3C /* SnippetDelegate.swift in Sources */,
 				A74B7C1327B63C5A00DD4E09 /* ActionViewController.swift in Sources */,
 				A7B3662927B9B6C2002E929E /* Snippets.swift in Sources */,
+				A7E7750827BCBA1F002CFF3C /* SnippetsListTableVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
