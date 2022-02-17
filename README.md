@@ -108,7 +108,7 @@ private var picker: PHPicker? // initial nil reference to picker
 func didSelectPicture(picture: UIImage) {
   picker = nil // picker deallocated
 }
-// On root VC
+// On root VC, deallocating the pushed VC before the main screen (UITable) appears
 override func viewWillAppear(_ animated: Bool) {
   super.viewWillAppear(animated: animated)
   // In case user didn't pick a picture, there is no PHPicker delegate for that
@@ -147,6 +147,18 @@ Should be called inside **viewDidLayoutSubviews** in a VC, but if not, an **asyn
 ## TableViewCell
 Comes with an embeded **contentView** inside the **cell**, it's size must not be edited, as it is done manually by the API.
 # 💻 Setup without Storyboards
+#### First
+Remove the **Main interface** from the *Deployment Info* section
+### Second
+Navigate inside the **info.plist** file.\
+Information Property List
+- Application Scene Manifest
+  - Scene Configuration
+    - Application Session Role
+      - Item 0 (Default Configuration)
+        -  *Storyboard Name*, delete its dictionary record (Minus button when clicked)
+#### Finally
+Inside the **SceneDelegate.swift** file write this code in the **func scene(scene:willConnectTo:options)** method. In a nutshell, you create a new *window* with the *UIWindow* object, then set its scene with the windowScene already unwrapped, set its main view controller and make it visible.
 ```swift
 guard let windowScene = (scene as? UIWindowScene) else { return }
 window = UIWindow(frame: windowScene.coordinateSpace.bounds)
