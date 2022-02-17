@@ -127,7 +127,7 @@ override func viewWillAppear(_ animated: Bool) {
 view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner] // Top corners round
 ```
 ### Add corner radius and shadow to a view
-Should be called inside **viewDidLayoutSubviews** in a VC, but if not, an **async** call will do it in a **UIView** subclass.\
+Should be called inside **viewDidLayoutSubviews** in a VC, but if not, an **async** call will do it in a **UIView** subclass.
 - **IMPORTANT**, *viewDidLayoutSubviews* can be called multiple times without the subviews updating, hence you **must** prevent the *shadowLayer* from getting called endlessly by any layout update. 
 - Just call it once, otherwise multiple shadows will stack on top of each other and consume memory significally. 
 - You could make the CAShapeLayer optional and only run the code when it's *nil* this way it will be called only once per lifecycle. However, there are multiple ways to accomplish this same behavior, implement them as convenient.
