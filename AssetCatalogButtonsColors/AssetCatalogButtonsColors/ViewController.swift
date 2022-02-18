@@ -28,6 +28,7 @@ class ViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    NotificationService.grantNotificationPermissions()
     button1.layer.borderWidth = 12
     button2.layer.borderWidth = 12
     button3.layer.borderWidth = 12
