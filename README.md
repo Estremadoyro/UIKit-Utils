@@ -116,6 +116,64 @@ override func viewWillAppear(_ animated: Bool) {
 }
 ```
 
+# 📅 Local Notifications
+Locations notifications don't depend on a dedicaded server capable of sending iOS notifications. These rely on local variables to trigger the notifications, the most common trigger is the interval or date component.\
+Grant access, **no need of info.plist entry**
+```swift
+// remember to import the notifications library
+import UserNotifications
+let center = UNUserNotificationCenter.current()
+// thre are more options than these, and can be used simultaniously
+center.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+  if let error = error {
+    prnit(error)
+    return
+  }
+  if granted {
+    // granted access to send notifications
+  } else { 
+    // denied access to send notifications
+  }
+}
+```
+Schedule local notifications
+```swift
+let center = UNUserNotificationCenter.current()
+// Removes the schedule notifications that weren't triggered yet, depends on business logic
+center.removeAllPendingNotificationRequests()
+
+// notification's UI content and data
+let content = UNMutableNotificationContent()
+content.title = "Daily Reward"
+content.body = "Come back and claim your daily reward"
+content.categoryIdentifier = NotificationService.CATEGORY_IDENTIFIER
+// custom optional data
+content.userInfo = ["dailyReward": "+100 gems"]
+content.sound = .default
+
+// create the trigger condition
+let trigger = UNTimeIntervalNotificationTrigger(timeInterval:repeats)
+let request = UNNotificationRequest(identifier:content:trigger)
+center.add(request:withCompletionHandler)
+```
+Delegate method to run when application was accessed from the notification
+```swift
+// here you can also access the optinal data used when the notification when scheduled
+// must call its complentionHandler
+func userNotificationCenter(center:response:completionHandler) -> Void
+```
+Customize category buttons for notification
+```swift
+let center = UNUserNotificationCenter.current()
+// delegate protocol is UNUserNotificationCenterDelegate
+center.delegate = self
+let remindLater = UNNotificationAction(identifier: "remindLater", title: "Remind me later", options: .foreground)
+// will connect to the notification already created by id: "alarm"
+let category = UNNotificationCategory(identifier: "alarm", actions: [remindLater], intentIdentifiers: [], options: [])
+center.setNotificationCategories([category])
+
+```
+
 # 📝 Info.plist 
 | Key | Value | Meaning |
 | --- | --- | --- |
