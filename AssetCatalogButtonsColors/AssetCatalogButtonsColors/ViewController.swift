@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import UserNotifications
 /// # The `Asssets` placeholder, holds mostly images, which are of `3 types:`
 /// `x1, x2, x3`
 /// # Each one of them represents an pixeal to unit ratio
@@ -28,6 +28,8 @@ class ViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    let center = UNUserNotificationCenter.current()
+    center.delegate = self
     NotificationService.grantNotificationPermissions()
     button1.layer.borderWidth = 12
     button2.layer.borderWidth = 12

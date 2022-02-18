@@ -160,6 +160,7 @@ Delegate method to run when application was accessed from the notification
 ```swift
 // here you can also access the optinal data used when the notification when scheduled
 // must call its complentionHandler
+// don't forget to set the UNUserNotificationCenter.current()'s delegate
 func userNotificationCenter(center:response:completionHandler) -> Void
 ```
 Customize category buttons for notification

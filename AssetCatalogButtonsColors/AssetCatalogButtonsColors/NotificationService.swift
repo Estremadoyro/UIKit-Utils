@@ -23,7 +23,6 @@ final class NotificationService {
         // Notify of daily alerts
 //        let ac = UIAlertController(title: "Notifications", message: "Congratzs! You will now recieve daily reminders", preferredStyle: .alert)
 //        ac.addAction(UIAlertAction(title: "Great", style: .cancel, handler: nil))
-        print("called once, should never be called again")
         return
       } else {
         print("Notifications access denied")
