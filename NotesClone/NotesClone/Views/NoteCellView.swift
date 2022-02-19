@@ -9,9 +9,14 @@ import UIKit
 
 class NoteCellView: UITableViewCell {
   @IBOutlet weak var noteTitleLabel: UILabel!
+  var title: String?
+  required init?(coder: NSCoder) {
+    super.init(coder: coder)
+  }
+
   override func awakeFromNib() {
     super.awakeFromNib()
-    noteTitleLabel.text = "Dr. Stone"
+    noteTitleLabel.text = title
     // Initialization code
   }
 
