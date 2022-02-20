@@ -12,14 +12,16 @@ class HomeTableVC: UIViewController {
 
   private let NOTES_CELL_ID = "NOTES_CELL"
   private lazy var homeTableNavigationBar = HomeTableNavigationBar(homeTableVC: self)
-  private lazy var homeTableView = HomeTableView()
+
+  override func awakeFromNib() {
+    super.awakeFromNib()
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    tableView.delegate = self
+    tableView.dataSource = self
     configureNavigationBar()
-    homeTableView.dataSource = self
-    homeTableView.delegate = self
-    homeTableView.register(NoteCellView.self, forCellReuseIdentifier: NOTES_CELL_ID)
   }
 }
 
@@ -35,8 +37,7 @@ extension HomeTableVC: UITableViewDataSource {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: NOTES_CELL_ID, for: indexPath) as? NoteCellView else {
       fatalError("Error dequeing \(NOTES_CELL_ID)")
     }
-    cell.title = "Dr Stone"
-    print(cell)
+    cell.title = "Tips"
     return cell
   }
 
@@ -45,7 +46,11 @@ extension HomeTableVC: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 1
+    return 10
+  }
+
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return 70
   }
 }
 

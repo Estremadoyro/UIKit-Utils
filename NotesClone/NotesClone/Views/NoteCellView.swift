@@ -9,19 +9,29 @@ import UIKit
 
 class NoteCellView: UITableViewCell {
   @IBOutlet weak var noteTitleLabel: UILabel!
-  var title: String?
+  var title: String? {
+    didSet {
+      configureTitleLabel(text: title)
+    }
+  }
+
   required init?(coder: NSCoder) {
     super.init(coder: coder)
   }
 
   override func awakeFromNib() {
     super.awakeFromNib()
-    noteTitleLabel.text = title
     // Initialization code
   }
 
   override func setSelected(_ selected: Bool, animated: Bool) {
     super.setSelected(selected, animated: animated)
-    // Configure the view for the selected state
+  }
+}
+
+extension NoteCellView {
+  private func configureTitleLabel(text: String?) {
+    guard let text = text else { return }
+    noteTitleLabel.text = text
   }
 }

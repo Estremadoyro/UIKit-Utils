@@ -18,6 +18,5 @@ class HomeTableView: UITableView {
 
   override func awakeFromNib() {
     super.awakeFromNib()
-//    backgroundColor = UIColor.systemPurple
   }
 }

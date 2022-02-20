@@ -18,7 +18,6 @@ class HomeTableToolbarView: UIToolbar {
 
   override func awakeFromNib() {
     super.awakeFromNib()
-    print(notesAmountItem.title ?? "")
   }
 
   deinit {
