@@ -8,8 +8,9 @@
 import UIKit
 
 class HomeTableToolbarView: UIToolbar {
-  @IBOutlet weak var notesAmountItem: UIBarButtonItem!
   @IBOutlet weak var newNoteItem: UIBarButtonItem!
+
+  weak var notes: Notes?
 
   // Can't use custom intializers when using Storyboards
   required init?(coder: NSCoder) {

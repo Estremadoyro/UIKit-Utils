@@ -11,20 +11,32 @@ class NewNoteVC: UIViewController {
   @IBOutlet weak var textView: UITextView!
   @IBOutlet weak var scrollView: UIScrollView!
 
-  let headerAttributes = [kCTFontAttributeName: UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body)]
-  let bodyAttributes = [kCTFontAttributeName: UIFont.preferredFont(forTextStyle: UIFont.TextStyle.headline)]
+  weak var notesDelegate: NotesDelegate?
+
+  weak var notes: Notes? {
+    didSet {
+      print("notes recieved: \(notes ?? Notes(notes: [Note]()))")
+    }
+  }
 
   private lazy var newNoteNavigation = NewNoteNavigation(newNoteVC: self)
+
   override func viewDidLoad() {
     super.viewDidLoad()
     configureNavigationBar()
-    highlightFirstLineInTextView()
     scrollView.delegate = self
-    textView.delegate = self
+    newNoteNavigation.noteDelegate = self
+    print(CFGetRetainCount(self))
   }
 
   override func viewDidAppear(_ animated: Bool) {
     textView.becomeFirstResponder()
+    print("First line: \(textView.text.getFirstLine3())")
+    print("Whol text length: \(textView.text.count)")
+  }
+
+  deinit {
+    print("\(self) deinited")
   }
 }
 
@@ -49,41 +61,12 @@ extension NewNoteVC: UIScrollViewDelegate {
   }
 }
 
-extension NewNoteVC: UITextViewDelegate {
-  func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-    let textAsNSString = self.textView.text as NSString
-    let replaced = textAsNSString.replacingCharacters(in: range, with: text) as NSString
-    let boldRange = replaced.range(of: "\n")
-    if boldRange.location <= range.location {
-      self.textView.typingAttributes = headerAttributes as [NSAttributedString.Key: Any]
-    } else {
-      self.textView.typingAttributes = bodyAttributes as [NSAttributedString.Key: Any]
-    }
-
-    return true
-  }
-
-  private func highlightFirstLineInTextView() {
-    let attributedText = NSMutableAttributedString(attributedString: textView.attributedText)
-    let textAsNSString = textView.text as NSString
-    let boldFont = UIFont.boldSystemFont(ofSize: 24) as Any
-    let normalFont = UIFont.preferredFont(forTextStyle: .body) as Any
-    let lineBreakRange: NSRange = NSRange(textView.text!.lineRange(for: ..<textView.text!.startIndex), in: textView.text!)
-    let boldRange: NSRange
-    let normalRange: NSRange
-
-    print("line break range: \(lineBreakRange.location)")
-    print("nsstring length: \(textAsNSString.length)")
-    if lineBreakRange.location < textAsNSString.length {
-      boldRange = NSRange(location: 0, length: lineBreakRange.location)
-      normalRange = NSRange(location: lineBreakRange.location, length: attributedText.length)
-    } else {
-      boldRange = NSRange(location: 0, length: attributedText.length)
-      normalRange = NSRange(location: 0, length: 0)
-    }
-
-    attributedText.addAttribute(NSAttributedString.Key.font, value: boldFont, range: boldRange)
-    attributedText.addAttribute(NSAttributedString.Key.font, value: normalFont, range: normalRange)
-    textView.attributedText = attributedText
+extension NewNoteVC: NewNoteDelegate {
+  func willSaveNewNote() {
+    let note = Note(title: UUID().uuidString, body: textView.text)
+    print("Text to save: \(textView.text)")
+    notes?.notes.append(note)
+    navigationController?.popViewController(animated: true)
+    notesDelegate?.didSaveNote()
   }
 }

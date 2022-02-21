@@ -14,6 +14,12 @@ class HomeTableNavigationBar {
     self.homeTableVC = homeTableVC
   }
 
+  deinit {
+    print("\(self) deinited")
+  }
+}
+
+extension HomeTableNavigationBar {
   open func buildNavigationBarItems() {
     let moreButtonImage = UIImage(systemName: "ellipsis.circle")?.withRenderingMode(.alwaysTemplate)
 
@@ -22,13 +28,11 @@ class HomeTableNavigationBar {
     let rightBarItems: [UIBarButtonItem] = [moreButton]
     homeTableVC?.navigationItem.rightBarButtonItems = rightBarItems
   }
+}
 
+extension HomeTableNavigationBar {
   @objc
   private func showMoreOptions() {
     print("show more buttons")
-  }
-
-  deinit {
-    print("\(self) deinited")
   }
 }

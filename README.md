@@ -17,6 +17,10 @@
 -[Fix Massive View Controllers](https://www.hackingwithswift.com/articles/86/how-to-move-data-sources-and-delegates-out-of-your-view-controllers)
 
 # 📌 Tips
+Get an object's ARC count
+```swift
+  let objARC = Unmanages.passUnretained(:Instance).toOpaque()
+```
 Some IBOutlets may be loaded in a lazy manner, may not be loaded during **awakeFromNib** call, hence is prefered to be used only with UIView subclasses\
 
 ####Inline switches (For/Case/Let)
