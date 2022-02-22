@@ -8,8 +8,9 @@
 import UIKit
 
 class NewNoteVC: UIViewController {
-  @IBOutlet weak var textView: UITextView!
-  @IBOutlet weak var scrollView: UIScrollView!
+  @IBOutlet private weak var textView: UITextView!
+  @IBOutlet private weak var noteTitleLabel: UITextField!
+  @IBOutlet private weak var scrollView: UIScrollView!
 
   weak var notesDelegate: NotesDelegate?
 
@@ -51,19 +52,25 @@ extension NewNoteVC {
   @objc
   private func dismissKeyboardTouchOutside() {
     textView.endEditing(true)
+    noteTitleLabel.endEditing(true)
   }
 }
 
 extension NewNoteVC: UIScrollViewDelegate {
   func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-    print("began dragging")
     textView.resignFirstResponder()
   }
 }
 
 extension NewNoteVC: NewNoteDelegate {
   func willSaveNewNote() {
-    let note = Note(title: UUID().uuidString, body: textView.text)
+    guard var title = noteTitleLabel.text else { return }
+
+    if title == "" {
+      title = "No title :("
+    }
+
+    let note = Note(title: title, body: textView.text)
     print("Text to save: \(textView.text ?? "")")
     notes?.notes.append(note)
     navigationController?.popViewController(animated: true)

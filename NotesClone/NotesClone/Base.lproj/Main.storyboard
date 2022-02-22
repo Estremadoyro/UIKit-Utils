@@ -42,17 +42,17 @@
                                 </connections>
                             </toolbar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="O4z-gg-iDy" customClass="HomeTableView" customModule="NotesClone" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="139" width="414" height="667.5"/>
+                                <rect key="frame" x="20" y="139" width="374" height="667.5"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NOTES_CELL" rowHeight="100" id="oCZ-11-Ap3" customClass="NoteCellView" customModule="NotesClone" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44.5" width="414" height="100"/>
+                                        <rect key="frame" x="0.0" y="44.5" width="374" height="100"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="oCZ-11-Ap3" id="rbt-8W-Ci4">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OSq-sG-j4e">
-                                                    <rect key="frame" x="20" y="0.0" width="374" height="100"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="374" height="100"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yR8-ms-LsD">
                                                             <rect key="frame" x="35" y="0.0" width="339" height="60"/>
@@ -91,13 +91,13 @@
                                                 </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="OSq-sG-j4e" secondAttribute="trailing" constant="20" id="6L6-DI-b4G"/>
-                                                <constraint firstItem="OSq-sG-j4e" firstAttribute="leading" secondItem="rbt-8W-Ci4" secondAttribute="leading" constant="20" id="KZo-jx-0hE"/>
+                                                <constraint firstAttribute="trailing" secondItem="OSq-sG-j4e" secondAttribute="trailing" id="6L6-DI-b4G"/>
+                                                <constraint firstItem="OSq-sG-j4e" firstAttribute="leading" secondItem="rbt-8W-Ci4" secondAttribute="leading" id="KZo-jx-0hE"/>
                                                 <constraint firstAttribute="bottom" secondItem="OSq-sG-j4e" secondAttribute="bottom" id="b1o-Vc-DI3"/>
                                                 <constraint firstItem="OSq-sG-j4e" firstAttribute="top" secondItem="rbt-8W-Ci4" secondAttribute="top" id="sIa-d5-WhW"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <inset key="separatorInset" minX="55" minY="0.0" maxX="20" maxY="0.0"/>
+                                        <inset key="separatorInset" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
                                             <outlet property="noteBodyLabel" destination="gyZ-Pd-ybR" id="Rix-Ze-EdU"/>
                                             <outlet property="noteDateLabel" destination="m9w-Rj-DOe" id="rDg-lb-cDe"/>
@@ -116,9 +116,9 @@
                         <constraints>
                             <constraint firstItem="HAC-Uh-TvX" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="15" id="2hh-YG-lT6"/>
                             <constraint firstItem="hWB-eE-z5m" firstAttribute="top" secondItem="O4z-gg-iDy" secondAttribute="bottom" id="6HV-H4-0MX"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="O4z-gg-iDy" secondAttribute="trailing" id="C8j-G6-9yv"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="O4z-gg-iDy" secondAttribute="trailing" constant="20" id="C8j-G6-9yv"/>
                             <constraint firstItem="hWB-eE-z5m" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.1" id="HQl-k0-EcV"/>
-                            <constraint firstItem="O4z-gg-iDy" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Kgg-gF-OM3"/>
+                            <constraint firstItem="O4z-gg-iDy" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="Kgg-gF-OM3"/>
                             <constraint firstAttribute="trailing" secondItem="HAC-Uh-TvX" secondAttribute="trailing" constant="15" id="LNs-ai-DWx"/>
                             <constraint firstItem="hWB-eE-z5m" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="W6C-cb-G4D"/>
                             <constraint firstItem="HAC-Uh-TvX" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="eYU-QK-o9O"/>
@@ -150,18 +150,26 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="808"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="onDrag" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="4RK-9A-CWu" userLabel="TextView">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="806.5"/>
+                                        <rect key="frame" x="0.0" y="89.5" width="414" height="717"/>
                                         <color key="textColor" systemColor="labelColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4OD-N7-cIQ">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="89.5"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="48"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" spellCheckingType="no"/>
+                                    </textField>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="4RK-9A-CWu" firstAttribute="width" secondItem="hQI-OS-F4M" secondAttribute="width" id="3XJ-FG-9LI"/>
-                                    <constraint firstItem="4RK-9A-CWu" firstAttribute="top" secondItem="MGM-nD-Af9" secondAttribute="top" id="GH1-Ud-4g6"/>
+                                    <constraint firstItem="4OD-N7-cIQ" firstAttribute="top" secondItem="MGM-nD-Af9" secondAttribute="top" id="EqD-07-rhN"/>
+                                    <constraint firstItem="MGM-nD-Af9" firstAttribute="trailing" secondItem="4OD-N7-cIQ" secondAttribute="trailing" id="JDw-rB-lYa"/>
+                                    <constraint firstItem="4RK-9A-CWu" firstAttribute="top" secondItem="4OD-N7-cIQ" secondAttribute="bottom" id="S4A-NO-xgZ"/>
                                     <constraint firstItem="4RK-9A-CWu" firstAttribute="bottom" secondItem="MGM-nD-Af9" secondAttribute="bottom" id="VlU-Eq-R7u"/>
                                     <constraint firstItem="4RK-9A-CWu" firstAttribute="trailing" secondItem="MGM-nD-Af9" secondAttribute="trailing" id="fIg-aP-JiF"/>
                                     <constraint firstItem="4RK-9A-CWu" firstAttribute="leading" secondItem="MGM-nD-Af9" secondAttribute="leading" id="h5i-3Z-Bc0"/>
+                                    <constraint firstItem="4OD-N7-cIQ" firstAttribute="leading" secondItem="MGM-nD-Af9" secondAttribute="leading" id="nqp-UY-fJo"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="MGM-nD-Af9"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="hQI-OS-F4M"/>
@@ -184,10 +192,11 @@
                         <constraints>
                             <constraint firstItem="mFn-gj-8BJ" firstAttribute="top" secondItem="m1Z-Mf-oer" secondAttribute="top" id="IMg-Z9-6zw"/>
                             <constraint firstAttribute="trailing" secondItem="mFn-gj-8BJ" secondAttribute="trailing" id="ITi-4Y-0PC"/>
+                            <constraint firstItem="4OD-N7-cIQ" firstAttribute="height" secondItem="oNX-k4-SD0" secondAttribute="height" multiplier="0.1" id="K7o-tF-izh"/>
                             <constraint firstItem="KjA-tx-HGe" firstAttribute="height" secondItem="oNX-k4-SD0" secondAttribute="height" multiplier="0.1" id="agw-K4-SGl"/>
                             <constraint firstItem="m1Z-Mf-oer" firstAttribute="trailing" secondItem="KjA-tx-HGe" secondAttribute="trailing" id="k8h-2p-gV3"/>
                             <constraint firstItem="mFn-gj-8BJ" firstAttribute="leading" secondItem="oNX-k4-SD0" secondAttribute="leading" id="kmf-QT-Qai"/>
-                            <constraint firstItem="4RK-9A-CWu" firstAttribute="height" secondItem="oNX-k4-SD0" secondAttribute="height" multiplier="0.9" id="mgC-QR-wBC"/>
+                            <constraint firstItem="4RK-9A-CWu" firstAttribute="height" secondItem="oNX-k4-SD0" secondAttribute="height" multiplier="0.8" id="mgC-QR-wBC"/>
                             <constraint firstItem="KjA-tx-HGe" firstAttribute="bottom" secondItem="m1Z-Mf-oer" secondAttribute="bottom" constant="34" id="n6G-nQ-B8R"/>
                             <constraint firstItem="mFn-gj-8BJ" firstAttribute="bottom" secondItem="KjA-tx-HGe" secondAttribute="bottom" id="qJC-ql-Fpk"/>
                             <constraint firstItem="KjA-tx-HGe" firstAttribute="leading" secondItem="m1Z-Mf-oer" secondAttribute="leading" id="yxk-gQ-LSO"/>
@@ -195,6 +204,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="4cD-Uk-IYm"/>
                     <connections>
+                        <outlet property="noteTitleLabel" destination="4OD-N7-cIQ" id="ujr-L5-oEw"/>
                         <outlet property="scrollView" destination="mFn-gj-8BJ" id="pFb-2A-gfl"/>
                         <outlet property="textView" destination="4RK-9A-CWu" id="lVD-jR-A0p"/>
                     </connections>
