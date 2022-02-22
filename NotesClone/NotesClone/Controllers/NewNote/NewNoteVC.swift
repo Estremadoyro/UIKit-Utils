@@ -19,7 +19,7 @@ class NewNoteVC: UIViewController {
     }
   }
 
-  private lazy var newNoteNavigation = NewNoteNavigation(newNoteVC: self)
+  private lazy var newNoteNavigation = NewNoteNavigationBar(newNoteVC: self)
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -64,9 +64,9 @@ extension NewNoteVC: UIScrollViewDelegate {
 extension NewNoteVC: NewNoteDelegate {
   func willSaveNewNote() {
     let note = Note(title: UUID().uuidString, body: textView.text)
-    print("Text to save: \(textView.text)")
+    print("Text to save: \(textView.text ?? "")")
     notes?.notes.append(note)
     navigationController?.popViewController(animated: true)
-    notesDelegate?.didSaveNote()
+    notesDelegate?.didSaveNote(note: note)
   }
 }

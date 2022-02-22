@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension HomeTableVC: UISearchBarDelegate {
+extension HomeVC: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     filteredNotes = [Note]()
     print("Search text: \(searchText)")
@@ -29,7 +29,7 @@ extension HomeTableVC: UISearchBarDelegate {
   }
 }
 
-extension HomeTableVC {
+extension HomeVC {
   func configureGestures() {
     let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(searchBarDismissKeyboardTouchOutside))
     gestureRecognizer.cancelsTouchesInView = false

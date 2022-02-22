@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeTableNavigationBar {
+class HomeNavigationBar {
   weak var homeTableVC: UIViewController?
 
   init(homeTableVC: UIViewController) {
@@ -19,7 +19,7 @@ class HomeTableNavigationBar {
   }
 }
 
-extension HomeTableNavigationBar {
+extension HomeNavigationBar {
   open func buildNavigationBarItems() {
     let moreButtonImage = UIImage(systemName: "ellipsis.circle")?.withRenderingMode(.alwaysTemplate)
 
@@ -30,7 +30,7 @@ extension HomeTableNavigationBar {
   }
 }
 
-extension HomeTableNavigationBar {
+extension HomeNavigationBar {
   @objc
   private func showMoreOptions() {
     print("show more buttons")

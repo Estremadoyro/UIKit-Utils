@@ -7,12 +7,10 @@
 
 import UIKit
 
-class HomeTableToolbarView: UIToolbar {
+class HomeToolBarView: UIToolbar {
   @IBOutlet weak var newNoteItem: UIBarButtonItem!
+  @IBOutlet weak var notesAmountItem: UIBarButtonItem!
 
-  weak var notes: Notes?
-
-  // Can't use custom intializers when using Storyboards
   required init?(coder: NSCoder) {
     super.init(coder: coder)
   }
@@ -21,7 +19,11 @@ class HomeTableToolbarView: UIToolbar {
     super.awakeFromNib()
   }
 
-  deinit {
-    print("\(self) deinited")
+  deinit { print("\(self) deinited") }
+}
+
+extension HomeToolBarView {
+  public func configureHomeToolBar(notes: Notes) {
+    notesAmountItem.title = "\(notes.notes.count) Notes"
   }
 }

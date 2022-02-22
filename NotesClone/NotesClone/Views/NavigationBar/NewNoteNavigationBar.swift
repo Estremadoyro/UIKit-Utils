@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NewNoteNavigation {
+class NewNoteNavigationBar {
   weak var newNoteVC: UIViewController?
   weak var noteDelegate: NewNoteDelegate?
 
@@ -34,7 +34,7 @@ class NewNoteNavigation {
   }
 }
 
-extension NewNoteNavigation {
+extension NewNoteNavigationBar {
   @objc
   private func showMoreOptions() {
     print("show more options")
