@@ -17,7 +17,7 @@ extension HomeVC: UISearchBarDelegate {
         self.filteredNotes = self.notes.copy(with: nil) as? [Note] ?? [Note]()
       } else {
         self.notes.notes.forEach { note in
-          if note.body.lowercased().contains(searchText.lowercased()) {
+          if note.title.lowercased().contains(searchText.lowercased()) || note.body.lowercased().contains(searchText.lowercased()) {
             self.filteredNotes.append(note)
           }
         }

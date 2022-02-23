@@ -24,14 +24,14 @@ class NewNoteVC: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    configureNavigationBar()
-    scrollView.delegate = self
     newNoteNavigation.noteDelegate = self
-    print(CFGetRetainCount(self))
+    scrollView.delegate = self
+    noteTitleLabel.delegate = self
+    configureNavigationBar()
   }
 
   override func viewDidAppear(_ animated: Bool) {
-    textView.becomeFirstResponder()
+    noteTitleLabel.becomeFirstResponder()
     print("First line: \(textView.text.getFirstLine3())")
     print("Whol text length: \(textView.text.count)")
   }
@@ -59,21 +59,43 @@ extension NewNoteVC {
 extension NewNoteVC: UIScrollViewDelegate {
   func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
     textView.resignFirstResponder()
+    noteTitleLabel.resignFirstResponder()
   }
 }
 
 extension NewNoteVC: NewNoteDelegate {
   func willSaveNewNote() {
-    guard var title = noteTitleLabel.text else { return }
+    guard var title = noteTitleLabel.text?.trimmingCharacters(in: .whitespaces) else { return }
+    guard var body = textView.text?.trimmingCharacters(in: .whitespaces) else { return }
 
     if title == "" {
-      title = "No title :("
+      title = "Unnamed note"
     }
 
-    let note = Note(title: title, body: textView.text)
+    if body == "" {
+      body = "No content 😢"
+    }
+
+    let note = Note(title: title, body: body)
     print("Text to save: \(textView.text ?? "")")
     notes?.notes.append(note)
     navigationController?.popViewController(animated: true)
     notesDelegate?.didSaveNote(note: note)
+  }
+}
+
+extension NewNoteVC: UITextFieldDelegate {
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    jumpToNextTextField(textField)
+    return true
+  }
+
+  func jumpToNextTextField(_ textField: UITextField) {
+    switch textField {
+      case noteTitleLabel:
+        textView.becomeFirstResponder()
+      default:
+        return
+    }
   }
 }

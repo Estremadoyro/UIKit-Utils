@@ -47,7 +47,7 @@ extension NoteCellView {
   private func configureDateLabel(date: Date?) {
     guard let date = date else { return }
     let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yy/MM/dd"
+    dateFormatter.dateFormat = "MM/dd/yy"
     let dateToString: String = dateFormatter.string(from: date)
     noteDateLabel.text = dateToString
   }

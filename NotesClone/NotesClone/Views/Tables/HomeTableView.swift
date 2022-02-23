@@ -14,5 +14,13 @@ class HomeTableView: UITableView {
 
   override func awakeFromNib() {
     super.awakeFromNib()
+    configureTable()
+  }
+}
+
+extension HomeTableView {
+  private func configureTable() {
+    self.layer.cornerRadius = 10
+    self.layer.masksToBounds = true
   }
 }
