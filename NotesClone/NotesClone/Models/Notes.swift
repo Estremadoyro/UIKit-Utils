@@ -10,13 +10,17 @@ import Foundation
 final class Notes: Codable, NSCopying {
   var notes: [Note] {
     didSet {
+      print("NOTES OBJ UPDATED")
       UserDefaults.standard.save(key: DefaultKeys.NOTES_KEY, obj: self)
+    }
+    willSet {
+      print("NOTES LSIT UPDATED")
     }
   }
 
   func copy(with zone: NSZone? = nil) -> Any {
-    let notes = Notes(notes: self.notes)
-    return notes.notes
+    let copiedNotes = Notes()
+    return copiedNotes
   }
 
   init() {

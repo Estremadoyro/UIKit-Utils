@@ -42,7 +42,7 @@ extension NewNoteNavigationBar {
 
   @objc
   private func doneButtonAction() {
-    noteDelegate?.willSaveNewNote()
     print("will save note")
+    noteDelegate?.willSaveNewNote()
   }
 }

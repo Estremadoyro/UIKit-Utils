@@ -104,6 +104,7 @@
                                             <outlet property="noteBodyLabel" destination="gyZ-Pd-ybR" id="Rix-Ze-EdU"/>
                                             <outlet property="noteDateLabel" destination="m9w-Rj-DOe" id="rDg-lb-cDe"/>
                                             <outlet property="noteTitleLabel" destination="yR8-ms-LsD" id="jjb-62-POr"/>
+                                            <segue destination="Qzs-im-8J4" kind="show" identifier="goToEditNoteVC" id="pRx-Bs-du3"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -250,6 +251,9 @@
             <point key="canvasLocation" x="137.68115942028987" y="124.55357142857142"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="pRx-Bs-du3"/>
+    </inferredMetricsTieBreakers>
     <color key="tintColor" systemColor="systemYellowColor"/>
     <resources>
         <image name="camera" catalog="system" width="128" height="94"/>

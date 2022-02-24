@@ -13,4 +13,5 @@ protocol NewNoteDelegate: AnyObject {
 
 protocol NotesDelegate: AnyObject {
   func didSaveNote(note: Note)
+  func didEditNote(note: Note)
 }

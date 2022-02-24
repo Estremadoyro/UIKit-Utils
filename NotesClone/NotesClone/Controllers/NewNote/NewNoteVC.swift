@@ -13,38 +13,45 @@ class NewNoteVC: UIViewController {
   @IBOutlet private weak var scrollView: UIScrollView!
 
   weak var notesDelegate: NotesDelegate?
+  var noteSceneType: NoteSceneType = .isCreatingNewNote
 
-  weak var notes: Notes? {
+  var notes: Notes? {
     didSet {
       print("notes recieved: \(notes ?? Notes(notes: [Note]()))")
     }
   }
 
+  var note: Note?
+
   private lazy var newNoteNavigation = NewNoteNavigationBar(newNoteVC: self)
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    print("note scene type: \(noteSceneType)")
     newNoteNavigation.noteDelegate = self
-    scrollView.delegate = self
     noteTitleLabel.delegate = self
+    scrollView.delegate = self
     configureNavigationBar()
+    configureNoteIfEditing(note: note)
   }
 
   override func viewDidAppear(_ animated: Bool) {
     noteTitleLabel.becomeFirstResponder()
-    print("First line: \(textView.text.getFirstLine3())")
-    print("Whol text length: \(textView.text.count)")
   }
 
-  deinit {
-    print("\(self) deinited")
-  }
+  deinit { print("\(self) deinited") }
 }
 
 extension NewNoteVC {
   private func configureNavigationBar() {
     navigationItem.largeTitleDisplayMode = .never
     newNoteNavigation.buildNavigationItems()
+  }
+
+  private func configureNoteIfEditing(note: Note?) {
+    guard let note = note else { return }
+    noteTitleLabel.text = note.title
+    textView.text = note.body
   }
 }
 
@@ -76,11 +83,30 @@ extension NewNoteVC: NewNoteDelegate {
       body = "No content 😢"
     }
 
-    let note = Note(title: title, body: body)
-    print("Text to save: \(textView.text ?? "")")
-    notes?.notes.append(note)
+    switch noteSceneType {
+      case .isCreatingNewNote:
+        createNewNote(title: title, body: body)
+      case .isEditingNote:
+        editNote(title: title, body: body)
+    }
     navigationController?.popViewController(animated: true)
+  }
+
+  private func createNewNote(title: String, body: String) {
+    let note = Note(title: title, body: body)
+    notes?.notes.append(note)
     notesDelegate?.didSaveNote(note: note)
+  }
+
+  private func editNote(title: String, body: String) {
+    guard let notes = notes else { return }
+    guard let note = note else { return }
+    guard let noteToEditIndex = notes.notes.firstIndex(where: { $0.id == note.id }) else { return }
+    let noteToEdit = notes.notes[noteToEditIndex]
+    noteToEdit.title = title
+    noteToEdit.body = body
+    UserDefaults.standard.save(key: DefaultKeys.NOTES_KEY, obj: notes)
+    notesDelegate?.didEditNote(note: noteToEdit)
   }
 }
 

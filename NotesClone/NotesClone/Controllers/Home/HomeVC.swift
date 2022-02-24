@@ -13,11 +13,17 @@ class HomeVC: UIViewController {
   @IBOutlet weak var homeToolbar: HomeToolBarView!
 
   lazy var notes = Notes()
-
-  lazy var filteredNotes: [Note] = notes.copy(with: nil) as? [Note] ?? [Note]()
+  lazy var filteredNotes: Notes = notes.copy(with: nil) as? Notes ?? Notes(notes: [Note]())
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    notes.notes.forEach { note in
+      print("Initial note: \(note.title)")
+    }
+    filteredNotes.notes.forEach { note in
+      print("Initial filtered note: \(note.title)")
+    }
+
     tableView.dataSource = self
     tableView.delegate = self
     homeSearchBar.delegate = self
@@ -26,11 +32,22 @@ class HomeVC: UIViewController {
   }
 
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    print("preparing for segue")
-    if segue.identifier == HomeConstants.goToNewNoteVCSegueId {
-      let newNoteVC = segue.destination as? NewNoteVC
-      newNoteVC?.notes = notes
-      newNoteVC?.notesDelegate = self
+    switch segue.identifier {
+      case HomeConstants.goToNewNoteVCSegueId:
+        // New Note
+        let newNoteVC = segue.destination as? NewNoteVC
+        newNoteVC?.notes = notes
+        newNoteVC?.notesDelegate = self
+      case HomeConstants.goToEditNoteSegueId:
+        // Edit Note
+        let cellSender = sender as? NoteCellView
+        let newNoteVC = segue.destination as? NewNoteVC
+        newNoteVC?.notes = notes
+        newNoteVC?.note = cellSender?.note
+        newNoteVC?.notesDelegate = self
+        newNoteVC?.noteSceneType = .isEditingNote
+      default:
+        return
     }
   }
 
@@ -51,8 +68,26 @@ extension HomeVC {
 
 extension HomeVC: NotesDelegate {
   func didSaveNote(note: Note) {
-    filteredNotes.append(note)
+    filteredNotes.notes.append(note)
     let indexPath = IndexPath(row: 0, section: 0)
     tableView.insertRows(at: [indexPath], with: .automatic)
+    print("did save note")
+  }
+
+  func didEditNote(note: Note) {
+    guard let editedNoteIndex = filteredNotes.notes.firstIndex(where: { $0.id == note.id }) else { return }
+    let editedNote = filteredNotes.notes[editedNoteIndex]
+    editedNote.title = note.title
+    editedNote.body = note.body
+    print("notes count: \(notes.notes.count)")
+    print(notes.notes)
+//    notes.notes = [Note]()
+    print("notes count: \(notes.notes.count)")
+    print("filtered notes count: \(filteredNotes.notes.count)")
+    print("did edit note")
+    print(Unmanaged.passUnretained(notes).toOpaque())
+    print(notes.notes)
+    print(filteredNotes.notes)
+    tableView.reloadData()
   }
 }
