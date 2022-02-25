@@ -27,7 +27,7 @@ extension HomeAlertActionSheet {
 
     ac.view.translatesAutoresizingMaskIntoConstraints = false
     ac.view.heightAnchor.constraint(equalToConstant: 200).isActive = true
-    ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+//    ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 
     self.homeVC?.present(ac, animated: true, completion: nil)
   }
@@ -37,5 +37,6 @@ extension HomeAlertActionSheet: HomeActionSheetDelegate {
   func didDismissActionDelegate(ac: UIAlertController) {
     print("dismiss action")
     ac.dismiss(animated: true, completion: nil)
+//    homeVC = nil
   }
 }
