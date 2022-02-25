@@ -36,7 +36,7 @@
                                         </connections>
                                     </barButtonItem>
                                 </items>
-                                <toolbarAppearance key="scrollEdgeAppearance"/>
+                                <toolbarAppearance key="standardAppearance"/>
                                 <connections>
                                     <outlet property="newNoteItem" destination="rYb-5C-DQj" id="wR2-MP-KNX"/>
                                     <outlet property="notesAmountItem" destination="zeL-t2-14O" id="JoG-US-93l"/>
@@ -197,6 +197,7 @@
                             </scrollView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KjA-tx-HGe">
                                 <rect key="frame" x="0.0" y="806.5" width="414" height="89.5"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <items>
                                     <barButtonItem title="Item" image="checklist" catalog="system" id="ta3-Q9-BQH"/>
                                     <barButtonItem systemItem="flexibleSpace" id="bYv-fL-Gbc"/>
@@ -206,6 +207,7 @@
                                     <barButtonItem systemItem="flexibleSpace" id="Egt-LZ-hfJ"/>
                                     <barButtonItem systemItem="compose" id="Ytc-9P-1sP"/>
                                 </items>
+                                <toolbarAppearance key="standardAppearance"/>
                             </toolbar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="m1Z-Mf-oer"/>

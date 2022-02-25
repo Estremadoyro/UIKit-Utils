@@ -15,3 +15,7 @@ protocol NotesDelegate: AnyObject {
   func didSaveNote(note: Note)
   func didEditNote(note: Note)
 }
+
+protocol HomeActionSheetDelegate: AnyObject {
+  func didDismissActionDelegate(ac: UIAlertController)
+}

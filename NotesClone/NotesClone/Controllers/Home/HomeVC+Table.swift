@@ -12,10 +12,7 @@ extension HomeVC: UITableViewDataSource {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeConstants.notesCellId, for: indexPath) as? NoteCellView else {
       fatalError("Error dequeing \(HomeConstants.notesCellId)")
     }
-    filteredNotes.notes.forEach { note in
-      print("CELL FOR ROW AT NOTE TITLE: \(note.title)")
-    }
-    let note = filteredNotes.notes.reversed()[indexPath.row]
+    let note = filteredNotes.reversed()[indexPath.row]
     cell.note = note
     return cell
   }
@@ -25,7 +22,7 @@ extension HomeVC: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return filteredNotes.notes.count
+    return filteredNotes.count
   }
 }
 
@@ -33,7 +30,7 @@ extension HomeVC: UITableViewDelegate {
   func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     let deleteActionCompletion: (UIContextualAction, UIView, @escaping (Bool) -> Void) -> Void = { [unowned self] _, _, completion in
       self.notes.notes.remove(at: indexPath.row)
-      self.filteredNotes.notes.remove(at: indexPath.row)
+      self.filteredNotes.remove(at: indexPath.row)
       self.tableView.deleteRows(at: [indexPath], with: .left)
       homeToolbar.configureHomeToolBar(notes: notes)
       completion(true)
@@ -85,5 +82,14 @@ extension HomeVC {
 
   func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
     homeSearchBar.resignFirstResponder()
+  }
+}
+
+extension HomeVC {
+  func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    cell.alpha = 0
+    UIView.animate(withDuration: 0.5, delay: 0.05 * Double(indexPath.row), animations: {
+      cell.alpha = 1
+    })
   }
 }

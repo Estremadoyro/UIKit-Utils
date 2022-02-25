@@ -12,15 +12,17 @@ class HomeVC: UIViewController {
   @IBOutlet weak var homeSearchBar: UISearchBar!
   @IBOutlet weak var homeToolbar: HomeToolBarView!
 
+  var homeNavigationBar: HomeNavigationBar?
+
   lazy var notes = Notes()
-  lazy var filteredNotes: Notes = notes.copy(with: nil) as? Notes ?? Notes(notes: [Note]())
+  lazy var filteredNotes: [Note] = (notes.copy(with: nil) as? Notes)?.notes ?? [Note]()
 
   override func viewDidLoad() {
     super.viewDidLoad()
     notes.notes.forEach { note in
       print("Initial note: \(note.title)")
     }
-    filteredNotes.notes.forEach { note in
+    filteredNotes.forEach { note in
       print("Initial filtered note: \(note.title)")
     }
 
@@ -62,32 +64,33 @@ class HomeVC: UIViewController {
 extension HomeVC {
   private func configureNavigationBar() {
     navigationController?.navigationBar.prefersLargeTitles = true
-    HomeNavigationBar(homeTableVC: self).buildNavigationBarItems()
+    homeNavigationBar = HomeNavigationBar(homeTableVC: self)
+    homeNavigationBar?.buildNavigationBarItems()
   }
 }
 
 extension HomeVC: NotesDelegate {
   func didSaveNote(note: Note) {
-    filteredNotes.notes.append(note)
+    filteredNotes.append(note)
     let indexPath = IndexPath(row: 0, section: 0)
     tableView.insertRows(at: [indexPath], with: .automatic)
     print("did save note")
   }
 
   func didEditNote(note: Note) {
-    guard let editedNoteIndex = filteredNotes.notes.firstIndex(where: { $0.id == note.id }) else { return }
-    let editedNote = filteredNotes.notes[editedNoteIndex]
+    guard let editedNoteIndex = filteredNotes.firstIndex(where: { $0.id == note.id }) else { return }
+    let editedNote = filteredNotes[editedNoteIndex]
     editedNote.title = note.title
     editedNote.body = note.body
     print("notes count: \(notes.notes.count)")
     print(notes.notes)
 //    notes.notes = [Note]()
     print("notes count: \(notes.notes.count)")
-    print("filtered notes count: \(filteredNotes.notes.count)")
+    print("filtered notes count: \(filteredNotes.count)")
     print("did edit note")
     print(Unmanaged.passUnretained(notes).toOpaque())
     print(notes.notes)
-    print(filteredNotes.notes)
+    print(filteredNotes)
     tableView.reloadData()
   }
 }
