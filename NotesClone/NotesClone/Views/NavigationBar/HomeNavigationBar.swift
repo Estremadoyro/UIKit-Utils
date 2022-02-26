@@ -34,7 +34,7 @@ extension HomeNavigationBar {
   @objc
   private func showMoreOptions() {
     print("show more buttons")
-    let homeAlertActionSheetVC = UIStoryboard(name: "HomeActionSheet", bundle: .main).instantiateViewController(withIdentifier: "HomeAlertActionSheetVC") as! HomeAlertActionSheetVC
+    let homeAlertActionSheetVC = UIStoryboard(name: "HomeActionSheet", bundle: .main).instantiateViewController(withIdentifier: "HomeAlertActionSheetVC") as! HomeActionSheetVC
     homeTableVC?.present(homeAlertActionSheetVC, animated: true, completion: nil)
   }
 }

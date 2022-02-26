@@ -8,13 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		A7104F1D27C939C000EE10CD /* HomeActionSheet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7104F1C27C939C000EE10CD /* HomeActionSheet.storyboard */; };
-		A7104F1F27C93A3D00EE10CD /* HomeAlertActionSheetVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7104F1E27C93A3D00EE10CD /* HomeAlertActionSheetVC.swift */; };
-		A7104F2127C93E2100EE10CD /* HomeAlertActionSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7104F2027C93E2100EE10CD /* HomeAlertActionSheetView.swift */; };
+		A7104F1F27C93A3D00EE10CD /* HomeActionSheetVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7104F1E27C93A3D00EE10CD /* HomeActionSheetVC.swift */; };
+		A7104F2127C93E2100EE10CD /* HomeActionSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7104F2027C93E2100EE10CD /* HomeActionSheetView.swift */; };
 		A715BE3127C0C36C004478F9 /* HomeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A715BE3027C0C36C004478F9 /* HomeTableView.swift */; };
 		A715BE3327C0C437004478F9 /* NoteCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A715BE3227C0C437004478F9 /* NoteCellView.swift */; };
 		A72E411527C49773005D99C9 /* HomeVC+Table.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72E411427C49773005D99C9 /* HomeVC+Table.swift */; };
 		A72E411F27C4A66A005D99C9 /* HomeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72E411E27C4A66A005D99C9 /* HomeConstants.swift */; };
 		A7514F6B27C493BB00040DD2 /* NewNoteToolBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7514F6A27C493BB00040DD2 /* NewNoteToolBarView.swift */; };
+		A77F3D2327CAE405007B8375 /* HomeActionSheetVC+Table.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77F3D2227CAE405007B8375 /* HomeActionSheetVC+Table.swift */; };
+		A77F3D2727CAE4A9007B8375 /* HomeActionSheetTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77F3D2627CAE4A9007B8375 /* HomeActionSheetTableView.swift */; };
 		A7A333F027C2C38C00CF3A7E /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A333EF27C2C38C00CF3A7E /* UserDefaults.swift */; };
 		A7A333F227C2C46600CF3A7E /* Notes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A333F127C2C46600CF3A7E /* Notes.swift */; };
 		A7A333F427C2E5F600CF3A7E /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A333F327C2E5F600CF3A7E /* String.swift */; };
@@ -36,13 +38,15 @@
 
 /* Begin PBXFileReference section */
 		A7104F1C27C939C000EE10CD /* HomeActionSheet.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = HomeActionSheet.storyboard; sourceTree = "<group>"; };
-		A7104F1E27C93A3D00EE10CD /* HomeAlertActionSheetVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAlertActionSheetVC.swift; sourceTree = "<group>"; };
-		A7104F2027C93E2100EE10CD /* HomeAlertActionSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAlertActionSheetView.swift; sourceTree = "<group>"; };
+		A7104F1E27C93A3D00EE10CD /* HomeActionSheetVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeActionSheetVC.swift; sourceTree = "<group>"; };
+		A7104F2027C93E2100EE10CD /* HomeActionSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeActionSheetView.swift; sourceTree = "<group>"; };
 		A715BE3027C0C36C004478F9 /* HomeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableView.swift; sourceTree = "<group>"; };
 		A715BE3227C0C437004478F9 /* NoteCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCellView.swift; sourceTree = "<group>"; };
 		A72E411427C49773005D99C9 /* HomeVC+Table.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeVC+Table.swift"; sourceTree = "<group>"; };
 		A72E411E27C4A66A005D99C9 /* HomeConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeConstants.swift; sourceTree = "<group>"; };
 		A7514F6A27C493BB00040DD2 /* NewNoteToolBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewNoteToolBarView.swift; sourceTree = "<group>"; };
+		A77F3D2227CAE405007B8375 /* HomeActionSheetVC+Table.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeActionSheetVC+Table.swift"; sourceTree = "<group>"; };
+		A77F3D2627CAE4A9007B8375 /* HomeActionSheetTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeActionSheetTableView.swift; sourceTree = "<group>"; };
 		A7A333EF27C2C38C00CF3A7E /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		A7A333F127C2C46600CF3A7E /* Notes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notes.swift; sourceTree = "<group>"; };
 		A7A333F327C2E5F600CF3A7E /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -133,6 +137,24 @@
 			path = ToolBar;
 			sourceTree = "<group>";
 		};
+		A77F3D2427CAE469007B8375 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A7104F2027C93E2100EE10CD /* HomeActionSheetView.swift */,
+				A77F3D2627CAE4A9007B8375 /* HomeActionSheetTableView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A77F3D2527CAE472007B8375 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				A7104F1E27C93A3D00EE10CD /* HomeActionSheetVC.swift */,
+				A77F3D2227CAE405007B8375 /* HomeActionSheetVC+Table.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		A7981EA927C8756600A83A11 /* AlertActionSheets */ = {
 			isa = PBXGroup;
 			children = (
@@ -144,8 +166,8 @@
 		A7981EAC27C8815200A83A11 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				A7104F1E27C93A3D00EE10CD /* HomeAlertActionSheetVC.swift */,
-				A7104F2027C93E2100EE10CD /* HomeAlertActionSheetView.swift */,
+				A77F3D2527CAE472007B8375 /* Controllers */,
+				A77F3D2427CAE469007B8375 /* Views */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -333,13 +355,15 @@
 				A72E411527C49773005D99C9 /* HomeVC+Table.swift in Sources */,
 				A72E411F27C4A66A005D99C9 /* HomeConstants.swift in Sources */,
 				A7A3341F27C3497800CF3A7E /* HomeVC+Search.swift in Sources */,
-				A7104F2127C93E2100EE10CD /* HomeAlertActionSheetView.swift in Sources */,
+				A7104F2127C93E2100EE10CD /* HomeActionSheetView.swift in Sources */,
 				A7A9A42827C1A969005D9CCE /* NewNoteVC.swift in Sources */,
 				A7A3383C27C0BC2800BBDFE8 /* HomeNavigationBar.swift in Sources */,
 				A7D8721C27C2C16A00574A66 /* Note.swift in Sources */,
 				A7A333F027C2C38C00CF3A7E /* UserDefaults.swift in Sources */,
+				A77F3D2727CAE4A9007B8375 /* HomeActionSheetTableView.swift in Sources */,
 				A7EFA27127C08B44003B1FCF /* AppDelegate.swift in Sources */,
-				A7104F1F27C93A3D00EE10CD /* HomeAlertActionSheetVC.swift in Sources */,
+				A7104F1F27C93A3D00EE10CD /* HomeActionSheetVC.swift in Sources */,
+				A77F3D2327CAE405007B8375 /* HomeActionSheetVC+Table.swift in Sources */,
 				A7A333F427C2E5F600CF3A7E /* String.swift in Sources */,
 				A715BE3327C0C437004478F9 /* NoteCellView.swift in Sources */,
 				A7A9A42A27C1A9F5005D9CCE /* NewNoteNavigationBar.swift in Sources */,

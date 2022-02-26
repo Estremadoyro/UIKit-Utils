@@ -7,9 +7,9 @@
 
 import UIKit
 
-class HomeAlertActionSheetView: UIView {}
+class HomeActionSheetView: UIView {}
 
-@IBDesignable extension HomeAlertActionSheetView {
+@IBDesignable extension HomeActionSheetView {
   @IBInspectable var cornerRadius: CGFloat {
     get { return layer.cornerRadius }
     set {
