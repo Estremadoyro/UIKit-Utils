@@ -9,7 +9,6 @@ import UIKit
 
 class HomeNavigationBar {
   weak var homeTableVC: UIViewController?
-  var homeAlertActionSheet: HomeAlertActionSheet?
 
   init(homeTableVC: UIViewController) {
     self.homeTableVC = homeTableVC
@@ -35,13 +34,7 @@ extension HomeNavigationBar {
   @objc
   private func showMoreOptions() {
     print("show more buttons")
-    homeAlertActionSheet = HomeAlertActionSheet(homeTableVC)
-    homeAlertActionSheet?.configureActionSheet()
-  }
-}
-
-extension HomeNavigationBar: HomeActionSheetDelegate {
-  func didDismissActionDelegate(ac: UIAlertController) {
-//    homeAlertActionSheet = nil
+    let homeAlertActionSheetVC = UIStoryboard(name: "HomeActionSheet", bundle: .main).instantiateViewController(withIdentifier: "HomeAlertActionSheetVC") as! HomeAlertActionSheetVC
+    homeTableVC?.present(homeAlertActionSheetVC, animated: true, completion: nil)
   }
 }
