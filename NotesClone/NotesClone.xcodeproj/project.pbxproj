@@ -26,6 +26,7 @@
 		A7A3383C27C0BC2800BBDFE8 /* HomeNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A3383B27C0BC2800BBDFE8 /* HomeNavigationBar.swift */; };
 		A7A9A42827C1A969005D9CCE /* NewNoteVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A9A42727C1A969005D9CCE /* NewNoteVC.swift */; };
 		A7A9A42A27C1A9F5005D9CCE /* NewNoteNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A9A42927C1A9F5005D9CCE /* NewNoteNavigationBar.swift */; };
+		A7C700E027CB317A0050B23D /* HomeActionSheetVC+Gesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C700DF27CB317A0050B23D /* HomeActionSheetVC+Gesture.swift */; };
 		A7D8721C27C2C16A00574A66 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D8721B27C2C16A00574A66 /* Note.swift */; };
 		A7EFA27127C08B44003B1FCF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFA27027C08B44003B1FCF /* AppDelegate.swift */; };
 		A7EFA27327C08B44003B1FCF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFA27227C08B44003B1FCF /* SceneDelegate.swift */; };
@@ -56,6 +57,7 @@
 		A7A3383B27C0BC2800BBDFE8 /* HomeNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNavigationBar.swift; sourceTree = "<group>"; };
 		A7A9A42727C1A969005D9CCE /* NewNoteVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewNoteVC.swift; sourceTree = "<group>"; };
 		A7A9A42927C1A9F5005D9CCE /* NewNoteNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewNoteNavigationBar.swift; sourceTree = "<group>"; };
+		A7C700DF27CB317A0050B23D /* HomeActionSheetVC+Gesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeActionSheetVC+Gesture.swift"; sourceTree = "<group>"; };
 		A7D8721B27C2C16A00574A66 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		A7EFA26D27C08B44003B1FCF /* NotesClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NotesClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7EFA27027C08B44003B1FCF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 			children = (
 				A7104F1E27C93A3D00EE10CD /* HomeActionSheetVC.swift */,
 				A77F3D2227CAE405007B8375 /* HomeActionSheetVC+Table.swift */,
+				A7C700DF27CB317A0050B23D /* HomeActionSheetVC+Gesture.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -367,6 +370,7 @@
 				A7A333F427C2E5F600CF3A7E /* String.swift in Sources */,
 				A715BE3327C0C437004478F9 /* NoteCellView.swift in Sources */,
 				A7A9A42A27C1A9F5005D9CCE /* NewNoteNavigationBar.swift in Sources */,
+				A7C700E027CB317A0050B23D /* HomeActionSheetVC+Gesture.swift in Sources */,
 				A7EFA27327C08B44003B1FCF /* SceneDelegate.swift in Sources */,
 				A7A333F227C2C46600CF3A7E /* Notes.swift in Sources */,
 			);

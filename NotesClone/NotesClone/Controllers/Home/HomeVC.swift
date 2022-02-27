@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeVC: UIViewController {
+final class HomeVC: UIViewController {
   @IBOutlet weak var tableView: HomeTableView!
   @IBOutlet weak var homeToolbar: HomeToolBarView!
   @IBOutlet weak var homeSearchBar: UISearchBar!

@@ -7,18 +7,29 @@
 
 import UIKit
 
-class HomeActionSheetVC: UIViewController {
-  @IBOutlet private weak var homeActionSheetView: HomeActionSheetView!
+protocol IHomeActionSheetGestures {
+  func didPanAction(_ gesture: UIPanGestureRecognizer)
+  func dismissActionSheetWithAnimation()
+  var alertIsDisplayed: NSLayoutConstraint! { get set }
+  var alertIsFullHeight: NSLayoutConstraint! { get set }
+  var alertIsHidden: NSLayoutConstraint! { get set }
+  var homeActionSheetView: HomeActionSheetView! { get set }
+}
+
+final class HomeActionSheetVC: UIViewController, IHomeActionSheetGestures {
+  @IBOutlet internal weak var homeActionSheetView: HomeActionSheetView!
   @IBOutlet private weak var dismissHomeActionSheetButton: UIButton!
   @IBOutlet private weak var homeActionSheetHeaderView: UIView!
   // Constraints must have a strong reference? or they get deallocated?
-  @IBOutlet private var alertIsHidden: NSLayoutConstraint!
-  @IBOutlet private var alertIsDisplayed: NSLayoutConstraint!
+  @IBOutlet internal var alertIsHidden: NSLayoutConstraint!
+  @IBOutlet internal var alertIsDisplayed: NSLayoutConstraint!
+  @IBOutlet internal var alertIsFullHeight: NSLayoutConstraint!
   private var didAnimate: Bool = false
 
   override func viewDidLoad() {
     super.viewDidLoad()
     alertIsDisplayed.isActive = false
+    alertIsFullHeight.isActive = false
     dismissHomeActionSheetButton.superview?.layoutIfNeeded()
   }
 
@@ -49,9 +60,11 @@ extension HomeActionSheetVC {
     dismissActionSheetWithAnimation()
   }
 
-  private func dismissActionSheetWithAnimation() {
+  internal func dismissActionSheetWithAnimation() {
     alertIsDisplayed.isActive = false
-    let customAnimation: () -> Void = { [unowned self] in
+    alertIsFullHeight.isActive = false
+    alertIsHidden.isActive = true
+    let customAnimation: () -> Void = {
       self.homeActionSheetView.superview?.layoutIfNeeded()
     }
     let customCompletion: (Bool) -> Void = { [unowned self] _ in

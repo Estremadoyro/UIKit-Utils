@@ -66,6 +66,7 @@
                                     </containerView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="6HR-Hx-2j4" secondAttribute="bottom" id="3Z9-co-ILm"/>
                                     <constraint firstAttribute="height" priority="999" id="KOh-Ms-uCU"/>
@@ -82,6 +83,9 @@
                                         <real key="value" value="15"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="BYt-wB-lJt" appends="YES" id="oUW-pM-wYA"/>
+                                </connections>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
@@ -89,12 +93,14 @@
                         <constraints>
                             <constraint firstItem="gxS-RZ-Jtc" firstAttribute="height" secondItem="5EZ-qb-Rvc" secondAttribute="height" multiplier="0.5" id="6vY-0y-8cs"/>
                             <constraint firstItem="gxS-RZ-Jtc" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="boF-pP-FPs"/>
+                            <constraint firstItem="gxS-RZ-Jtc" firstAttribute="height" secondItem="vDu-zF-Fre" secondAttribute="height" priority="998" id="dEz-oo-7ME"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="gxS-RZ-Jtc" secondAttribute="trailing" id="t2X-Yh-bZg"/>
                             <constraint firstAttribute="bottom" secondItem="gxS-RZ-Jtc" secondAttribute="bottom" id="uRK-lF-bxx"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="alertIsDisplayed" destination="6vY-0y-8cs" id="j9a-r6-j2E"/>
+                        <outlet property="alertIsFullHeight" destination="dEz-oo-7ME" id="3nN-2C-qhz"/>
                         <outlet property="alertIsHidden" destination="KOh-Ms-uCU" id="L4J-vk-9Ue"/>
                         <outlet property="dismissHomeActionSheetButton" destination="JsQ-7d-kID" id="GU4-6g-gb9"/>
                         <outlet property="homeActionSheetHeaderView" destination="zoa-2h-B3v" id="qiC-SF-xZl"/>
@@ -102,6 +108,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="BYt-wB-lJt">
+                    <connections>
+                        <action selector="didPanAction:" destination="Y6W-OH-hqX" id="jq4-Oo-htI"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="115.94202898550725" y="77.678571428571431"/>
         </scene>
@@ -109,7 +120,7 @@
         <scene sceneID="pWx-m0-pBT">
             <objects>
                 <tableViewController id="jcb-Th-lKh" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="static" style="insetGrouped" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="1" estimatedSectionFooterHeight="-1" contentViewInsetsToSafeArea="NO" id="fOF-tO-cU0" customClass="HomeActionSheetTableView" customModule="NotesClone" customModuleProvider="target">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="static" style="insetGrouped" rowHeight="45" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="1" estimatedSectionFooterHeight="-1" contentViewInsetsToSafeArea="NO" id="fOF-tO-cU0" customClass="HomeActionSheetTableView" customModule="NotesClone" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="381"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -118,20 +129,20 @@
                             <tableViewSection id="Ksd-c4-fUB">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="gray" indentationWidth="10" id="ufQ-ev-2mN">
-                                        <rect key="frame" x="20" y="18" width="374" height="43.5"/>
+                                        <rect key="frame" x="20" y="18" width="374" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ufQ-ev-2mN" id="AYc-FI-IsI">
-                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="45"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="View as Gallery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2QK-xi-mFm">
-                                                    <rect key="frame" x="20" y="13.5" width="99" height="17"/>
+                                                    <rect key="frame" x="20" y="14" width="99" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="square.grid.2x2" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="sQy-2c-sKh">
-                                                    <rect key="frame" x="342.5" y="13" width="19.5" height="17.5"/>
+                                                    <rect key="frame" x="342.5" y="13.5" width="19.5" height="17.5"/>
                                                     <color key="tintColor" systemColor="labelColor"/>
                                                 </imageView>
                                             </subviews>
@@ -149,20 +160,20 @@
                             <tableViewSection id="5bx-Ak-SDk">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="rRx-Rt-bGS">
-                                        <rect key="frame" x="20" y="80.5" width="374" height="43.5"/>
+                                        <rect key="frame" x="20" y="82" width="374" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rRx-Rt-bGS" id="t0k-LK-MfU">
-                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="45"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select Notes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gye-DQ-Z9G">
-                                                    <rect key="frame" x="20" y="13.5" width="83" height="17"/>
+                                                    <rect key="frame" x="20" y="14" width="83" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="2q4-lK-JbN">
-                                                    <rect key="frame" x="342" y="12.5" width="20" height="19"/>
+                                                    <rect key="frame" x="342" y="13" width="20" height="19"/>
                                                     <color key="tintColor" systemColor="labelColor"/>
                                                 </imageView>
                                             </subviews>
@@ -176,20 +187,20 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="6cm-3q-EOf">
-                                        <rect key="frame" x="20" y="124" width="374" height="43.5"/>
+                                        <rect key="frame" x="20" y="127" width="374" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6cm-3q-EOf" id="lI0-Md-3zV">
-                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="45"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="View Attachments" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qsh-QY-8Vp">
-                                                    <rect key="frame" x="20" y="13.5" width="117" height="17"/>
+                                                    <rect key="frame" x="20" y="14" width="117" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="paperclip" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="1kg-9C-zbp">
-                                                    <rect key="frame" x="342" y="11.5" width="20" height="21"/>
+                                                    <rect key="frame" x="342" y="12" width="20" height="21"/>
                                                     <color key="tintColor" systemColor="labelColor"/>
                                                 </imageView>
                                             </subviews>
@@ -213,7 +224,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WEl-yz-YEV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="944.92753623188412" y="77.34375"/>
+            <point key="canvasLocation" x="997" y="78"/>
         </scene>
     </scenes>
     <resources>

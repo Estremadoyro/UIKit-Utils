@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NewNoteVC: UIViewController {
+final class NewNoteVC: UIViewController {
   @IBOutlet private weak var textView: UITextView!
   @IBOutlet private weak var noteTitleLabel: UITextField!
   @IBOutlet private weak var scrollView: UIScrollView!

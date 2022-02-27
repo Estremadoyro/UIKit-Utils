@@ -8,5 +8,3 @@
 import UIKit
 
 extension HomeActionSheetVC {}
-
-extension HomeActionSheetVC: UITableViewDelegate {}
