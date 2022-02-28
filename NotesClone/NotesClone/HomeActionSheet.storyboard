@@ -93,7 +93,7 @@
                         <constraints>
                             <constraint firstItem="gxS-RZ-Jtc" firstAttribute="height" secondItem="5EZ-qb-Rvc" secondAttribute="height" multiplier="0.5" id="6vY-0y-8cs"/>
                             <constraint firstItem="gxS-RZ-Jtc" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="boF-pP-FPs"/>
-                            <constraint firstItem="gxS-RZ-Jtc" firstAttribute="height" secondItem="vDu-zF-Fre" secondAttribute="height" priority="998" id="dEz-oo-7ME"/>
+                            <constraint firstItem="gxS-RZ-Jtc" firstAttribute="height" secondItem="5EZ-qb-Rvc" secondAttribute="height" multiplier="0.95" priority="998" id="dEz-oo-7ME"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="gxS-RZ-Jtc" secondAttribute="trailing" id="t2X-Yh-bZg"/>
                             <constraint firstAttribute="bottom" secondItem="gxS-RZ-Jtc" secondAttribute="bottom" id="uRK-lF-bxx"/>
                         </constraints>
