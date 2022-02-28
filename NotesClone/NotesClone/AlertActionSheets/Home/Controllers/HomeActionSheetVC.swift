@@ -9,7 +9,7 @@ import UIKit
 
 protocol IHomeActionSheetGestures {
   func didPanAction(_ gesture: UIPanGestureRecognizer)
-  func dismissActionSheetWithAnimation()
+  func constraintsUpdateWithAnimation(updateType: ConstraintUpdateType, constraintsUpdates: () -> Void)
   var alertIsDisplayed: NSLayoutConstraint! { get set }
   var alertIsFullHeight: NSLayoutConstraint! { get set }
   var alertIsHidden: NSLayoutConstraint! { get set }
@@ -57,20 +57,20 @@ extension HomeActionSheetVC {
 extension HomeActionSheetVC {
   @IBAction private func dismissHomeAlertActionSheet(_ sender: UIButton) {
     print("dismiss vc")
-    dismissActionSheetWithAnimation()
+    constraintsUpdateWithAnimation(updateType: .toHidden) { [unowned self] in
+      self.activateSheetHidden
+    }
   }
 
-  internal func dismissActionSheetWithAnimation() {
-    alertIsDisplayed.isActive = false
-    alertIsFullHeight.isActive = false
-    alertIsHidden.isActive = true
+  internal func constraintsUpdateWithAnimation(updateType: ConstraintUpdateType = .toHidden, constraintsUpdates: () -> Void) {
+    constraintsUpdates()
     let customAnimation: () -> Void = {
       self.homeActionSheetView.superview?.layoutIfNeeded()
     }
-    let customCompletion: (Bool) -> Void = { [unowned self] _ in
-      self.dismiss(animated: true, completion: nil)
+    let customCompletion: (Bool) -> Void = { [weak self] _ in
+      self?.dismiss(animated: true, completion: nil)
     }
-    UIView.animate(withDuration: 0.35, delay: 0, options: [], animations: customAnimation, completion: customCompletion)
+    UIView.animate(withDuration: 0.35, delay: 0, options: [], animations: customAnimation, completion: updateType == .toHidden ? customCompletion : nil)
   }
 }
 
@@ -80,7 +80,9 @@ extension HomeActionSheetVC {
     let touchesViews = touches.map { $0.view }
     print(touchesViews)
     if touch?.view != homeActionSheetView, touch?.view != homeActionSheetHeaderView {
-      dismissActionSheetWithAnimation()
+      constraintsUpdateWithAnimation(updateType: .toHidden) { [unowned self] in
+        self.activateSheetHidden
+      }
     }
   }
 }

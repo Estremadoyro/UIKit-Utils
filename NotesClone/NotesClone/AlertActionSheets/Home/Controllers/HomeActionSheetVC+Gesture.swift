@@ -7,66 +7,89 @@
 
 import UIKit
 
+enum ConstraintUpdateType {
+  case toHidden
+  case toMidHeight
+  case toFullScreen
+}
+
 extension HomeActionSheetVC {
+  fileprivate var activateSheetFullScreen: Void {
+    alertIsFullHeight.constant = 0
+    alertIsFullHeight.isActive = true
+    alertIsDisplayed.isActive = false
+    alertIsHidden.isActive = false
+  }
+
+  fileprivate var activateSheetMidHeight: Void {
+    alertIsDisplayed.constant = 0
+    alertIsFullHeight.constant = 0
+    alertIsDisplayed.isActive = true
+    alertIsFullHeight.isActive = false
+    alertIsHidden.isActive = false
+  }
+
+  internal var activateSheetHidden: Void {
+    alertIsDisplayed.constant = 0
+    alertIsFullHeight.constant = 0
+    alertIsDisplayed.isActive = false
+    alertIsFullHeight.isActive = false
+    alertIsHidden.isActive = true
+  }
+
   @IBAction func didPanAction(_ gesture: UIPanGestureRecognizer) {
-    let dragTranslation = gesture.translation(in: self.view)
+    let dragTranslation = gesture.translation(in: view)
     let actionSheetHeight = homeActionSheetView.frame.size.height
-    let masterViewHeight = view.frame.size.height 
+    let masterViewHeight = view.frame.size.height - view.safeAreaInsets.top
     switch gesture.state {
       case .began:
-        print("")
+        break
       case .changed:
-//        print("pan changed")
-
-        if actionSheetHeight <= masterViewHeight {
+        print("Action height: \(actionSheetHeight)")
+        print("Master height: \(masterViewHeight)")
+        if actionSheetHeight < masterViewHeight || dragTranslation.y > 0 {
           print("actionSheetHeight: \(actionSheetHeight)")
           if alertIsFullHeight.isActive {
-            alertIsFullHeight.constant = -dragTranslation.y
-            print("full constant: \(alertIsDisplayed.constant)")
+            // Top anchor, must be negative as only option is dragging down
+            alertIsFullHeight.constant = dragTranslation.y
           } else {
+            // Height anchor, must be positive
             alertIsDisplayed.constant = -dragTranslation.y
-            print("mid constant: \(alertIsDisplayed.constant)")
           }
         } else {
-          print("alertIsFullHeight constant: \(alertIsFullHeight.constant)")
-          print("alertIsDisplayed constant: \(alertIsDisplayed.constant)")
           print("max dragging reached")
         }
 
       case .ended:
         print("pan ended")
-        print("Action height: \(actionSheetHeight)")
-        print("Master height: \(masterViewHeight)")
-        print("1/4 frame height: \(masterViewHeight / 4)")
         if actionSheetHeight <= (masterViewHeight / 4) {
           print("hide action")
-          dismissActionSheetWithAnimation()
+          constraintsUpdateWithAnimation(updateType: .toHidden) { [unowned self] in
+            self.activateSheetHidden
+          }
         } else if (actionSheetHeight / 2) + (-dragTranslation.y) > (masterViewHeight * 3 / 5) {
           print("full screen action")
-          alertIsFullHeight.constant = 0
-          alertIsFullHeight.isActive = true
-          alertIsDisplayed.isActive = false
-          alertIsHidden.isActive = false
-          print("FULL SCREEN HEIGHT: \(homeActionSheetView.frame.height)")
+          constraintsUpdateWithAnimation(updateType: .toFullScreen) { [unowned self] in
+            self.activateSheetFullScreen
+          }
+          homeActionSheetView.superview?.layoutIfNeeded()
         } else {
           print("else go back to original")
-          alertIsDisplayed.isActive = true
-          alertIsFullHeight.isActive = false
-          alertIsHidden.isActive = false
-          alertIsDisplayed.constant = 0
-          alertIsFullHeight.constant = 0
+          constraintsUpdateWithAnimation(updateType: .toMidHeight) { [unowned self] in
+            self.activateSheetMidHeight
+          }
         }
-
-      case .cancelled:
-        print("pan cancelled")
-      case .failed:
-//        homeActionSheetView.transform = .identity
-        print("pan failed")
       case .possible:
-        print("pan possible (default state)")
+        break
+      case .cancelled:
+        break
+      case .failed:
+        break
       @unknown default:
-//        homeActionSheetView.transform = .identity
-        print("pan unknown")
+        constraintsUpdateWithAnimation(updateType: .toMidHeight) { [unowned self] in
+          self.activateSheetMidHeight
+        }
+        print("pan unkwnown default")
     }
   }
 }

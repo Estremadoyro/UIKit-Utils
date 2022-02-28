@@ -7,4 +7,6 @@
 
 import UIKit
 
-class NewNoteToolBarView: UIToolbar {}
+class NewNoteToolBarView: UIToolbar {
+  deinit { print("\(self) deintied") }
+}
