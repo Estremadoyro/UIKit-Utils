@@ -9,7 +9,7 @@ import UIKit
 
 class NewNoteNavigationBar {
   weak var newNoteVC: UIViewController?
-  weak var noteDelegate: NewNoteDelegate?
+  weak var newNoteDelegate: NewNoteDelegate?
 
   init(newNoteVC: UIViewController) {
     self.newNoteVC = newNoteVC
@@ -43,6 +43,6 @@ extension NewNoteNavigationBar {
   @objc
   private func doneButtonAction() {
     print("will save note")
-    noteDelegate?.willSaveNewNote()
+    newNoteDelegate?.willSaveNewNote()
   }
 }

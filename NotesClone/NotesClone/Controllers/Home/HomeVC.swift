@@ -18,7 +18,7 @@ final class HomeVC: UIViewController {
 
   lazy var notes = Notes()
   lazy var filteredNotes: [Note] = (notes.copy(with: nil) as? Notes)?.notes ?? [Note]()
-
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     tableView.dataSource = self

@@ -11,6 +11,7 @@ final class NewNoteVC: UIViewController {
   @IBOutlet private weak var textView: UITextView!
   @IBOutlet private weak var noteTitleLabel: UITextField!
   @IBOutlet private weak var scrollView: UIScrollView!
+  @IBOutlet private weak var newNoteToolBarView: NewNoteToolBarView!
 
   weak var notesDelegate: NotesDelegate?
   var noteSceneType: NoteSceneType = .isCreatingNewNote
@@ -28,11 +29,15 @@ final class NewNoteVC: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     print("note scene type: \(noteSceneType)")
-    newNoteNavigation.noteDelegate = self
+    newNoteNavigation.newNoteDelegate = self
+    newNoteToolBarView.newNoteDelegate = self
+    newNoteToolBarView.newNoteDataSource = self
     noteTitleLabel.delegate = self
+    textView.delegate = self
     scrollView.delegate = self
     configureNavigationBar()
     configureNoteIfEditing(note: note)
+    newNoteToolBarView.setClearItemState()
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -92,6 +97,25 @@ extension NewNoteVC: NewNoteDelegate {
     navigationController?.popViewController(animated: true)
   }
 
+  func didClearNewNote() {
+    noteTitleLabel.text? = ""
+    textView.text? = ""
+  }
+}
+
+extension NewNoteVC: NewNoteDataSource {
+  func getNewNoteLength() -> Int {
+    guard let titleCharsLength = noteTitleLabel.text?.count else {
+      return 0
+    }
+
+    let bodyCharsLength = textView.text.count
+
+    return titleCharsLength + bodyCharsLength
+  }
+}
+
+extension NewNoteVC {
   private func createNewNote(title: String, body: String) {
     let note = Note(title: title, body: body)
     notes?.notes.append(note)
@@ -123,5 +147,15 @@ extension NewNoteVC: UITextFieldDelegate {
       default:
         return
     }
+  }
+
+  func textFieldDidChangeSelection(_ textField: UITextField) {
+    newNoteToolBarView.setClearItemState()
+  }
+}
+
+extension NewNoteVC: UITextViewDelegate {
+  func textViewDidChange(_ textView: UITextView) {
+    newNoteToolBarView.setClearItemState()
   }
 }

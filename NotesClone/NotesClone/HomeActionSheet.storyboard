@@ -55,6 +55,7 @@
                                             <constraint firstAttribute="trailing" secondItem="JsQ-7d-kID" secondAttribute="trailing" constant="10" id="PlG-qU-xlM"/>
                                             <constraint firstItem="YJR-lm-YuF" firstAttribute="leading" secondItem="zoa-2h-B3v" secondAttribute="leading" constant="15" id="RD7-T2-AEU"/>
                                             <constraint firstItem="YJR-lm-YuF" firstAttribute="top" secondItem="zoa-2h-B3v" secondAttribute="top" constant="15" id="dwI-aB-tIm"/>
+                                            <constraint firstAttribute="height" constant="67" id="gsr-jc-44O"/>
                                             <constraint firstItem="q8n-FA-Klp" firstAttribute="leading" secondItem="YJR-lm-YuF" secondAttribute="trailing" constant="5" id="myu-0g-Vxy"/>
                                         </constraints>
                                     </view>
@@ -76,7 +77,6 @@
                                     <constraint firstItem="6HR-Hx-2j4" firstAttribute="leading" secondItem="gxS-RZ-Jtc" secondAttribute="leading" id="XX6-ws-U3M"/>
                                     <constraint firstItem="zoa-2h-B3v" firstAttribute="leading" secondItem="gxS-RZ-Jtc" secondAttribute="leading" id="YE5-qP-yWh"/>
                                     <constraint firstItem="zoa-2h-B3v" firstAttribute="top" secondItem="gxS-RZ-Jtc" secondAttribute="top" id="mk7-7L-os3"/>
-                                    <constraint firstItem="zoa-2h-B3v" firstAttribute="height" secondItem="gxS-RZ-Jtc" secondAttribute="height" multiplier="0.15" id="sN9-Zs-fbz"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -104,6 +104,7 @@
                         <outlet property="alertIsHidden" destination="KOh-Ms-uCU" id="L4J-vk-9Ue"/>
                         <outlet property="dismissHomeActionSheetButton" destination="JsQ-7d-kID" id="GU4-6g-gb9"/>
                         <outlet property="homeActionSheetHeaderView" destination="zoa-2h-B3v" id="qiC-SF-xZl"/>
+                        <outlet property="homeActionSheetHeaderViewHeight" destination="gsr-jc-44O" id="pYU-MU-mCg"/>
                         <outlet property="homeActionSheetView" destination="gxS-RZ-Jtc" id="Cam-rP-cVx"/>
                     </connections>
                 </viewController>

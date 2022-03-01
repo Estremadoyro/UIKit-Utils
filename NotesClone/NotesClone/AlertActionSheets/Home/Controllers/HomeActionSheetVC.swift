@@ -19,11 +19,12 @@ protocol IHomeActionSheetGestures {
 final class HomeActionSheetVC: UIViewController, IHomeActionSheetGestures {
   @IBOutlet internal weak var homeActionSheetView: HomeActionSheetView!
   @IBOutlet private weak var dismissHomeActionSheetButton: UIButton!
-  @IBOutlet private weak var homeActionSheetHeaderView: UIView!
+  @IBOutlet internal weak var homeActionSheetHeaderView: UIView!
   // Constraints must have a strong reference? or they get deallocated?
   @IBOutlet internal var alertIsHidden: NSLayoutConstraint!
   @IBOutlet internal var alertIsDisplayed: NSLayoutConstraint!
   @IBOutlet internal var alertIsFullHeight: NSLayoutConstraint!
+  @IBOutlet internal var homeActionSheetHeaderViewHeight: NSLayoutConstraint!
   private var didAnimate: Bool = false
 
   override func viewDidLoad() {
@@ -48,8 +49,8 @@ final class HomeActionSheetVC: UIViewController, IHomeActionSheetGestures {
 extension HomeActionSheetVC {
   private func animatePresentingView() {
     alertIsDisplayed.isActive = true
-    UIView.animate(withDuration: 0.35, delay: 0, animations: { [unowned self] in
-      self.homeActionSheetView.superview?.layoutIfNeeded()
+    UIView.animate(withDuration: 0.30, delay: 0, animations: { [weak self] in
+      self?.homeActionSheetView.superview?.layoutIfNeeded()
     })
   }
 }
@@ -57,20 +58,21 @@ extension HomeActionSheetVC {
 extension HomeActionSheetVC {
   @IBAction private func dismissHomeAlertActionSheet(_ sender: UIButton) {
     print("dismiss vc")
-    constraintsUpdateWithAnimation(updateType: .toHidden) { [unowned self] in
-      self.activateSheetHidden
-    }
+    constraintsUpdateWithAnimation(updateType: .toHidden) { activateSheetHidden }
   }
 
   internal func constraintsUpdateWithAnimation(updateType: ConstraintUpdateType = .toHidden, constraintsUpdates: () -> Void) {
     constraintsUpdates()
-    let customAnimation: () -> Void = {
-      self.homeActionSheetView.superview?.layoutIfNeeded()
+    let customAnimation: () -> Void = { [weak self] in
+      if updateType == .toHidden {
+        self?.homeActionSheetHeaderViewHeight.constant = 0
+      }
+      self?.homeActionSheetView.superview?.layoutIfNeeded()
     }
     let customCompletion: (Bool) -> Void = { [weak self] _ in
       self?.dismiss(animated: true, completion: nil)
     }
-    UIView.animate(withDuration: 0.35, delay: 0, options: [], animations: customAnimation, completion: updateType == .toHidden ? customCompletion : nil)
+    UIView.animate(withDuration: 0.30, delay: 0, options: [], animations: customAnimation, completion: updateType == .toHidden ? customCompletion : nil)
   }
 }
 

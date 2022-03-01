@@ -41,14 +41,19 @@ extension HomeActionSheetVC {
     let dragTranslation = gesture.translation(in: view)
     let actionSheetHeight = homeActionSheetView.frame.size.height
     let masterViewHeight = view.frame.size.height - view.safeAreaInsets.top
+    let heightForFullScreenThreshold = masterViewHeight * 4 / 5
+    let heightForHiddenThreshold = masterViewHeight / 4
+    let heightForBounceBackFullScreenThreshold = masterViewHeight * 4 / 5
+
     switch gesture.state {
       case .began:
         break
       case .changed:
-        print("Action height: \(actionSheetHeight)")
-        print("Master height: \(masterViewHeight)")
+        print("~ Action height: \(actionSheetHeight)")
+        print("~ Master height: \(masterViewHeight)")
+        print("~ drag translation: \(dragTranslation.y)")
         if actionSheetHeight < masterViewHeight || dragTranslation.y > 0 {
-          print("actionSheetHeight: \(actionSheetHeight)")
+          print("~ actionSheetHeight: \(actionSheetHeight)")
           if alertIsFullHeight.isActive {
             // Top anchor, must be negative as only option is dragging down
             alertIsFullHeight.constant = dragTranslation.y
@@ -62,22 +67,19 @@ extension HomeActionSheetVC {
 
       case .ended:
         print("pan ended")
-        if actionSheetHeight <= (masterViewHeight / 4) {
+        if actionSheetHeight <= heightForHiddenThreshold {
           print("hide action")
-          constraintsUpdateWithAnimation(updateType: .toHidden) { [unowned self] in
-            self.activateSheetHidden
-          }
-        } else if (actionSheetHeight / 2) + (-dragTranslation.y) > (masterViewHeight * 3 / 5) {
-          print("full screen action")
-          constraintsUpdateWithAnimation(updateType: .toFullScreen) { [unowned self] in
-            self.activateSheetFullScreen
-          }
+          constraintsUpdateWithAnimation(updateType: .toHidden) { activateSheetHidden }
+        } else if actionSheetHeight > heightForFullScreenThreshold {
+          constraintsUpdateWithAnimation(updateType: .toFullScreen) { activateSheetFullScreen }
+          homeActionSheetView.superview?.layoutIfNeeded()
+        } else if actionSheetHeight > heightForBounceBackFullScreenThreshold {
+          print("bounce back to full screen")
+          constraintsUpdateWithAnimation(updateType: .toFullScreen) { activateSheetFullScreen }
           homeActionSheetView.superview?.layoutIfNeeded()
         } else {
           print("else go back to original")
-          constraintsUpdateWithAnimation(updateType: .toMidHeight) { [unowned self] in
-            self.activateSheetMidHeight
-          }
+          constraintsUpdateWithAnimation(updateType: .toMidHeight) { activateSheetMidHeight }
         }
       case .possible:
         break
@@ -86,8 +88,8 @@ extension HomeActionSheetVC {
       case .failed:
         break
       @unknown default:
-        constraintsUpdateWithAnimation(updateType: .toMidHeight) { [unowned self] in
-          self.activateSheetMidHeight
+        constraintsUpdateWithAnimation(updateType: .toMidHeight) {
+          activateSheetMidHeight
         }
         print("pan unkwnown default")
     }

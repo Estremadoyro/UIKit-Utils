@@ -195,7 +195,7 @@
                                 <viewLayoutGuide key="contentLayoutGuide" id="MGM-nD-Af9"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="hQI-OS-F4M"/>
                             </scrollView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KjA-tx-HGe">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KjA-tx-HGe" customClass="NewNoteToolBarView" customModule="NotesClone" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="806.5" width="414" height="89.5"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <items>
@@ -205,9 +205,19 @@
                                     <barButtonItem systemItem="flexibleSpace" id="BTg-3o-uvd"/>
                                     <barButtonItem title="Item" image="pencil.tip.crop.circle" catalog="system" id="dDC-fh-R6z"/>
                                     <barButtonItem systemItem="flexibleSpace" id="Egt-LZ-hfJ"/>
-                                    <barButtonItem systemItem="compose" id="Ytc-9P-1sP"/>
+                                    <barButtonItem systemItem="compose" id="Ytc-9P-1sP">
+                                        <connections>
+                                            <action selector="clearNoteItemTapped" destination="KjA-tx-HGe" id="34M-qa-WeC"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
-                                <toolbarAppearance key="standardAppearance"/>
+                                <toolbarAppearance key="compactAppearance"/>
+                                <connections>
+                                    <outlet property="clearNoteItem" destination="Ytc-9P-1sP" id="hCW-Sb-tmA"/>
+                                    <outlet property="drawNoteItem" destination="dDC-fh-R6z" id="oBw-Yw-djz"/>
+                                    <outlet property="enumarateNoteItem" destination="ta3-Q9-BQH" id="BPE-tP-l0F"/>
+                                    <outlet property="pictureNoteItem" destination="5ia-la-KZv" id="oRd-nw-ESi"/>
+                                </connections>
                             </toolbar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="m1Z-Mf-oer"/>
@@ -225,6 +235,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="4cD-Uk-IYm"/>
                     <connections>
+                        <outlet property="newNoteToolBarView" destination="KjA-tx-HGe" id="lSR-mq-o83"/>
                         <outlet property="noteTitleLabel" destination="4OD-N7-cIQ" id="ujr-L5-oEw"/>
                         <outlet property="scrollView" destination="mFn-gj-8BJ" id="pFb-2A-gfl"/>
                         <outlet property="textView" destination="4RK-9A-CWu" id="lVD-jR-A0p"/>
