@@ -35,3 +35,8 @@ class SandBox {
     textView.attributedText = attributedText
   }
 }
+
+extension SandBox {
+  // find pin, expensive, but there is a simpler way with 2 lists (pinned and not pinned)
+//          let noteToPin: Note = notes.first(where: { $0.id == strongSelf.notPinnedNotes[globalIndex - pinnedNotes].id }) ?? Note(title: "error", body: "error")
+}

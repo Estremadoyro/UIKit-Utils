@@ -17,8 +17,12 @@ final class HomeVC: UIViewController {
   var insertIndexPath: IndexPath?
 
   lazy var notes = Notes()
+  var notPinnedNotes = [Note]()
+  var pinnedNotes = [Note]()
   lazy var filteredNotes: [Note] = (notes.copy(with: nil) as? Notes)?.notes ?? [Note]()
-  
+
+  var tableSectionsAmount: Int = 1
+
   override func viewDidLoad() {
     super.viewDidLoad()
     tableView.dataSource = self
@@ -27,6 +31,7 @@ final class HomeVC: UIViewController {
     configureNavigationBar()
     configureToolbar()
     configureGestures()
+    notes.notes.forEach { print("pinned: \($0.pinned)") }
   }
 
   override func viewDidAppear(_ animated: Bool) {

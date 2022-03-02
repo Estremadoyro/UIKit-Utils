@@ -49,9 +49,6 @@ extension HomeActionSheetVC {
       case .began:
         break
       case .changed:
-        print("~ Action height: \(actionSheetHeight)")
-        print("~ Master height: \(masterViewHeight)")
-        print("~ drag translation: \(dragTranslation.y)")
         if actionSheetHeight < masterViewHeight || dragTranslation.y > 0 {
           print("~ actionSheetHeight: \(actionSheetHeight)")
           if alertIsFullHeight.isActive {

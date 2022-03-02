@@ -12,6 +12,7 @@ class Note: Codable, Identifiable {
   var title: String
   var body: String
   var date = Date()
+  var pinned: Bool = false
 
   init(title: String, body: String) {
     self.title = title

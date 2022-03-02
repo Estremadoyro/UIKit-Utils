@@ -7,7 +7,24 @@
 
 import UIKit
 
+enum NotePinState {
+  case isPinned
+  case notPinned
+}
+
 extension HomeVC: UITableViewDataSource {
+  fileprivate func filterNotesByPinned(pin: NotePinState) -> [Note] {
+    return notes.notes.filter { pin == .isPinned ? $0.pinned : !$0.pinned }
+  }
+
+  fileprivate func getIndexForSection(in indexPath: IndexPath) -> Int {
+    var sumRowsBySection: Int = 0
+    for section in 0 ..< indexPath.section {
+      sumRowsBySection += tableView.numberOfRows(inSection: section)
+    }
+    return sumRowsBySection + indexPath.row
+  }
+
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeConstants.notesCellId, for: indexPath) as? NoteCellView else {
       fatalError("Error dequeing \(HomeConstants.notesCellId)")
@@ -18,11 +35,30 @@ extension HomeVC: UITableViewDataSource {
   }
 
   func numberOfSections(in tableView: UITableView) -> Int {
-    return 1
+    return tableSectionsAmount
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return filteredNotes.count
+    guard tableView.numberOfSections == 2 else {
+      return filteredNotes.count
+    }
+
+    let pinnedNotesAmount = filterNotesByPinned(pin: .isPinned).count
+    let remainingNormalNotesAmount = filteredNotes.count - pinnedNotesAmount
+    print("SECTION 1 AMOUNT: \(remainingNormalNotesAmount)")
+    print("SECTION 0 AMOUNT: \(pinnedNotesAmount)")
+    return section == 1 ? remainingNormalNotesAmount : pinnedNotesAmount
+  }
+
+  func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    guard tableView.numberOfSections == 2 else {
+      return ""
+    }
+    return section == 0 ? "Pinned" : "Notes"
+  }
+
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    return 1
   }
 }
 
@@ -62,8 +98,57 @@ extension HomeVC: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-    let pinActionCompletion: (UIContextualAction, UIView, @escaping (Bool) -> Void) -> Void = { _, _, completion in
-      completion(true)
+    let pinActionCompletion: (UIContextualAction, UIView, @escaping (Bool) -> Void) -> Void = { [weak self] _, _, completion in
+      guard let strongSelf = self else { return }
+      defer {
+        strongSelf.notPinnedNotes = strongSelf.filterNotesByPinned(pin: .notPinned).reversed()
+        strongSelf.pinnedNotes = strongSelf.filterNotesByPinned(pin: .isPinned).reversed()
+//        let rowsPinned: Int = tableView.numberOfRows(inSection: 0)
+        let globalIndex: Int = strongSelf.getIndexForSection(in: indexPath)
+        let pinnedNotes: Int = tableView.numberOfRows(inSection: 0)
+        print("global index: \(globalIndex)")
+        print("# PINNED notes: \(pinnedNotes)")
+        print("NOT pinned notes: \(strongSelf.notPinnedNotes.map { $0.title })")
+        print("CURRENT SECTION: \(indexPath.section)")
+        if indexPath.section == 1 || pinnedNotes == 0 {
+          let noteToPin: Note = strongSelf.notPinnedNotes[globalIndex - pinnedNotes]
+          noteToPin.pinned.toggle()
+          print("noteToPin: \(noteToPin.title)")
+          print("ALL CURRENT NOTES OBJ PINN STATUS: \(strongSelf.notes.notes.map { $0.pinned })")
+
+          let pinnedIndex = IndexPath(row: 0, section: 0)
+          let normalIndex = IndexPath(row: indexPath.row, section: 1)
+
+          if noteToPin.pinned {
+            print("new note toggled: \(noteToPin.pinned)")
+            tableView.moveRow(at: normalIndex, to: pinnedIndex)
+          }
+        } else if indexPath.section == 0 {
+          let noteToUnPin: Note = strongSelf.pinnedNotes[pinnedNotes - 1]
+          noteToUnPin.pinned.toggle()
+          print("noteToUnPin: \(noteToUnPin.title)")
+
+          let pinnedIndex = IndexPath(row: indexPath.row, section: 0)
+          let normalIndex = IndexPath(row: 0, section: 1)
+
+          if !noteToUnPin.pinned {
+            strongSelf.pinnedNotes = strongSelf.filterNotesByPinned(pin: .isPinned)
+            print("new note toggled: \(noteToUnPin.pinned)")
+            print("DELETE SECTIONS, # pinned notes: \(strongSelf.pinnedNotes.count)")
+            tableView.moveRow(at: pinnedIndex, to: normalIndex)
+            if strongSelf.pinnedNotes.count == 0 {
+              strongSelf.tableSectionsAmount = 1
+              tableView.deleteSections(IndexSet(arrayLiteral: 0), with: .automatic)
+            }
+          }
+        }
+        completion(true)
+      }
+      guard tableView.numberOfSections < 2 else { return }
+      strongSelf.tableSectionsAmount += 1
+      let newSection = IndexSet(arrayLiteral: 0)
+      print("MIERDAAAAAAAAAAA")
+      tableView.insertSections(newSection, with: .automatic)
     }
     let pinAction = UIContextualAction(style: .normal, title: nil, handler: pinActionCompletion)
     pinAction.image = UIImage(systemName: "pin.fill")
@@ -87,9 +172,9 @@ extension HomeVC {
 
 extension HomeVC {
   func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    cell.alpha = 0
-    UIView.animate(withDuration: 0.5, delay: 0.05 * Double(indexPath.row), animations: {
-      cell.alpha = 1
-    })
+    cell.alpha = 1
+//    UIView.animate(withDuration: 0.5, delay: 0.05 * Double(indexPath.row), animations: {
+//      cell.alpha = 1
+//    })
   }
 }

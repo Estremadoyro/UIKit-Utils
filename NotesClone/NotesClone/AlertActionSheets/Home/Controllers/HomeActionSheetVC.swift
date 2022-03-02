@@ -79,8 +79,6 @@ extension HomeActionSheetVC {
 extension HomeActionSheetVC {
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     let touch = touches.first
-    let touchesViews = touches.map { $0.view }
-    print(touchesViews)
     if touch?.view != homeActionSheetView, touch?.view != homeActionSheetHeaderView {
       constraintsUpdateWithAnimation(updateType: .toHidden) { [unowned self] in
         self.activateSheetHidden
