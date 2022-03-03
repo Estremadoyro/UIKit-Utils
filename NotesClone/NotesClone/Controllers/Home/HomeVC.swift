@@ -25,6 +25,7 @@ final class HomeVC: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+//    UserDefaults.standard.reset()
     tableView.dataSource = self
     tableView.delegate = self
     homeSearchBar.delegate = self
@@ -88,8 +89,7 @@ extension HomeVC: NotesDelegate {
   func didSaveNote(note: Note) {
     print("did save note")
     filteredNotes.append(note)
-    let indexPath = IndexPath(row: 0, section: 0)
-    insertIndexPath = indexPath
+    insertIndexPath = IndexPath(row: 0, section: tableSectionsAmount > 1 ? 1 : 0)
   }
 
   func didEditNote(note: Note) {

@@ -30,7 +30,7 @@ class NewNoteNavigationBar {
   }
 
   deinit {
-    print("\(self) deinited")
+    print("NewNavigationBar deinited")
   }
 }
 
