@@ -18,4 +18,8 @@ class Note: Codable, Identifiable {
     self.title = title
     self.body = body
   }
+
+  deinit {
+    print("\(self.title) (\(self.id)) deleted")
+  }
 }

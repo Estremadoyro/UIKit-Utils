@@ -15,6 +15,7 @@ final class NewNoteVC: UIViewController {
 
   weak var notesDelegate: NotesDelegate?
   var noteSceneType: NoteSceneType = .isCreatingNewNote
+  var noteIndexPath = IndexPath(row: 0, section: 0)
 
   var notes: Notes? {
     didSet {
@@ -130,7 +131,7 @@ extension NewNoteVC {
     noteToEdit.title = title
     noteToEdit.body = body
     UserDefaults.standard.save(key: DefaultKeys.NOTES_KEY, obj: notes)
-    notesDelegate?.didEditNote(note: noteToEdit)
+    notesDelegate?.didEditNote(note: noteToEdit, noteIndexPath: noteIndexPath)
   }
 }
 

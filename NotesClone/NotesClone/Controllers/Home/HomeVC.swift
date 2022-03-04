@@ -17,11 +17,16 @@ final class HomeVC: UIViewController {
   var insertIndexPath: IndexPath?
 
   lazy var notes = Notes()
-  var notPinnedNotes = [Note]()
-  var pinnedNotes = [Note]()
+  lazy var notPinnedNotes = self.filterNotesByPinned(pin: .notPinned)
+  lazy var pinnedNotes = self.filterNotesByPinned(pin: .isPinned)
+
   lazy var filteredNotes: [Note] = (notes.copy(with: nil) as? Notes)?.notes ?? [Note]()
 
-  var tableSectionsAmount: Int = 1
+  var tableSectionsAmount: Int = 1 {
+    didSet {
+      assert(tableSectionsAmount <= 2 && tableSectionsAmount > 0, "# Sections can't be greater than 2 or lower than 0")
+    }
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -75,10 +80,14 @@ extension HomeVC {
         // Edit Note
         let cellSender = sender as? NoteCellView
         let newNoteVC = segue.destination as? NewNoteVC
+        guard let indexPath = tableView.indexPathForSelectedRow else {
+          fatalError("ERROR PASSING INDEX PATH TO EDIT ROW")
+        }
         newNoteVC?.notes = notes
         newNoteVC?.note = cellSender?.note
         newNoteVC?.notesDelegate = self
         newNoteVC?.noteSceneType = .isEditingNote
+        newNoteVC?.noteIndexPath = indexPath
       default:
         return
     }
@@ -89,17 +98,26 @@ extension HomeVC: NotesDelegate {
   func didSaveNote(note: Note) {
     print("did save note")
     filteredNotes.append(note)
+    pinnedNotes = filterNotesByPinned(pin: .isPinned)
+    notPinnedNotes = filterNotesByPinned(pin: .notPinned)
     insertIndexPath = IndexPath(row: 0, section: tableSectionsAmount > 1 ? 1 : 0)
   }
 
-  func didEditNote(note: Note) {
+  func didEditNote(note: Note, noteIndexPath: IndexPath) {
     print("did edit note")
-    guard let editedNoteIndex = filteredNotes.firstIndex(where: { $0.id == note.id }) else { return }
+    print("NOTE NEW VALUE: \(note.title)")
+    guard let editedNoteIndex = filteredNotes.firstIndex(where: { $0.id == note.id }) else {
+      fatalError("Didn't find edited note: \(note.title) (\(note.id), pinned? \(note.pinned)")
+    }
+    print("edited note: \(filteredNotes[editedNoteIndex].title)")
     let editedNote = filteredNotes[editedNoteIndex]
     editedNote.title = note.title
     editedNote.body = note.body
-    let reversedIndex = (filteredNotes.count - 1) - editedNoteIndex
-    let indexPath = IndexPath(row: reversedIndex, section: 0)
+//    let reversedIndex = (filteredNotes.count - 1) - editedNoteIndex
+    print("EDITED NOTE: \(editedNote.title) INDEXPATH - row: \(noteIndexPath.row), section: \(noteIndexPath.section)")
+    pinnedNotes = filterNotesByPinned(pin: .isPinned)
+    notPinnedNotes = filterNotesByPinned(pin: .notPinned)
+    let indexPath = IndexPath(row: noteIndexPath.row, section: noteIndexPath.section)
     editIndexPath = indexPath
   }
 }
