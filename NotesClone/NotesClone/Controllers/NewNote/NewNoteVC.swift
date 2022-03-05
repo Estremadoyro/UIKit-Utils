@@ -127,7 +127,11 @@ extension NewNoteVC {
     guard let notes = notes else { return }
     guard let note = note else { return }
     guard let noteToEditIndex = notes.notes.firstIndex(where: { $0.id == note.id }) else { return }
+    print("[NOTES] NOTE TO EDIT INDEX: \(noteToEditIndex)")
+    print("[NOTES] TITLE: \(title)")
+    
     let noteToEdit = notes.notes[noteToEditIndex]
+    print("[NOTES] NOTE TO EDIT: \(noteToEdit.title)")
     noteToEdit.title = title
     noteToEdit.body = body
     UserDefaults.standard.save(key: DefaultKeys.NOTES_KEY, obj: notes)

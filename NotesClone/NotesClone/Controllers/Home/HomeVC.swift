@@ -30,7 +30,8 @@ final class HomeVC: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-//    UserDefaults.standard.reset()
+    UserDefaults.standard.reset()
+    notes.notes = Utils.createDummyData(10)
     tableView.dataSource = self
     tableView.delegate = self
     homeSearchBar.delegate = self
@@ -44,6 +45,7 @@ final class HomeVC: UIViewController {
     super.viewDidAppear(animated)
     if let editIndexPath = editIndexPath {
       tableView.reloadRows(at: [editIndexPath], with: .automatic)
+      print("RELOADED INDEXPATH - row: \(editIndexPath.row) | section: \(editIndexPath.section)")
       self.editIndexPath = nil
     }
 
@@ -118,6 +120,8 @@ extension HomeVC: NotesDelegate {
     pinnedNotes = filterNotesByPinned(pin: .isPinned)
     notPinnedNotes = filterNotesByPinned(pin: .notPinned)
     let indexPath = IndexPath(row: noteIndexPath.row, section: noteIndexPath.section)
+    print("PINNED ORDER: \(pinnedNotes.map { $0.title })")
+    print("NOT PINNED ORDER: \(notPinnedNotes.map { $0.title })")
     editIndexPath = indexPath
   }
 }

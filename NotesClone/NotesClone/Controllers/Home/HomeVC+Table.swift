@@ -29,7 +29,12 @@ extension HomeVC: UITableViewDataSource {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeConstants.notesCellId, for: indexPath) as? NoteCellView else {
       fatalError("Error dequeing \(HomeConstants.notesCellId)")
     }
-    let note = filteredNotes.reversed()[indexPath.row]
+//    let note = filteredNotes.reversed()[indexPath.row]
+    var note = notPinnedNotes.reversed()[indexPath.row]
+    if indexPath.section == 0, tableView.numberOfSections == 2 {
+      note = pinnedNotes.reversed()[indexPath.row]
+      print("[CELL] Index: \(indexPath.row) - \(note.title)")
+    }
     cell.note = note
     return cell
   }

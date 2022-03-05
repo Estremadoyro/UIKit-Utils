@@ -12,6 +12,7 @@
 		A7104F2127C93E2100EE10CD /* HomeActionSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7104F2027C93E2100EE10CD /* HomeActionSheetView.swift */; };
 		A715BE3127C0C36C004478F9 /* HomeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A715BE3027C0C36C004478F9 /* HomeTableView.swift */; };
 		A715BE3327C0C437004478F9 /* NoteCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A715BE3227C0C437004478F9 /* NoteCellView.swift */; };
+		A7297F6127D2DBDF006F6022 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7297F6027D2DBDF006F6022 /* Utils.swift */; };
 		A72E411527C49773005D99C9 /* HomeVC+Table.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72E411427C49773005D99C9 /* HomeVC+Table.swift */; };
 		A72E411F27C4A66A005D99C9 /* HomeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72E411E27C4A66A005D99C9 /* HomeConstants.swift */; };
 		A7514F6B27C493BB00040DD2 /* NewNoteToolBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7514F6A27C493BB00040DD2 /* NewNoteToolBarView.swift */; };
@@ -43,6 +44,7 @@
 		A7104F2027C93E2100EE10CD /* HomeActionSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeActionSheetView.swift; sourceTree = "<group>"; };
 		A715BE3027C0C36C004478F9 /* HomeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableView.swift; sourceTree = "<group>"; };
 		A715BE3227C0C437004478F9 /* NoteCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCellView.swift; sourceTree = "<group>"; };
+		A7297F6027D2DBDF006F6022 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		A72E411427C49773005D99C9 /* HomeVC+Table.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeVC+Table.swift"; sourceTree = "<group>"; };
 		A72E411E27C4A66A005D99C9 /* HomeConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeConstants.swift; sourceTree = "<group>"; };
 		A7514F6A27C493BB00040DD2 /* NewNoteToolBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewNoteToolBarView.swift; sourceTree = "<group>"; };
@@ -81,6 +83,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A7297F5F27D2DBD8006F6022 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A7297F6027D2DBDF006F6022 /* Utils.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		A72E411627C49DB8005D99C9 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -228,6 +238,7 @@
 		A7EFA26F27C08B44003B1FCF /* NotesClone */ = {
 			isa = PBXGroup;
 			children = (
+				A7297F5F27D2DBD8006F6022 /* Utils */,
 				A72E411D27C4A657005D99C9 /* Constants */,
 				A72E411A27C4A20B005D99C9 /* Protocols */,
 				A7A333F527C2E5FA00CF3A7E /* Extensions */,
@@ -354,6 +365,7 @@
 				A715BE3127C0C36C004478F9 /* HomeTableView.swift in Sources */,
 				A7EFA28827C09CB0003B1FCF /* HomeToolBarView.swift in Sources */,
 				A7EFA27527C08B44003B1FCF /* HomeVC.swift in Sources */,
+				A7297F6127D2DBDF006F6022 /* Utils.swift in Sources */,
 				A7514F6B27C493BB00040DD2 /* NewNoteToolBarView.swift in Sources */,
 				A72E411527C49773005D99C9 /* HomeVC+Table.swift in Sources */,
 				A72E411F27C4A66A005D99C9 /* HomeConstants.swift in Sources */,
