@@ -13,10 +13,6 @@ enum NotePinState {
 }
 
 extension HomeVC: UITableViewDataSource {
-  internal func filterNotesByPinned(pin: NotePinState) -> [Note] {
-    return notes.notes.filter { pin == .isPinned ? $0.pinned : !$0.pinned }
-  }
-
   fileprivate func getIndexForSection(in indexPath: IndexPath) -> Int {
     var sumRowsBySection: Int = 0
     for section in 0 ..< indexPath.section {
@@ -29,12 +25,14 @@ extension HomeVC: UITableViewDataSource {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeConstants.notesCellId, for: indexPath) as? NoteCellView else {
       fatalError("Error dequeing \(HomeConstants.notesCellId)")
     }
-//    let note = filteredNotes.reversed()[indexPath.row]
-    var note = notPinnedNotes.reversed()[indexPath.row]
-    if indexPath.section == 0, tableView.numberOfSections == 2 {
-      note = pinnedNotes.reversed()[indexPath.row]
-      print("[CELL] Index: \(indexPath.row) - \(note.title)")
+    let pinnedNotes: [Note] = notes.filterNotesPinnedAmount(pin: .isPinned)
+    let notPinnedNotes: [Note] = notes.filterNotesPinnedAmount(pin: .notPinned)
+    var note = notPinnedNotes[indexPath.row]
+
+    if tableView.numberOfSections == 2, indexPath.section == 0 {
+      note = pinnedNotes[indexPath.row]
     }
+
     cell.note = note
     return cell
   }
@@ -48,8 +46,10 @@ extension HomeVC: UITableViewDataSource {
       return filteredNotes.count
     }
 
-    let pinnedNotesAmount = filterNotesByPinned(pin: .isPinned).count
-    let remainingNormalNotesAmount = filteredNotes.count - pinnedNotesAmount
+    let pinnedNotesAmount: Int = notes.filterNotesPinnedAmount(pin: .isPinned).count
+    print("PINNED NOTES AMOUNT: \(pinnedNotesAmount)")
+    let remainingNormalNotesAmount = notes.notes.count - pinnedNotesAmount
+    print("NEW NUMBER OF ROWS IN SECTION: \(remainingNormalNotesAmount)")
     return section == 1 ? remainingNormalNotesAmount : pinnedNotesAmount
   }
 
@@ -73,39 +73,12 @@ extension HomeVC: UITableViewDelegate {
         completion(true)
       }
       let globalIndex: Int = self.getIndexForSection(in: indexPath)
-      var rowIndex: Int = globalIndex
-      var newIndexPath = IndexPath(row: rowIndex, section: 0)
-      var noteToDelete = indexPath.section == 0 && tableView.numberOfSections == 2 ? self.pinnedNotes[rowIndex] : self.notPinnedNotes[rowIndex]
-      var sectionNoteList: [Note] = self.notPinnedNotes
-      // at least 1 pinned note (pin section exists)
-      // Sections 2 | section: not pinned
-      if indexPath.section == 1 {
-        rowIndex = globalIndex - self.pinnedNotes.count
-        noteToDelete = self.notPinnedNotes[rowIndex]
-        newIndexPath = IndexPath(row: rowIndex, section: 1)
-        // Sections 2 | section: pinned
-      } else if indexPath.section == 0, tableView.numberOfSections == 2 {
-        print("NOT TO DELETE IS PINNED")
-        rowIndex = globalIndex
-        noteToDelete = self.pinnedNotes[rowIndex]
-        sectionNoteList = self.pinnedNotes
-        // Sections 1 | section: not pinned
-      } // else if indexPath.section == 0, tableView.numberOfSections == 1 {}
-
-      // must be first, or noteToDelete will have already deleted the note (notPinnedNotes share same Note-item memory from Notes obj.)
-      print("NOTE TO DELETE: \(noteToDelete.title)")
-      self.filteredNotes.removeAll(where: { $0.id == noteToDelete.id })
-      self.notes.notes.removeAll(where: { $0.id == noteToDelete.id })
-      // also removes from Notes obj, sharing same [Note] address
-      sectionNoteList.remove(at: rowIndex)
-      print("new notes: \(self.notes.notes.map { $0.title })")
-      self.tableView.deleteRows(at: [newIndexPath], with: .left)
-      self.notPinnedNotes = self.filterNotesByPinned(pin: .notPinned).reversed()
-      self.pinnedNotes = self.filterNotesByPinned(pin: .isPinned).reversed()
-      if tableView.numberOfSections == 2, self.pinnedNotes.count == 0 {
-        self.tableSectionsAmount = 1
-        tableView.deleteSections(IndexSet(arrayLiteral: 0), with: .left)
-      }
+      self.notes.deleteNote(&self.filteredNotes, note: self.notes.notes[globalIndex])
+      self.tableView.deleteRows(at: [indexPath], with: .left)
+//      if tableView.numberOfSections == 2, self.pinnedNotes.count == 0 {
+//        self.tableSectionsAmount = 1
+//        tableView.deleteSections(IndexSet(arrayLiteral: 0), with: .left)
+//      }
     }
 
     let moveToFolderActionCompletion: (UIContextualAction, UIView, @escaping (Bool) -> Void) -> Void = { _, _, completion in
@@ -137,64 +110,24 @@ extension HomeVC: UITableViewDelegate {
     let pinActionCompletion: (UIContextualAction, UIView, @escaping (Bool) -> Void) -> Void = { [weak self] _, _, completion in
       guard let strongSelf = self else { return }
       defer {
-        let globalIndex: Int = strongSelf.getIndexForSection(in: indexPath)
-        let pinnedIndex: IndexPath
-        let normalIndex: IndexPath
-        print("global index: \(globalIndex)")
-        // || pinnedNotes == 0 -> To allow the first unpinned note to pass
-        // Note to pin
-        if indexPath.section == 1 || strongSelf.pinnedNotes.count == 0 {
-          guard let noteViewToPin = tableView.cellForRow(at: IndexPath(row: globalIndex - strongSelf.pinnedNotes.count, section: 1)) as? NoteCellView else {
-            fatalError("[Pinning] Note doesn't exist @ \(globalIndex)")
-          }
-          let noteToPin: Note = strongSelf.notPinnedNotes.first(where: { $0.id == noteViewToPin.note?.id }) ?? Note(title: "ERROR", body: "pinning")
-          noteToPin.pinned.toggle()
-          strongSelf.pinnedNotes = strongSelf.filterNotesByPinned(pin: .isPinned)
-          strongSelf.notPinnedNotes = strongSelf.filterNotesByPinned(pin: .notPinned)
-          print("noteToPin: \(noteToPin.title)")
-          print("ALL CURRENT NOTES OBJ PINN STATUS: \(strongSelf.notes.notes.map { "\($0.title):  \($0.pinned)" })")
-
-          pinnedIndex = IndexPath(row: 0, section: 0)
-          normalIndex = IndexPath(row: indexPath.row, section: 1)
-
-          if noteToPin.pinned {
-            print("new note toggled: \(noteToPin.pinned)")
-            tableView.moveRow(at: normalIndex, to: pinnedIndex)
-            print("NOT pinned notes: \(strongSelf.notPinnedNotes.map { $0.title }), # \(strongSelf.notPinnedNotes.count)")
-            print("PINNED notes: \(strongSelf.pinnedNotes.map { $0.title }), # \(strongSelf.pinnedNotes.count)")
-          }
-          // Note to un-pin
-        } else if indexPath.section == 0 {
-          print("GLOBAL INDEX: \(globalIndex)")
-          print("pinned notes: \(strongSelf.pinnedNotes.map { $0.title })")
-          guard let noteViewToUnPin = tableView.cellForRow(at: IndexPath(row: globalIndex, section: 0)) as? NoteCellView else {
-            fatalError("[Unpinning] Note doesn't exist @ \(globalIndex)")
-          }
-          let noteToUnPin: Note = strongSelf.pinnedNotes.first(where: { $0.id == noteViewToUnPin.note?.id }) ?? Note(title: "ERROR", body: "unpinning")
-          noteToUnPin.pinned.toggle()
-          strongSelf.pinnedNotes = strongSelf.filterNotesByPinned(pin: .isPinned)
-          strongSelf.notPinnedNotes = strongSelf.filterNotesByPinned(pin: .notPinned)
-          print("noteToUnPin: \(noteToUnPin.title)")
-
-          pinnedIndex = IndexPath(row: indexPath.row, section: 0)
-          normalIndex = IndexPath(row: 0, section: 1)
-
-          if !noteToUnPin.pinned {
-            print("new note toggled: \(noteToUnPin.pinned)")
-            print("DELETE SECTIONS, # pinned notes: \(strongSelf.pinnedNotes.count)")
-            tableView.moveRow(at: pinnedIndex, to: normalIndex)
-            if strongSelf.pinnedNotes.count == 0 {
-              strongSelf.tableSectionsAmount = 1
-              tableView.deleteSections(IndexSet(arrayLiteral: 0), with: .left)
-            }
-          }
+        let pinnedNotesAmount: Int = strongSelf.notes.filterNotesPinnedAmount(pin: .isPinned).count
+        let pinnedIndexPath = IndexPath(row: 0, section: 0)
+        var notPinnedIndexPath = indexPath
+        // If note is first to be pinned, update Index (section 1) after creating the section
+        if pinnedNotesAmount == 0 {
+          notPinnedIndexPath = IndexPath(row: indexPath.row, section: 1)
         }
-        completion(true)
+        print("[PIN] notPinnedIndexPath - row: \(notPinnedIndexPath.row) | section: \(notPinnedIndexPath.section)")
+        // Global index to update with the Notes' list
+        let globalIndex: Int = strongSelf.getIndexForSection(in: indexPath)
+        strongSelf.notes.pinNote(&strongSelf.filteredNotes, noteIndex: globalIndex)
+        tableView.moveRow(at: notPinnedIndexPath, to: pinnedIndexPath)
       }
-      guard tableView.numberOfSections < 2 else { return }
-      strongSelf.tableSectionsAmount += 1
-      let newSection = IndexSet(arrayLiteral: 0)
-      tableView.insertSections(newSection, with: .left)
+      if tableView.numberOfSections < 2 {
+        strongSelf.tableSectionsAmount += 1
+        tableView.insertSections(IndexSet(arrayLiteral: 0), with: .left)
+      }
+      completion(true)
     }
     let pinAction = UIContextualAction(style: .normal, title: nil, handler: pinActionCompletion)
     let pinImageName = tableSectionsAmount > 1 && indexPath.section == 0 ? "pin.slash.fill" : "pin.fill"

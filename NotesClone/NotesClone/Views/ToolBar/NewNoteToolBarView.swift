@@ -23,7 +23,7 @@ class NewNoteToolBarView: UIToolbar {
     drawNoteItem.isEnabled = false
   }
 
-  deinit { print("\(self) deintied") }
+  deinit { print("NewNoteToolBarView deintied") }
 }
 
 extension NewNoteToolBarView {
@@ -37,7 +37,7 @@ extension NewNoteToolBarView {
       clearNoteItem.isEnabled = false
       return
     }
-    print("Note chars length: \(newNoteCharsLength)")
+//    print("Note chars length: \(newNoteCharsLength)")
     clearNoteItem.isEnabled = newNoteCharsLength > 0
   }
 }

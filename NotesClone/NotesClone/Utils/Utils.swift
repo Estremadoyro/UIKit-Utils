@@ -16,6 +16,7 @@ class Utils {
       let dummyNote = Note(title: String(letter).uppercased(), body: String(letter))
       notesList.append(dummyNote)
     }
+    print("dummy notes: \(notesList.map {$0.title})")
     return notesList
   }
 }

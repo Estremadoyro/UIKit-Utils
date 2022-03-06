@@ -119,23 +119,11 @@ extension NewNoteVC: NewNoteDataSource {
 extension NewNoteVC {
   private func createNewNote(title: String, body: String) {
     let note = Note(title: title, body: body)
-    notes?.notes.append(note)
     notesDelegate?.didSaveNote(note: note)
   }
 
   private func editNote(title: String, body: String) {
-    guard let notes = notes else { return }
-    guard let note = note else { return }
-    guard let noteToEditIndex = notes.notes.firstIndex(where: { $0.id == note.id }) else { return }
-    print("[NOTES] NOTE TO EDIT INDEX: \(noteToEditIndex)")
-    print("[NOTES] TITLE: \(title)")
-    
-    let noteToEdit = notes.notes[noteToEditIndex]
-    print("[NOTES] NOTE TO EDIT: \(noteToEdit.title)")
-    noteToEdit.title = title
-    noteToEdit.body = body
-    UserDefaults.standard.save(key: DefaultKeys.NOTES_KEY, obj: notes)
-    notesDelegate?.didEditNote(note: noteToEdit, noteIndexPath: noteIndexPath)
+    notesDelegate?.didEditNote(noteIndexPath: noteIndexPath, title: title, body: body)
   }
 }
 

@@ -18,5 +18,5 @@ protocol NewNoteDataSource: AnyObject {
 
 protocol NotesDelegate: AnyObject {
   func didSaveNote(note: Note)
-  func didEditNote(note: Note, noteIndexPath: IndexPath)
+  func didEditNote(noteIndexPath: IndexPath, title: String, body: String)
 }

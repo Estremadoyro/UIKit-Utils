@@ -17,9 +17,6 @@ final class HomeVC: UIViewController {
   var insertIndexPath: IndexPath?
 
   lazy var notes = Notes()
-  lazy var notPinnedNotes = self.filterNotesByPinned(pin: .notPinned)
-  lazy var pinnedNotes = self.filterNotesByPinned(pin: .isPinned)
-
   lazy var filteredNotes: [Note] = (notes.copy(with: nil) as? Notes)?.notes ?? [Note]()
 
   var tableSectionsAmount: Int = 1 {
@@ -31,14 +28,14 @@ final class HomeVC: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     UserDefaults.standard.reset()
-    notes.notes = Utils.createDummyData(10)
+    notes.notes = Utils.createDummyData(4).reversed()
     tableView.dataSource = self
     tableView.delegate = self
     homeSearchBar.delegate = self
     configureNavigationBar()
     configureToolbar()
     configureGestures()
-    notes.notes.forEach { print("pinned: \($0.pinned)") }
+    print("Loaded notes: \(notes.notes.map { "\($0.title) (P: \($0.pinned))" })")
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -98,30 +95,13 @@ extension HomeVC {
 
 extension HomeVC: NotesDelegate {
   func didSaveNote(note: Note) {
-    print("did save note")
-    filteredNotes.append(note)
-    pinnedNotes = filterNotesByPinned(pin: .isPinned)
-    notPinnedNotes = filterNotesByPinned(pin: .notPinned)
-    insertIndexPath = IndexPath(row: 0, section: tableSectionsAmount > 1 ? 1 : 0)
+    notes.insertNewNote(&filteredNotes, note: note)
+    let section: Int = tableSectionsAmount > 1 ? 1 : 0
+    insertIndexPath = IndexPath(row: 0, section: section)
   }
 
-  func didEditNote(note: Note, noteIndexPath: IndexPath) {
-    print("did edit note")
-    print("NOTE NEW VALUE: \(note.title)")
-    guard let editedNoteIndex = filteredNotes.firstIndex(where: { $0.id == note.id }) else {
-      fatalError("Didn't find edited note: \(note.title) (\(note.id), pinned? \(note.pinned)")
-    }
-    print("edited note: \(filteredNotes[editedNoteIndex].title)")
-    let editedNote = filteredNotes[editedNoteIndex]
-    editedNote.title = note.title
-    editedNote.body = note.body
-//    let reversedIndex = (filteredNotes.count - 1) - editedNoteIndex
-    print("EDITED NOTE: \(editedNote.title) INDEXPATH - row: \(noteIndexPath.row), section: \(noteIndexPath.section)")
-    pinnedNotes = filterNotesByPinned(pin: .isPinned)
-    notPinnedNotes = filterNotesByPinned(pin: .notPinned)
-    let indexPath = IndexPath(row: noteIndexPath.row, section: noteIndexPath.section)
-    print("PINNED ORDER: \(pinnedNotes.map { $0.title })")
-    print("NOT PINNED ORDER: \(notPinnedNotes.map { $0.title })")
-    editIndexPath = indexPath
+  func didEditNote(noteIndexPath: IndexPath, title: String, body: String) {
+    notes.updateNote(&filteredNotes, noteIndexPath: noteIndexPath, title: title, body: body)
+    editIndexPath = noteIndexPath
   }
 }
