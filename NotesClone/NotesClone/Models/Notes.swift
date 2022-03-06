@@ -31,7 +31,7 @@ final class Notes: Codable, NSCopying {
 }
 
 extension Notes {
-  public func filterNotesPinnedAmount(pin: NotePinState) -> [Note] {
+  public func filterNotesPinned(pin: NotePinState) -> [Note] {
     return notes.filter { pin == .isPinned ? $0.pinned : !$0.pinned }
   }
 }
@@ -56,7 +56,7 @@ extension Notes {
 extension Notes {
   public func insertNewNote(_ filteredNotes: inout [Note], note: Note) {
     // insert new note (add logic for pinned notes)
-    let pinnedNotesAmount: Int = filterNotesPinnedAmount(pin: .isPinned).count
+    let pinnedNotesAmount: Int = filterNotesPinned(pin: .isPinned).count
     notes.insert(note, at: pinnedNotesAmount == 0 ? 0 : pinnedNotesAmount)
     print("did insert new note: \(note.title)")
     filteredNotes = notes
@@ -89,7 +89,14 @@ extension Notes {
     saveNotesToLocal()
   }
 
-  public func unPinNote() {
+  public func unPinNote(_ filteredNotes: inout [Note], noteIndex: Int) {
     // unpin note
+    let pinnedNotesAmount: Int = filterNotesPinned(pin: .isPinned).count
+    guard let noteToUnPin: Note = notes.first(where: { $0.id == notes[noteIndex].id }) else { return }
+    noteToUnPin.pinned = false
+    notes.remove(at: noteIndex)
+    notes.insert(noteToUnPin, at: pinnedNotesAmount == 0 ? 0 : pinnedNotesAmount)
+    filteredNotes = notes
+    saveNotesToLocal()
   }
 }

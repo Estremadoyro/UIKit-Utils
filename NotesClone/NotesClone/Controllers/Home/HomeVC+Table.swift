@@ -25,8 +25,8 @@ extension HomeVC: UITableViewDataSource {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeConstants.notesCellId, for: indexPath) as? NoteCellView else {
       fatalError("Error dequeing \(HomeConstants.notesCellId)")
     }
-    let pinnedNotes: [Note] = notes.filterNotesPinnedAmount(pin: .isPinned)
-    let notPinnedNotes: [Note] = notes.filterNotesPinnedAmount(pin: .notPinned)
+    let pinnedNotes: [Note] = notes.filterNotesPinned(pin: .isPinned)
+    let notPinnedNotes: [Note] = notes.filterNotesPinned(pin: .notPinned)
     var note = notPinnedNotes[indexPath.row]
 
     if tableView.numberOfSections == 2, indexPath.section == 0 {
@@ -46,7 +46,7 @@ extension HomeVC: UITableViewDataSource {
       return filteredNotes.count
     }
 
-    let pinnedNotesAmount: Int = notes.filterNotesPinnedAmount(pin: .isPinned).count
+    let pinnedNotesAmount: Int = notes.filterNotesPinned(pin: .isPinned).count
     print("PINNED NOTES AMOUNT: \(pinnedNotesAmount)")
     let remainingNormalNotesAmount = notes.notes.count - pinnedNotesAmount
     print("NEW NUMBER OF ROWS IN SECTION: \(remainingNormalNotesAmount)")
@@ -74,11 +74,14 @@ extension HomeVC: UITableViewDelegate {
       }
       let globalIndex: Int = self.getIndexForSection(in: indexPath)
       self.notes.deleteNote(&self.filteredNotes, note: self.notes.notes[globalIndex])
+
+      let pinnedNotesAmount: Int = notes.filterNotesPinned(pin: .isPinned).count
       self.tableView.deleteRows(at: [indexPath], with: .left)
-//      if tableView.numberOfSections == 2, self.pinnedNotes.count == 0 {
-//        self.tableSectionsAmount = 1
-//        tableView.deleteSections(IndexSet(arrayLiteral: 0), with: .left)
-//      }
+
+      if tableView.numberOfSections == 2, pinnedNotesAmount == 0 {
+        self.tableSectionsAmount = 1
+        tableView.deleteSections(IndexSet(arrayLiteral: 0), with: .left)
+      }
     }
 
     let moveToFolderActionCompletion: (UIContextualAction, UIView, @escaping (Bool) -> Void) -> Void = { _, _, completion in
@@ -110,7 +113,7 @@ extension HomeVC: UITableViewDelegate {
     let pinActionCompletion: (UIContextualAction, UIView, @escaping (Bool) -> Void) -> Void = { [weak self] _, _, completion in
       guard let strongSelf = self else { return }
       defer {
-        let pinnedNotesAmount: Int = strongSelf.notes.filterNotesPinnedAmount(pin: .isPinned).count
+        let pinnedNotesAmount: Int = strongSelf.notes.filterNotesPinned(pin: .isPinned).count
         let pinnedIndexPath = IndexPath(row: 0, section: 0)
         var notPinnedIndexPath = indexPath
         // If note is first to be pinned, update Index (section 1) after creating the section
@@ -122,12 +125,13 @@ extension HomeVC: UITableViewDelegate {
         let globalIndex: Int = strongSelf.getIndexForSection(in: indexPath)
         strongSelf.notes.pinNote(&strongSelf.filteredNotes, noteIndex: globalIndex)
         tableView.moveRow(at: notPinnedIndexPath, to: pinnedIndexPath)
+        completion(true)
       }
+
       if tableView.numberOfSections < 2 {
         strongSelf.tableSectionsAmount += 1
         tableView.insertSections(IndexSet(arrayLiteral: 0), with: .left)
       }
-      completion(true)
     }
     let pinAction = UIContextualAction(style: .normal, title: nil, handler: pinActionCompletion)
     let pinImageName = tableSectionsAmount > 1 && indexPath.section == 0 ? "pin.slash.fill" : "pin.fill"
