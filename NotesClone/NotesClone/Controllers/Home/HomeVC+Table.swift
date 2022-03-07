@@ -7,11 +7,6 @@
 
 import UIKit
 
-enum NotePinState {
-  case isPinned
-  case notPinned
-}
-
 extension HomeVC: UITableViewDataSource {
   fileprivate func getIndexForSection(in indexPath: IndexPath) -> Int {
     var sumRowsBySection: Int = 0
@@ -25,12 +20,12 @@ extension HomeVC: UITableViewDataSource {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeConstants.notesCellId, for: indexPath) as? NoteCellView else {
       fatalError("Error dequeing \(HomeConstants.notesCellId)")
     }
-    let pinnedNotes: [Note] = notes.filterNotesPinned(pin: .isPinned)
-    let notPinnedNotes: [Note] = notes.filterNotesPinned(pin: .notPinned)
-    var note = notPinnedNotes[indexPath.row]
+    var note: Note
 
     if tableView.numberOfSections == 2, indexPath.section == 0 {
-      note = pinnedNotes[indexPath.row]
+      note = notes.pinnedNotes[indexPath.row]
+    } else {
+      note = notes.notPinnedNotes[indexPath.row]
     }
 
     cell.note = note
@@ -42,15 +37,20 @@ extension HomeVC: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    guard tableView.numberOfSections > 1 else {
-      return filteredNotes.count
+    guard tableView.numberOfSections > 1 else { return filteredNotes.count }
+
+    var rowsInSection: Int {
+      // pinned section
+      if tableView.numberOfSections == 2, section == 0 {
+        print("PINNED ROWS AMOUNT: \(notes.pinnedNotes.count)")
+        return notes.pinnedNotes.count
+      }
+      // not pinned
+      print("NOT PINNED ROWS AMOUNT: \(notes.notPinnedNotes.count)")
+      return notes.notPinnedNotes.count
     }
 
-    let pinnedNotesAmount: Int = notes.filterNotesPinned(pin: .isPinned).count
-    print("PINNED NOTES AMOUNT: \(pinnedNotesAmount)")
-    let remainingNormalNotesAmount = notes.notes.count - pinnedNotesAmount
-    print("NEW NUMBER OF ROWS IN SECTION: \(remainingNormalNotesAmount)")
-    return section == 1 ? remainingNormalNotesAmount : pinnedNotesAmount
+    return rowsInSection
   }
 
   func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -60,9 +60,7 @@ extension HomeVC: UITableViewDataSource {
     return section == 0 ? "Pinned" : "Notes"
   }
 
-  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return 1
-  }
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat { 1 }
 }
 
 extension HomeVC: UITableViewDelegate {
@@ -75,10 +73,9 @@ extension HomeVC: UITableViewDelegate {
       let globalIndex: Int = self.getIndexForSection(in: indexPath)
       self.notes.deleteNote(&self.filteredNotes, note: self.notes.notes[globalIndex])
 
-      let pinnedNotesAmount: Int = notes.filterNotesPinned(pin: .isPinned).count
       self.tableView.deleteRows(at: [indexPath], with: .left)
 
-      if tableView.numberOfSections == 2, pinnedNotesAmount == 0 {
+      if tableView.numberOfSections == 2, notes.pinnedNotes.count == 0 {
         self.tableSectionsAmount = 1
         tableView.deleteSections(IndexSet(arrayLiteral: 0), with: .left)
       }
@@ -112,25 +109,37 @@ extension HomeVC: UITableViewDelegate {
   func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     let pinActionCompletion: (UIContextualAction, UIView, @escaping (Bool) -> Void) -> Void = { [weak self] _, _, completion in
       guard let strongSelf = self else { return }
-      defer {
-        let pinnedNotesAmount: Int = strongSelf.notes.filterNotesPinned(pin: .isPinned).count
-        let pinnedIndexPath = IndexPath(row: 0, section: 0)
-        var notPinnedIndexPath = indexPath
-        // If note is first to be pinned, update Index (section 1) after creating the section
-        if pinnedNotesAmount == 0 {
-          notPinnedIndexPath = IndexPath(row: indexPath.row, section: 1)
-        }
-        print("[PIN] notPinnedIndexPath - row: \(notPinnedIndexPath.row) | section: \(notPinnedIndexPath.section)")
-        // Global index to update with the Notes' list
-        let globalIndex: Int = strongSelf.getIndexForSection(in: indexPath)
-        strongSelf.notes.pinNote(&strongSelf.filteredNotes, noteIndex: globalIndex)
-        tableView.moveRow(at: notPinnedIndexPath, to: pinnedIndexPath)
-        completion(true)
-      }
+      defer { completion(true) }
 
       if tableView.numberOfSections < 2 {
         strongSelf.tableSectionsAmount += 1
         tableView.insertSections(IndexSet(arrayLiteral: 0), with: .left)
+      }
+
+      // Global index to update with the Notes' list
+      let globalIndex: Int = strongSelf.getIndexForSection(in: indexPath)
+      var pinnedIndexPath = IndexPath(row: 0, section: 0)
+      var notPinnedIndexPath = indexPath
+
+      // If note is first to be pinned, manually update indexPath.section -> 1 (indexPath is not yet aware of the new section created)
+      if strongSelf.notes.pinnedNotes.count == 0 {
+        notPinnedIndexPath = IndexPath(row: indexPath.row, section: 1)
+      }
+
+      // Note is already pinned
+      if tableView.numberOfSections == 2, notPinnedIndexPath.section == 0 {
+        pinnedIndexPath = indexPath
+        notPinnedIndexPath = IndexPath(row: 0, section: 1)
+        strongSelf.notes.unPinNote(&strongSelf.filteredNotes, noteIndex: globalIndex)
+        tableView.moveRow(at: pinnedIndexPath, to: notPinnedIndexPath)
+      } else {
+        strongSelf.notes.pinNote(&strongSelf.filteredNotes, noteIndex: globalIndex)
+        tableView.moveRow(at: notPinnedIndexPath, to: pinnedIndexPath)
+      }
+
+      if tableView.numberOfSections == 2, strongSelf.notes.pinnedNotes.count == 0 {
+        strongSelf.tableSectionsAmount = 1
+        tableView.deleteSections(IndexSet(arrayLiteral: 0), with: .left)
       }
     }
     let pinAction = UIContextualAction(style: .normal, title: nil, handler: pinActionCompletion)
@@ -155,5 +164,9 @@ extension HomeVC {
 }
 
 extension HomeVC {
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {}
+  func setupInitialSections() {
+    if tableView.numberOfSections == 1, notes.pinnedNotes.count > 0 {
+      tableSectionsAmount += 1
+    }
+  }
 }

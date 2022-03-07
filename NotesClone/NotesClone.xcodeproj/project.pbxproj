@@ -29,6 +29,7 @@
 		A7A9A42A27C1A9F5005D9CCE /* NewNoteNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A9A42927C1A9F5005D9CCE /* NewNoteNavigationBar.swift */; };
 		A7C700E027CB317A0050B23D /* HomeActionSheetVC+Gesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C700DF27CB317A0050B23D /* HomeActionSheetVC+Gesture.swift */; };
 		A7D8721C27C2C16A00574A66 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D8721B27C2C16A00574A66 /* Note.swift */; };
+		A7E6122B27D579ED00846855 /* NotesCRUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E6122A27D579ED00846855 /* NotesCRUD.swift */; };
 		A7EFA27127C08B44003B1FCF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFA27027C08B44003B1FCF /* AppDelegate.swift */; };
 		A7EFA27327C08B44003B1FCF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFA27227C08B44003B1FCF /* SceneDelegate.swift */; };
 		A7EFA27527C08B44003B1FCF /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFA27427C08B44003B1FCF /* HomeVC.swift */; };
@@ -61,6 +62,7 @@
 		A7A9A42927C1A9F5005D9CCE /* NewNoteNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewNoteNavigationBar.swift; sourceTree = "<group>"; };
 		A7C700DF27CB317A0050B23D /* HomeActionSheetVC+Gesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeActionSheetVC+Gesture.swift"; sourceTree = "<group>"; };
 		A7D8721B27C2C16A00574A66 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
+		A7E6122A27D579ED00846855 /* NotesCRUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesCRUD.swift; sourceTree = "<group>"; };
 		A7EFA26D27C08B44003B1FCF /* NotesClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NotesClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7EFA27027C08B44003B1FCF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A7EFA27227C08B44003B1FCF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 		A72E411A27C4A20B005D99C9 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				A7E6122A27D579ED00846855 /* NotesCRUD.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -385,6 +388,7 @@
 				A7C700E027CB317A0050B23D /* HomeActionSheetVC+Gesture.swift in Sources */,
 				A7EFA27327C08B44003B1FCF /* SceneDelegate.swift in Sources */,
 				A7A333F227C2C46600CF3A7E /* Notes.swift in Sources */,
+				A7E6122B27D579ED00846855 /* NotesCRUD.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

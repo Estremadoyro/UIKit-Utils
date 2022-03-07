@@ -7,17 +7,8 @@
 
 import Foundation
 
-final class Notes: Codable, NSCopying {
-  var notes: [Note] {
-    didSet {
-      print("NOTES OBJ UPDATED")
-    }
-  }
-
-  func copy(with zone: NSZone? = nil) -> Any {
-    let copiedNotes = Notes(notes: notes)
-    return copiedNotes
-  }
+final class Notes: Codable {
+  var notes: [Note]
 
   init() {
     self.notes = UserDefaults.standard.load(key: DefaultKeys.NOTES_KEY, obj: Notes.self)?.notes ?? [Note]()
@@ -31,8 +22,14 @@ final class Notes: Codable, NSCopying {
 }
 
 extension Notes {
-  public func filterNotesPinned(pin: NotePinState) -> [Note] {
-    return notes.filter { pin == .isPinned ? $0.pinned : !$0.pinned }
+  var pinnedNotes: [Note] { notes.filter { $0.pinned } }
+  var notPinnedNotes: [Note] { notes.filter { !$0.pinned } }
+}
+
+extension Notes: NSCopying {
+  func copy(with zone: NSZone? = nil) -> Any {
+    let copiedNotes = Notes(notes: notes)
+    return copiedNotes
   }
 }
 
@@ -47,17 +44,12 @@ extension Notes {
     UserDefaults.standard.save(key: DefaultKeys.NOTES_KEY, obj: self)
     logUpdatedList()
   }
-
-  static func updateNotesPosition() {
-    // update notes position
-  }
 }
 
-extension Notes {
+extension Notes: NotesCRUD {
   public func insertNewNote(_ filteredNotes: inout [Note], note: Note) {
     // insert new note (add logic for pinned notes)
-    let pinnedNotesAmount: Int = filterNotesPinned(pin: .isPinned).count
-    notes.insert(note, at: pinnedNotesAmount == 0 ? 0 : pinnedNotesAmount)
+    notes.insert(note, at: pinnedNotes.count == 0 ? 0 : pinnedNotes.count)
     print("did insert new note: \(note.title)")
     filteredNotes = notes
     saveNotesToLocal()
@@ -91,11 +83,10 @@ extension Notes {
 
   public func unPinNote(_ filteredNotes: inout [Note], noteIndex: Int) {
     // unpin note
-    let pinnedNotesAmount: Int = filterNotesPinned(pin: .isPinned).count
     guard let noteToUnPin: Note = notes.first(where: { $0.id == notes[noteIndex].id }) else { return }
     noteToUnPin.pinned = false
     notes.remove(at: noteIndex)
-    notes.insert(noteToUnPin, at: pinnedNotesAmount == 0 ? 0 : pinnedNotesAmount)
+    notes.insert(noteToUnPin, at: pinnedNotes.count == 0 ? 0 : pinnedNotes.count)
     filteredNotes = notes
     saveNotesToLocal()
   }

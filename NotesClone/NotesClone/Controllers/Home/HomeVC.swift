@@ -16,7 +16,7 @@ final class HomeVC: UIViewController {
   var editIndexPath: IndexPath?
   var insertIndexPath: IndexPath?
 
-  lazy var notes = Notes()
+  var notes = Notes()
   lazy var filteredNotes: [Note] = (notes.copy(with: nil) as? Notes)?.notes ?? [Note]()
 
   var tableSectionsAmount: Int = 1 {
@@ -27,8 +27,8 @@ final class HomeVC: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    UserDefaults.standard.reset()
-    notes.notes = Utils.createDummyData(4).reversed()
+//    UserDefaults.standard.reset()
+//    notes.notes = Utils.createDummyData(4).reversed()
     tableView.dataSource = self
     tableView.delegate = self
     homeSearchBar.delegate = self
@@ -36,6 +36,11 @@ final class HomeVC: UIViewController {
     configureToolbar()
     configureGestures()
     print("Loaded notes: \(notes.notes.map { "\($0.title) (P: \($0.pinned))" })")
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    setupInitialSections()
   }
 
   override func viewDidAppear(_ animated: Bool) {
