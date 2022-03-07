@@ -8,7 +8,7 @@
 import UIKit
 
 extension HomeVC: UITableViewDataSource {
-  fileprivate func getIndexForSection(in indexPath: IndexPath) -> Int {
+  internal func getIndexForSection(in indexPath: IndexPath) -> Int {
     var sumRowsBySection: Int = 0
     for section in 0 ..< indexPath.section {
       sumRowsBySection += tableView.numberOfRows(inSection: section)
@@ -20,14 +20,9 @@ extension HomeVC: UITableViewDataSource {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeConstants.notesCellId, for: indexPath) as? NoteCellView else {
       fatalError("Error dequeing \(HomeConstants.notesCellId)")
     }
-    var note: Note
-
-    if tableView.numberOfSections == 2, indexPath.section == 0 {
-      note = notes.pinnedNotes[indexPath.row]
-    } else {
-      note = notes.notPinnedNotes[indexPath.row]
-    }
-
+    let globalIndex: Int = getIndexForSection(in: indexPath)
+    let note = filteredNotes[globalIndex]
+    print("LOADED NOTE: \(note.title)")
     cell.note = note
     return cell
   }
@@ -112,7 +107,7 @@ extension HomeVC: UITableViewDelegate {
       defer { completion(true) }
 
       if tableView.numberOfSections < 2 {
-        strongSelf.tableSectionsAmount += 1
+        strongSelf.tableSectionsAmount = 2
         tableView.insertSections(IndexSet(arrayLiteral: 0), with: .left)
       }
 
@@ -165,8 +160,11 @@ extension HomeVC {
 
 extension HomeVC {
   func setupInitialSections() {
-    if tableView.numberOfSections == 1, notes.pinnedNotes.count > 0 {
-      tableSectionsAmount += 1
+    print("SETUP, filteredNotesCount: \(filteredNotes.count), notes count: \(notes.notes.count)")
+    if tableView.numberOfSections == 1, notes.pinnedNotes.count > 0, !flagFiltered {
+      print("SETUP AGAIN")
+      flagFiltered = true
+      tableSectionsAmount = 2
     }
   }
 }

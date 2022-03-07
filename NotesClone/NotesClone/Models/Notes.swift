@@ -48,16 +48,16 @@ extension Notes {
 
 extension Notes: NotesCRUD {
   public func insertNewNote(_ filteredNotes: inout [Note], note: Note) {
-    // insert new note (add logic for pinned notes)
+    // insert new note
     notes.insert(note, at: pinnedNotes.count == 0 ? 0 : pinnedNotes.count)
     print("did insert new note: \(note.title)")
     filteredNotes = notes
     saveNotesToLocal()
   }
 
-  public func updateNote(_ filteredNotes: inout [Note], noteIndexPath: IndexPath, title: String, body: String) {
+  public func updateNote(_ filteredNotes: inout [Note], noteIndex: Int, title: String, body: String) {
     // update note
-    guard let noteToEdit: Note = notes.first(where: { $0.id == notes[noteIndexPath.row].id }) else { return }
+    let noteToEdit: Note = notes[noteIndex]
     noteToEdit.title = title
     noteToEdit.body = body
     filteredNotes = notes
@@ -73,7 +73,7 @@ extension Notes: NotesCRUD {
 
   public func pinNote(_ filteredNotes: inout [Note], noteIndex: Int) {
     // pin note
-    guard let noteToPin: Note = notes.first(where: { $0.id == notes[noteIndex].id }) else { return }
+    let noteToPin: Note = notes[noteIndex]
     noteToPin.pinned = true
     notes.remove(at: noteIndex)
     notes.insert(noteToPin, at: 0)

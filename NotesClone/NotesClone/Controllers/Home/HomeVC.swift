@@ -15,13 +15,14 @@ final class HomeVC: UIViewController {
   var homeNavigationBar: HomeNavigationBar?
   var editIndexPath: IndexPath?
   var insertIndexPath: IndexPath?
+  var flagFiltered: Bool = false
 
   var notes = Notes()
   lazy var filteredNotes: [Note] = (notes.copy(with: nil) as? Notes)?.notes ?? [Note]()
 
   var tableSectionsAmount: Int = 1 {
     didSet {
-      assert(tableSectionsAmount <= 2 && tableSectionsAmount > 0, "# Sections can't be greater than 2 or lower than 0")
+      assert(tableSectionsAmount <= 2 && tableSectionsAmount > 0, "# Sections can't be \(tableSectionsAmount)")
     }
   }
 
@@ -54,6 +55,7 @@ final class HomeVC: UIViewController {
     if let insertIndexPath = insertIndexPath {
       tableView.insertRows(at: [insertIndexPath], with: .automatic)
       self.insertIndexPath = nil
+      homeToolbar.configureHomeToolBar(notes: notes)
     }
   }
 
@@ -77,11 +79,13 @@ extension HomeVC {
     switch segue.identifier {
       case HomeConstants.goToNewNoteVCSegueId:
         // New Note
+        print("GO TO NEW NOTE")
         let newNoteVC = segue.destination as? NewNoteVC
         newNoteVC?.notes = notes
         newNoteVC?.notesDelegate = self
       case HomeConstants.goToEditNoteSegueId:
         // Edit Note
+        print("GO TO EDIT NOTE")
         let cellSender = sender as? NoteCellView
         let newNoteVC = segue.destination as? NewNoteVC
         guard let indexPath = tableView.indexPathForSelectedRow else {
@@ -106,7 +110,9 @@ extension HomeVC: NotesDelegate {
   }
 
   func didEditNote(noteIndexPath: IndexPath, title: String, body: String) {
-    notes.updateNote(&filteredNotes, noteIndexPath: noteIndexPath, title: title, body: body)
+    print("DID EDIT NOTE")
+    let globalIndex: Int = getIndexForSection(in: noteIndexPath)
+    notes.updateNote(&filteredNotes, noteIndex: globalIndex, title: title, body: body)
     editIndexPath = noteIndexPath
   }
 }

@@ -10,7 +10,7 @@ import Foundation
 protocol NotesCRUD {
   func insertNewNote(_ filteredNotes: inout [Note], note: Note)
 
-  func updateNote(_ filteredNotes: inout [Note], noteIndexPath: IndexPath, title: String, body: String)
+  func updateNote(_ filteredNotes: inout [Note], noteIndex: Int, title: String, body: String)
 
   func deleteNote(_ filteredNotes: inout [Note], note: Note)
 
