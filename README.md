@@ -1,5 +1,13 @@
 # UIKit Utils
-Useful code snippets, references and explanations to basic iOS topics. This repository is inspired in Paul Hudson's guide [HackingWithSwift](https://www.hackingwithswift.com/100), all the challenges and Days can be found here, up to day 75 for now.
+Useful code snippets, references and explanations to basic iOS topics. This repository is inspired in Paul Hudson's guide [HackingWithSwift](https://www.hackingwithswift.com/100) (**100DaysOfSwift**), all the challenges and Days can be found here, up to day 75 for now.
+
+<br />
+
+![Commit history](https://img.shields.io/github/commit-activity/m/estremadoyro/uikit-utils)
+![Last commit](https://img.shields.io/github/last-commit/estremadoyro/uikit-utils)
+![Languages](https://img.shields.io/github/languages/top/estremadoyro/uikit-utils)
+![Visitors](https://api.visitorbadge.io/api/visitors?path=estremadoyro%2Fuikit-utils&label=Views&labelColor=%235c5c5c&countColor=%23539bf5&style=flat)
+
 # 🔗 Useful links
 - [README.md documentation](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
 - [Organize Layout Code](https://dilloncodes.com/how-i-organize-layout-code-in-swift)
