@@ -4,3 +4,6 @@
 [submodule "PhotoLibrary"]
 	path = PhotoLibrary
 	url = https://github.com/Estremadoyro/PhotoLibrary
+[submodule "Hangman"]
+	path = Hangman
+	url = https://github.com/Estremadoyro/Hangman
