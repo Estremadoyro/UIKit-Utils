@@ -47,27 +47,43 @@ extension Notes {
 }
 
 extension Notes: NotesCRUD {
-  public func insertNewNote(_ filteredNotes: inout [Note], note: Note) {
+  public func insertNewNote(_ filteredNotes: inout [Note], _ isFiltering: Bool, note: Note) {
     // insert new note
     notes.insert(note, at: pinnedNotes.count == 0 ? 0 : pinnedNotes.count)
     print("did insert new note: \(note.title)")
-    filteredNotes = notes
+    if !isFiltering {
+      filteredNotes = notes
+    } else {
+      filteredNotes.insert(note, at: 0)
+    }
     saveNotesToLocal()
   }
 
-  public func updateNote(_ filteredNotes: inout [Note], noteIndex: Int, title: String, body: String) {
+  public func updateNote(_ filteredNotes: inout [Note], _ isFiltering: Bool, noteIndex: Int, title: String, body: String) {
     // update note
-    let noteToEdit: Note = notes[noteIndex]
-    noteToEdit.title = title
-    noteToEdit.body = body
-    filteredNotes = notes
+    let filteredNoteToEdit: Note = filteredNotes[noteIndex]
+    filteredNoteToEdit.title = title
+    filteredNoteToEdit.body = body
+
+//    if !isFiltering {
+//      filteredNotes = notes
+//    } else {
+//      let filteredNoteToEdit: Note = filteredNotes[noteIndex]
+//      filteredNoteToEdit.title = title
+//      filteredNoteToEdit.body = body
+//    }
     saveNotesToLocal()
   }
 
-  public func deleteNote(_ filteredNotes: inout [Note], note: Note) {
+  public func deleteNote(_ filteredNotes: inout [Note], _ isFiltering: Bool, noteIndex: Int) {
     // delete note
-    notes.removeAll(where: { $0.id == note.id })
-    filteredNotes = notes
+    let noteToDelete: Note = filteredNotes[noteIndex]
+    notes.removeAll(where: { $0.id == noteToDelete.id })
+    if !isFiltering {
+      filteredNotes = notes
+    } else {
+      filteredNotes.removeAll(where: { $0.id == noteToDelete.id })
+    }
     saveNotesToLocal()
   }
 

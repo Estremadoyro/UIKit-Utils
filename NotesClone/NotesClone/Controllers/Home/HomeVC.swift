@@ -15,7 +15,8 @@ final class HomeVC: UIViewController {
   var homeNavigationBar: HomeNavigationBar?
   var editIndexPath: IndexPath?
   var insertIndexPath: IndexPath?
-  var flagFiltered: Bool = false
+  var isFiltering: Bool = false
+  var didSetupSections: Bool = false
 
   var notes = Notes()
   lazy var filteredNotes: [Note] = (notes.copy(with: nil) as? Notes)?.notes ?? [Note]()
@@ -41,7 +42,10 @@ final class HomeVC: UIViewController {
 
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    setupInitialSections()
+    if !didSetupSections {
+      print("SETUP - SHOULD RUN ONLY ONCE")
+      setupInitialSections()
+    }
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -104,7 +108,7 @@ extension HomeVC {
 
 extension HomeVC: NotesDelegate {
   func didSaveNote(note: Note) {
-    notes.insertNewNote(&filteredNotes, note: note)
+    notes.insertNewNote(&filteredNotes, isFiltering, note: note)
     let section: Int = tableSectionsAmount > 1 ? 1 : 0
     insertIndexPath = IndexPath(row: 0, section: section)
   }
@@ -112,7 +116,7 @@ extension HomeVC: NotesDelegate {
   func didEditNote(noteIndexPath: IndexPath, title: String, body: String) {
     print("DID EDIT NOTE")
     let globalIndex: Int = getIndexForSection(in: noteIndexPath)
-    notes.updateNote(&filteredNotes, noteIndex: globalIndex, title: title, body: body)
+    notes.updateNote(&filteredNotes, isFiltering, noteIndex: globalIndex, title: title, body: body)
     editIndexPath = noteIndexPath
   }
 }

@@ -30,6 +30,7 @@
 		A7C700E027CB317A0050B23D /* HomeActionSheetVC+Gesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C700DF27CB317A0050B23D /* HomeActionSheetVC+Gesture.swift */; };
 		A7D8721C27C2C16A00574A66 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D8721B27C2C16A00574A66 /* Note.swift */; };
 		A7E6122B27D579ED00846855 /* NotesCRUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E6122A27D579ED00846855 /* NotesCRUD.swift */; };
+		A7E6122D27D6FDF400846855 /* NewNote+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E6122C27D6FDF400846855 /* NewNote+Keyboard.swift */; };
 		A7EFA27127C08B44003B1FCF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFA27027C08B44003B1FCF /* AppDelegate.swift */; };
 		A7EFA27327C08B44003B1FCF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFA27227C08B44003B1FCF /* SceneDelegate.swift */; };
 		A7EFA27527C08B44003B1FCF /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFA27427C08B44003B1FCF /* HomeVC.swift */; };
@@ -63,6 +64,7 @@
 		A7C700DF27CB317A0050B23D /* HomeActionSheetVC+Gesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeActionSheetVC+Gesture.swift"; sourceTree = "<group>"; };
 		A7D8721B27C2C16A00574A66 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		A7E6122A27D579ED00846855 /* NotesCRUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesCRUD.swift; sourceTree = "<group>"; };
+		A7E6122C27D6FDF400846855 /* NewNote+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewNote+Keyboard.swift"; sourceTree = "<group>"; };
 		A7EFA26D27C08B44003B1FCF /* NotesClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NotesClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7EFA27027C08B44003B1FCF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A7EFA27227C08B44003B1FCF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				A7A9A42727C1A969005D9CCE /* NewNoteVC.swift */,
+				A7E6122C27D6FDF400846855 /* NewNote+Keyboard.swift */,
 			);
 			path = NewNote;
 			sourceTree = "<group>";
@@ -378,6 +381,7 @@
 				A7A3383C27C0BC2800BBDFE8 /* HomeNavigationBar.swift in Sources */,
 				A7D8721C27C2C16A00574A66 /* Note.swift in Sources */,
 				A7A333F027C2C38C00CF3A7E /* UserDefaults.swift in Sources */,
+				A7E6122D27D6FDF400846855 /* NewNote+Keyboard.swift in Sources */,
 				A77F3D2727CAE4A9007B8375 /* HomeActionSheetTableView.swift in Sources */,
 				A7EFA27127C08B44003B1FCF /* AppDelegate.swift in Sources */,
 				A7104F1F27C93A3D00EE10CD /* HomeActionSheetVC.swift in Sources */,

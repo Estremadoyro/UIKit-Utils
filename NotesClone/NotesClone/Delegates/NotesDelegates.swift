@@ -10,6 +10,7 @@ import UIKit
 protocol NewNoteDelegate: AnyObject {
   func willSaveNewNote()
   func didClearNewNote()
+  func didShareNote()
 }
 
 protocol NewNoteDataSource: AnyObject {

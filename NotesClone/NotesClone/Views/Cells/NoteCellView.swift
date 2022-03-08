@@ -8,9 +8,9 @@
 import UIKit
 
 class NoteCellView: UITableViewCell {
-  @IBOutlet weak var noteTitleLabel: UILabel!
-  @IBOutlet weak var noteBodyLabel: UILabel!
-  @IBOutlet weak var noteDateLabel: UILabel!
+  @IBOutlet private weak var noteTitleLabel: UILabel!
+  @IBOutlet private weak var noteBodyLabel: UILabel!
+  @IBOutlet private weak var noteDateLabel: UILabel!
 
   var note: Note? {
     didSet {
@@ -40,15 +40,13 @@ extension NoteCellView {
   }
 
   private func configureBodyLabel(text: String?) {
-    guard let text = text else { return }
+    guard let text = text?.trimmingCharacters(in: .whitespaces) else { return }
     noteBodyLabel.text = text
   }
 
   private func configureDateLabel(date: Date?) {
     guard let date = date else { return }
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "MM/dd/yy"
-    let dateToString: String = dateFormatter.string(from: date)
-    noteDateLabel.text = dateToString
+    let dateFormated: String = Utils.dateFormater(date: date, format: "MM/dd/yy")
+    noteDateLabel.text = dateFormated
   }
 }

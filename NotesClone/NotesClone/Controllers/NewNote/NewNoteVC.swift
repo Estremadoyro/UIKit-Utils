@@ -8,10 +8,10 @@
 import UIKit
 
 final class NewNoteVC: UIViewController {
-  @IBOutlet private weak var textView: UITextView!
+  @IBOutlet internal weak var textView: UITextView!
   @IBOutlet private weak var noteTitleLabel: UITextField!
   @IBOutlet private weak var scrollView: UIScrollView!
-  @IBOutlet private weak var newNoteToolBarView: NewNoteToolBarView!
+  @IBOutlet internal weak var newNoteToolBarView: NewNoteToolBarView!
 
   weak var notesDelegate: NotesDelegate?
   var noteSceneType: NoteSceneType = .isCreatingNewNote
@@ -37,7 +37,8 @@ final class NewNoteVC: UIViewController {
     textView.delegate = self
     scrollView.delegate = self
     configureNavigationBar()
-    configureNoteIfEditing(note: note)
+    configureNoteIfEditing()
+    configureKeyboardNotifications()
     newNoteToolBarView.setClearItemState()
   }
 
@@ -54,10 +55,16 @@ extension NewNoteVC {
     newNoteNavigation.buildNavigationItems()
   }
 
-  private func configureNoteIfEditing(note: Note?) {
-    guard let note = note else { return }
+  private func configureNoteIfEditing() {
+    guard let note = self.note else { return }
     noteTitleLabel.text = note.title
     textView.text = note.body
+  }
+
+  private func configureKeyboardNotifications() {
+    let notificationCenter = NotificationCenter.default
+    notificationCenter.addObserver(self, selector: #selector(adjustKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+    notificationCenter.addObserver(self, selector: #selector(adjustKeyboard), name: UIResponder.keyboardDidHideNotification, object: nil)
   }
 }
 
@@ -95,12 +102,25 @@ extension NewNoteVC: NewNoteDelegate {
       case .isEditingNote:
         editNote(title: title, body: body)
     }
+
     navigationController?.popViewController(animated: true)
   }
 
   func didClearNewNote() {
     noteTitleLabel.text? = ""
     textView.text? = ""
+  }
+
+  func didShareNote() {
+    guard let noteTitle: String = note?.title else { return }
+    guard let noteBody: String = note?.body else { return }
+    guard let noteDate: Date = note?.date else { return }
+    let formatedDate: String = Utils.dateFormater(date: noteDate, format: "MM/dd/yyyy")
+    let ac = UIActivityViewController(activityItems: [noteTitle, noteBody, formatedDate], applicationActivities: nil)
+    // prevents from crashing on iPad
+    // iOS 8+ requires popOver...
+    ac.popoverPresentationController?.sourceView = super.view
+    present(ac, animated: true, completion: nil)
   }
 }
 

@@ -16,28 +16,27 @@ class NewNoteNavigationBar {
   }
 
   open func buildNavigationItems() {
-    let moreButtonImage = UIImage(systemName: "ellipsis.circle")?.withRenderingMode(.alwaysTemplate)
+    let moreButtonImage = UIImage(systemName: "square.and.arrow.up")?.withRenderingMode(.alwaysTemplate)
 
-    let moreOptionsButton = UIBarButtonItem(image: moreButtonImage, style: .plain, target: self, action: #selector(showMoreOptions))
-    moreOptionsButton.tintColor = UIColor.systemYellow
+    let shareNoteButton = UIBarButtonItem(image: moreButtonImage, style: .plain, target: self, action: #selector(shareNoteAction))
+    shareNoteButton.tintColor = UIColor.systemYellow
 
     let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneButtonAction))
     doneButton.tintColor = UIColor.systemYellow
 
-    let rightBarItems = [doneButton, moreOptionsButton]
+    let rightBarItems = [doneButton, shareNoteButton]
     newNoteVC?.navigationItem.rightBarButtonItems = rightBarItems
     newNoteVC?.navigationItem.backBarButtonItem?.tintColor = UIColor.systemYellow
   }
 
-  deinit {
-    print("NewNavigationBar deinited")
-  }
+  deinit { print("NewNavigationBar deinited") }
 }
 
 extension NewNoteNavigationBar {
   @objc
-  private func showMoreOptions() {
-    print("show more options")
+  private func shareNoteAction() {
+    print("sharing note")
+    newNoteDelegate?.didShareNote()
   }
 
   @objc

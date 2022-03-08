@@ -8,11 +8,11 @@
 import Foundation
 
 protocol NotesCRUD {
-  func insertNewNote(_ filteredNotes: inout [Note], note: Note)
+  func insertNewNote(_ filteredNotes: inout [Note], _ isFiltering: Bool, note: Note)
 
-  func updateNote(_ filteredNotes: inout [Note], noteIndex: Int, title: String, body: String)
+  func updateNote(_ filteredNotes: inout [Note], _ isFiltering: Bool, noteIndex: Int, title: String, body: String)
 
-  func deleteNote(_ filteredNotes: inout [Note], note: Note)
+  func deleteNote(_ filteredNotes: inout [Note], _ isFiltering: Bool, noteIndex: Int)
 
   func pinNote(_ filteredNotes: inout [Note], noteIndex: Int)
 

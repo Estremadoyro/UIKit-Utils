@@ -16,7 +16,14 @@ class Utils {
       let dummyNote = Note(title: String(letter).uppercased(), body: String(letter))
       notesList.append(dummyNote)
     }
-    print("dummy notes: \(notesList.map {$0.title})")
+    print("dummy notes: \(notesList.map { $0.title })")
     return notesList
+  }
+
+  static func dateFormater(date: Date, format: String) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = format
+    let dateToString: String = dateFormatter.string(from: date)
+    return dateToString
   }
 }

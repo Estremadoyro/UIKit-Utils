@@ -16,10 +16,12 @@ extension HomeVC: UISearchBarDelegate {
     DispatchQueue.global(qos: .userInitiated).async { [unowned self] in
       if searchText == "" {
         self.filteredNotes = notes.notes
+        self.isFiltering = false
         if self.notes.pinnedNotes.count > 0 {
           self.tableSectionsAmount = 2
         }
       } else {
+        self.isFiltering = true
         self.notes.notes.forEach { note in
           if note.title.lowercased().contains(searchText.lowercased()) || note.body.lowercased().contains(searchText.lowercased()) {
             print("NOTE FILTERED: \(note.title)")

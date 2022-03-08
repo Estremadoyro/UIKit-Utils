@@ -66,7 +66,7 @@ extension HomeVC: UITableViewDelegate {
         completion(true)
       }
       let globalIndex: Int = self.getIndexForSection(in: indexPath)
-      self.notes.deleteNote(&self.filteredNotes, note: self.notes.notes[globalIndex])
+      self.notes.deleteNote(&self.filteredNotes, isFiltering, noteIndex: globalIndex)
 
       self.tableView.deleteRows(at: [indexPath], with: .left)
 
@@ -141,8 +141,9 @@ extension HomeVC: UITableViewDelegate {
     let pinImageName = tableSectionsAmount > 1 && indexPath.section == 0 ? "pin.slash.fill" : "pin.fill"
     pinAction.image = UIImage(systemName: pinImageName)
     pinAction.backgroundColor = UIColor.systemOrange.withAlphaComponent(1)
+    let actions = [pinAction]
 
-    let swipeConfig = UISwipeActionsConfiguration(actions: [pinAction])
+    let swipeConfig = UISwipeActionsConfiguration(actions: isFiltering ? [] : actions)
     swipeConfig.performsFirstActionWithFullSwipe = true
     return swipeConfig
   }
@@ -150,7 +151,7 @@ extension HomeVC: UITableViewDelegate {
 
 extension HomeVC {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return 60
+    return 70
   }
 
   func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -160,11 +161,10 @@ extension HomeVC {
 
 extension HomeVC {
   func setupInitialSections() {
-    print("SETUP, filteredNotesCount: \(filteredNotes.count), notes count: \(notes.notes.count)")
-    if tableView.numberOfSections == 1, notes.pinnedNotes.count > 0, !flagFiltered {
-      print("SETUP AGAIN")
-      flagFiltered = true
+    if tableView.numberOfSections == 1, notes.pinnedNotes.count > 0, !didSetupSections {
+      print("SETUP - sections: \(tableView.numberOfSections) | pinnedNotesCount: \(notes.pinnedNotes.count) | didSetupSections: \(didSetupSections)")
       tableSectionsAmount = 2
+      didSetupSections = true
     }
   }
 }

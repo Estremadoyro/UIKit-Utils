@@ -63,13 +63,13 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m9w-Rj-DOe">
-                                                            <rect key="frame" x="35" y="86.5" width="339" height="13.5"/>
+                                                            <rect key="frame" x="35" y="81.5" width="339" height="13.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="systemGrayColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Body" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gyZ-Pd-ybR">
-                                                            <rect key="frame" x="35" y="46.5" width="339" height="40"/>
+                                                            <rect key="frame" x="35" y="41.5" width="339" height="40"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="systemGrayColor"/>
                                                             <nil key="highlightedColor"/>
@@ -78,7 +78,7 @@
                                                     <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                     <constraints>
                                                         <constraint firstItem="m9w-Rj-DOe" firstAttribute="top" secondItem="gyZ-Pd-ybR" secondAttribute="bottom" id="2cz-CF-hk4"/>
-                                                        <constraint firstAttribute="bottom" secondItem="m9w-Rj-DOe" secondAttribute="bottom" id="2zi-4B-vme"/>
+                                                        <constraint firstAttribute="bottom" secondItem="m9w-Rj-DOe" secondAttribute="bottom" constant="5" id="2zi-4B-vme"/>
                                                         <constraint firstItem="yR8-ms-LsD" firstAttribute="leading" secondItem="OSq-sG-j4e" secondAttribute="leading" constant="35" id="A44-X5-sjr"/>
                                                         <constraint firstItem="m9w-Rj-DOe" firstAttribute="leading" secondItem="OSq-sG-j4e" secondAttribute="leading" constant="35" id="JkE-Js-r4Y"/>
                                                         <constraint firstAttribute="trailing" secondItem="gyZ-Pd-ybR" secondAttribute="trailing" id="Q9s-zv-38V"/>
