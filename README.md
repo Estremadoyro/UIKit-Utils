@@ -1,6 +1,13 @@
 # UIKit Utils
 Useful code snippets, references and explanations to basic iOS topics. This repository is inspired in Paul Hudson's guide [HackingWithSwift](https://www.hackingwithswift.com/100) (**100DaysOfSwift**), all the challenges and Days can be found here, up to day 75 for now.
 
+<br />
+
+![Commit history](https://img.shields.io/github/commit-activity/m/estremadoyro/uikit-utils)
+![Last commit](https://img.shields.io/github/last-commit/estremadoyro/uikit-utils)
+![Languages](https://img.shields.io/github/languages/top/estremadoyro/uikit-utils)
+![Visitors](https://api.visitorbadge.io/api/visitors?path=estremadoyro%2Fuikit-utils&label=Views&labelColor=%235c5c5c&countColor=%23539bf5&style=flat)
+
 ### Projects
 Some of HackigWithSwift challenges taken to a next level.
 - [NotesClone](https://github.com/Estremadoyro/NotesClone/tree/9d6ac50183aa0d1164f5cda85ebf456ab078c2ad)
@@ -9,12 +16,6 @@ Some of HackigWithSwift challenges taken to a next level.
 - [Hangman](https://github.com/Estremadoyro/Hangman/tree/5975b0dfe544360afba16fe00be5db56118f4f33)
 - [MapKitTest](https://github.com/Estremadoyro/MapKitTestLibrary/tree/be7f404e614bcd9a5245b81f3363ec614b77b3a4)
 
-<br />
-
-![Commit history](https://img.shields.io/github/commit-activity/m/estremadoyro/uikit-utils)
-![Last commit](https://img.shields.io/github/last-commit/estremadoyro/uikit-utils)
-![Languages](https://img.shields.io/github/languages/top/estremadoyro/uikit-utils)
-![Visitors](https://api.visitorbadge.io/api/visitors?path=estremadoyro%2Fuikit-utils&label=Views&labelColor=%235c5c5c&countColor=%23539bf5&style=flat)
 
 # 🔗 Useful links
 - [README.md documentation](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
