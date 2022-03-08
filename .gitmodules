@@ -10,3 +10,6 @@
 [submodule "MapKitTestLibrary"]
 	path = MapKitTestLibrary
 	url = https://github.com/Estremadoyro/MapKitTestLibrary
+[submodule "PhotoEditor"]
+	path = PhotoEditor
+	url = https://github.com/Estremadoyro/PhotoEditor
