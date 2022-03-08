@@ -1,3 +1,6 @@
 [submodule "NotesClone"]
 	path = NotesClone
 	url = https://github.com/Estremadoyro/NotesClone
+[submodule "PhotoLibrary"]
+	path = PhotoLibrary
+	url = https://github.com/Estremadoyro/PhotoLibrary
