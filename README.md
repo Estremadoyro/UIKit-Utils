@@ -1,6 +1,14 @@
 # UIKit Utils
 Useful code snippets, references and explanations to basic iOS topics. This repository is inspired in Paul Hudson's guide [HackingWithSwift](https://www.hackingwithswift.com/100) (**100DaysOfSwift**), all the challenges and Days can be found here, up to day 75 for now.
 
+### Projects
+Some of HackigWithSwift challenges taken to a next level.
+- [NotesClone](https://github.com/Estremadoyro/NotesClone/tree/9d6ac50183aa0d1164f5cda85ebf456ab078c2ad)
+- [PhotoLibrary](https://github.com/Estremadoyro/PhotoLibrary/tree/5d652bab8cd16e9a5f370099a08ade63bc03d5d0)
+- [PhotoEditor](https://github.com/Estremadoyro/PhotoEditor/tree/9f08ba6100f63224eed040b49365b57c967eed9b)
+- [Hangman](https://github.com/Estremadoyro/Hangman/tree/5975b0dfe544360afba16fe00be5db56118f4f33)
+- [MapKitTest](https://github.com/Estremadoyro/MapKitTestLibrary/tree/be7f404e614bcd9a5245b81f3363ec614b77b3a4)
+
 <br />
 
 ![Commit history](https://img.shields.io/github/commit-activity/m/estremadoyro/uikit-utils)
