@@ -1,5 +1,1 @@
 NotesClone
-- Fix editing note when beign filtered by the SearchBar
-  - filteredNotes has to match the # after filtered when coming back to the     RootController after editing the note (NewNoteVC)
-  - dlete notes needs to access the note displayed and delete it from the
-    Notes global object aswell
