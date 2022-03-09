@@ -1,5 +1,8 @@
 # UIKit Utils
-Useful code snippets, references and explanations to basic iOS topics. This repository is inspired in Paul Hudson's guide [HackingWithSwift](https://www.hackingwithswift.com/100) (**100DaysOfSwift**), all the challenges and Days can be found here, up to day 75 for now.\
+Useful code snippets, references and explanations to basic iOS topics. This repository is inspired in Paul Hudson's guide [HackingWithSwift](https://www.hackingwithswift.com/100) (**100DaysOfSwift**), all the challenges and Days can be found here, up to day 75 for now.
+
+<br />
+
 I will highly appreciate if you starred or followed this repo if it was of any help!
 
 <br />
@@ -43,7 +46,7 @@ Get an object's ARC count
 ```
 Some IBOutlets may be loaded in a lazy manner, may not be loaded during **awakeFromNib** call, hence is prefered to be used only with UIView subclasses\
 
-####Inline switches (For/Case/Let)
+#### Inline switches (For/Case/Let)
 ```swift
 for case let CONDITIONS {}
 // i.e
