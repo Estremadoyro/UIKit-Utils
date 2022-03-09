@@ -1,8 +1,5 @@
 # UIKit Utils
-Useful code snippets, references and explanations to basic iOS topics. This repository is inspired in Paul Hudson's guide [HackingWithSwift](https://www.hackingwithswift.com/100) (**100DaysOfSwift**), all the challenges and Days can be found here, up to day 75 for now.
-
-<br />
-
+Useful code snippets, references and explanations to basic iOS topics. This repository is inspired in Paul Hudson's guide [HackingWithSwift](https://www.hackingwithswift.com/100) (**100DaysOfSwift**), all the challenges and Days can be found here, up to day 75 for now.\
 I will highly appreciate if you starred or followed this repo if it was of any help!
 
 <br />
