@@ -65,7 +65,7 @@ extension ViewController {
     let attributes: [NSAttributedString.Key: Any] = [
       .foregroundColor: UIColor.white,
       .backgroundColor: UIColor.systemRed,
-      .font: UIFont.boldSystemFont(ofSize: 22)
+      .font: UIFont.boldSystemFont(ofSize: 36)
     ]
     let attributedString = NSAttributedString(string: sentence, attributes: attributes)
     titleLabel.attributedText = attributedString

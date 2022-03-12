@@ -157,6 +157,7 @@ let attributes: [NSAttributedString.Key: Any] = [
 let attributedString = NSAttributedString(string: string, attributes: attributes)
 UILabel.attributedText = attributedString
 ```
+<img src="images/NSAttributedString-Example.png" width=200 />
 
 #### NSMutableAttributedString
 Allow having different attributes in different parts of the String.
