@@ -274,6 +274,9 @@ Information Property List
     - Application Session Role
       - Item 0 (Default Configuration)
         -  **Storyboard Name**, delete its dictionary record (Minus button when clicked)
+
+<img src="images/RemoveStoryBoard-Infoplist.png" width=200 />
+
 ### Finally
 Inside the **SceneDelegate.swift** file write this code in the **func scene(scene:willConnectTo:options)** method. In a nutshell, you create a new *window* with the *UIWindow* object, then set its scene with the windowScene already unwrapped, set its main view controller and make it visible.
 ```swift
