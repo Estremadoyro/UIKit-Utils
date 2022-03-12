@@ -147,7 +147,7 @@ Attributed Strings help applying multiple attributes to Strings, these attribute
 
 #### NSAttributedString
 Asigns attributes to the whole text via a NSAttributedString dictionary.
-``swift
+```swift
 let sentence: String = "Stone World"
 let attributes: [NSAttributedString.Key: Any] = [
   .foregroundColor: UIColor.white,  
