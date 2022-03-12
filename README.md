@@ -161,13 +161,14 @@ UILabel.attributedText = attributedString
 #### NSMutableAttributedString
 Allow having different attributes in different parts of the String.
 ```swift
-let mutableAttributedString = NSMutrableAttributedString(string: sentence)
+let mutableAttributedString = NSMutableAttributedString(string: sentence)
 mutableAttributedString.addAttribute(.backgroundColor, value: UIColor.systemGreen, range: NSRange(location: 0, length: sentence.count))
 mutableAttributedString.addAttribute(.strikethroughStyle, value: 1, range: NSRange(location: 0, length: 5))
 mutableAttributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 36), range: NSRange(location: 0, length: 5))
 mutableAttributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 48), range: NSRange(location: 6, length: sentence.count - 6))
 UILabel.attributedText = mutableAttributedString
 ```
+<img src="images/NSAttributedMutableString-Example.png" width=200 />
 
 # 📅 Local Notifications
 Locations notifications don't depend on a dedicaded server capable of sending iOS notifications. These rely on local variables to trigger the notifications, the most common trigger is the interval or date component.\
