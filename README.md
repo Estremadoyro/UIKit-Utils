@@ -142,6 +142,33 @@ override func viewWillAppear(_ animated: Bool) {
 }
 ```
 
+# 🔤 Attributed Strings
+Attributed Strings help applying multiple attributes to Strings, these attributes can also be reflected in i.e UILabel.text, and give larger settings compared to customizing a label as a UI object. 
+
+#### NSAttributedString
+Asigns attributes to the whole text via a NSAttributedString dictionary.
+``swift
+let sentence: String = "Stone World"
+let attributes: [NSAttributedString.Key: Any] = [
+  .foregroundColor: UIColor.white,  
+  .backgroundColor: UIColor.systemRed,  
+  .font: UIFont.boldSystemFont(ofSize: 22)
+]
+let attributedString = NSAttributedString(string: string, attributes: attributes)
+UILabel.attributedText = attributedString
+```
+
+#### NSMutableAttributedString
+Allow having different attributes in different parts of the String.
+```swift
+let mutableAttributedString = NSMutrableAttributedString(string: sentence)
+mutableAttributedString.addAttribute(.backgroundColor, value: UIColor.systemGreen, range: NSRange(location: 0, length: sentence.count))
+mutableAttributedString.addAttribute(.strikethroughStyle, value: 1, range: NSRange(location: 0, length: 5))
+mutableAttributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 36), range: NSRange(location: 0, length: 5))
+mutableAttributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 48), range: NSRange(location: 6, length: sentence.count - 6))
+UILabel.attributedText = mutableAttributedString
+```
+
 # 📅 Local Notifications
 Locations notifications don't depend on a dedicaded server capable of sending iOS notifications. These rely on local variables to trigger the notifications, the most common trigger is the interval or date component.\
 Grant access, **no need of info.plist entry**
