@@ -13,6 +13,7 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     playground()
+    challenge()
   }
 }
 
@@ -115,5 +116,47 @@ extension String {
       }
     }
     return false
+  }
+}
+
+/// # Challenges
+extension ViewController {
+  private func challenge() {
+    let protagonist: String = "Senku"
+    let characterWithPrefix: String = protagonist.withPrefix("Dr. ")
+    print("[Challenge] \(characterWithPrefix)")
+
+    let numericInString: String = "23"
+    let numericfFromString = numericInString.isNumeric
+    print("[Challenge] String \(numericInString) contains a number? -\(numericfFromString)")
+
+    let multiLineString: String = "this\nis\na\ntest"
+    let newLinesArray: [String] = multiLineString.lines
+    print("[Challenge] Lines: \(newLinesArray)")
+  }
+}
+
+public extension String {
+  // Append prefix to String, unless it has it already
+  func withPrefix(_ prefix: String) -> String {
+    // If word is empty, then return the same
+    guard !self.isEmpty else { return "" }
+    // Get wordPrefix last index
+    let prefixEndIndex: String.Index = self.index(self.startIndex, offsetBy: prefix.count)
+    // Get wordPrefix's string (prefix)
+    let inputPrefix = String(self.prefix(upTo: prefixEndIndex))
+    // If prefixes are the same, then don't do nothing
+    guard inputPrefix != prefix else { return self }
+    // If it doesn't already have the prefix, append it
+    return prefix + self
+  }
+
+  // Check if String holds any sort of number
+  var isNumeric: Bool {
+    return (Double(self) != nil ? true : false)
+  }
+
+  var lines: [String] {
+    return self.components(separatedBy: .newlines)
   }
 }
