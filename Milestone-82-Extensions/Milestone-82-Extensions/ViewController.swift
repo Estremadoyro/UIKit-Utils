@@ -64,6 +64,7 @@ extension Array where Element: Equatable {
   }
 }
 
-enum Person {
+class Person {
   static let age: Int = 23
+  init() {}
 }
