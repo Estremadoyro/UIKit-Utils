@@ -133,6 +133,8 @@ extension ViewController {
     let multiLineString: String = "this\nis\na\ntest"
     let newLinesArray: [String] = multiLineString.lines
     print("[Challenge] Lines: \(newLinesArray)")
+
+    print(Date.distantFuture)
   }
 }
 
