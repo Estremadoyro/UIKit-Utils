@@ -142,6 +142,16 @@ override func viewWillAppear(_ animated: Bool) {
 }
 ```
 
+# self vs. Self vs. Type
+<img src="images/self-Self-type.jpeg" width=300 />
+
+#### self
+To complete...
+#### Self
+To complete...
+#### Type (MetaType)
+To complete...
+
 # 🔤 Attributed Strings
 Attributed Strings help applying multiple attributes to Strings, these attributes can also be reflected in i.e UILabel.text, and give larger settings compared to customizing a label as a UI object. 
 
