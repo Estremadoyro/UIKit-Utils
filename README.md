@@ -143,7 +143,7 @@ override func viewWillAppear(_ animated: Bool) {
 ```
 
 # self vs. Self vs. Type
-<img src="images/self-Self-type.jpeg" width=300 />
+<img src="images/self-Self-Type.jpeg" width=200 />
 
 #### self
 To complete...
