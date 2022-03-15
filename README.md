@@ -142,15 +142,71 @@ override func viewWillAppear(_ animated: Bool) {
 }
 ```
 
-# self vs. Self vs. Type
+# Type vs. self vs. Self
 <img src="images/self-Self-Type.jpeg" width=200 />
 
-#### self
-To complete...
-#### Self
-To complete...
 #### Type (MetaType)
-To complete...
+Type, references to the Metatype of a Type (The type of a type). This Type can change, as it's value, during compilation, might be different from execution. Also called "Dynamic Metatype". A reference to a Metatype allows you to use all of that type's properties and methods.
+| Value | Type |
+| --- | --- |
+| "Hello World" | String |
+| String.self | String.Type |
+```swift
+struct Person { 
+  var name: String
+}
+
+let person1: Person = Person(name: "Leonardo")
+// Where
+// : Person represents the type of an instance
+// Person(name: "Leonardo") represents an instance of the Person object
+
+let something = type(of: person1) // Person.Type
+let student: Person = something.init() // Yes, you can access the .init() from the MetaType reference "something".
+
+// Dynamic Metatype
+let developer: Any = "Leonardo"  
+// Any    : During compilation
+// String : During runtime 
+```
+
+#### self
+Is a reference to the current instance of a class or struct within itself. This can also be used to access the value of a Metatype. You probably have used before when working with UserDefaults to decode an object.
+```swift
+struct Book { 
+  var title: String
+  var ISBN: String
+}
+// Reading new book from UserDefaults
+let data = UserDefaults.standard.object(forKey: BOOK_KEY) as! Data
+let savedBook = try! JSONDecoder().decode(book.self, from: data) // Accessing the value of Book's metatype.
+```
+#### Self
+Self's is mostly used for **protocols** & **extensions**, as it directly refers to the type which conforms the protocol. However, this may depend on wether constraints are used or not.
+```swift
+extension Numeric { 
+  func squared() -> Self { // Self, refers to the type
+    // self Refers to "number"
+    return self * self
+  }
+}
+
+let number = 10
+number.squared() // 100
+
+// Constraint: Only elements that conform Numeric
+// We can use Element as a "subtype" of the type of the element in the Sequence
+extension Sequence where Element: Numeric { 
+  // Remember Swift is a type-safe language, meaning we need to define the type of our value and referece types or let the runtime imply them. However, with methods we must explicity say what are we returning. 
+  // With that in mind, returning Self alone would be like returning Sequence, when we know we must specify the Sequence's element's types.
+  func squareAll() -> [Self.Element] {
+    return self.map { $0 * $0 }
+  } 
+} 
+
+let numbers = [10, 11, 12]
+numbers.squareAll() // [100, 121, 144]
+```
 
 # 🔤 Attributed Strings
 Attributed Strings help applying multiple attributes to Strings, these attributes can also be reflected in i.e UILabel.text, and give larger settings compared to customizing a label as a UI object. 
