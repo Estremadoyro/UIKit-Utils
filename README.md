@@ -191,7 +191,7 @@ let center = UNUserNotificationCenter.current()
 // thre are more options than these, and can be used simultaniously
 center.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
   if let error = error {
-    prnit(error)
+    print(error)
     return
   }
   if granted {
