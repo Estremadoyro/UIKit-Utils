@@ -145,7 +145,7 @@ override func viewWillAppear(_ animated: Bool) {
 # Type vs. self vs. Self
 <img src="images/self-Self-Type.jpeg" width=200 />
 
-#### Type (MetaType)
+### Type (MetaType)
 Type, references to the Metatype of a Type (The type of a type). This Type can change, as it's value, during compilation, might be different from execution. Also called "Dynamic Metatype". A reference to a Metatype allows you to use all of that type's properties and methods.
 | Value | Type |
 | --- | --- |
@@ -170,7 +170,7 @@ let developer: Any = "Leonardo"
 // String : During runtime 
 ```
 
-#### self
+### self
 Is a reference to the current instance of a class or struct within itself. This can also be used to access the value of a Metatype. You probably have used before when working with UserDefaults to decode an object.
 ```swift
 struct Book { 
@@ -181,7 +181,7 @@ struct Book {
 let data = UserDefaults.standard.object(forKey: BOOK_KEY) as! Data
 let savedBook = try! JSONDecoder().decode(book.self, from: data) // Accessing the value of Book's metatype.
 ```
-#### Self
+### Self
 Self's is mostly used for **protocols** & **extensions**, as it directly refers to the type which conforms the protocol. However, this may depend on wether constraints are used or not.
 ```swift
 extension Numeric { 
