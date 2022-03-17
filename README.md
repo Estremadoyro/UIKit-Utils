@@ -36,6 +36,7 @@ Some of HackigWithSwift challenges taken to a next level.
 - [Reducing memory footprint for UIImages](https://swiftsenpai.com/development/reduce-uiimage-memory-footprint/)
 - [Fix Massive View Controllers](https://www.hackingwithswift.com/articles/86/how-to-move-data-sources-and-delegates-out-of-your-view-controllers)
 - [self vs. Self vs. Type](https://swiftrocks.com/whats-type-and-self-swift-metatypes.html)
+- [MultipeerConnectivity (P2P)](https://www.ralfebert.com/ios-app-development/multipeer-connectivity/)
 # 📌 Tips
 Get an object's ARC count
 ```swift
@@ -141,6 +142,25 @@ override func viewWillAppear(_ animated: Bool) {
   self.picker != nil { self.picker = nil }
 }
 ```
+
+# P2P (MultipeerConnectivity)
+Allows devices to connect and share data (Message based, streaming, and resources) with each other automatically using 3 possible technologies:
+- Wifi Connection (In case in the same Wifi)
+- P2P Wifi
+- Bluetooth
+
+From iOS 13+ it's now necessary to add the following rows to **info.plist**.
+Where the 2 values in the *Bounjour Services* must be the registered **serviceType** with this format.
+```swift
+let serviceType: String = "lec-project25"
+
+// In Bonjour services (in info.plist), without the quotes ofc ("")
+let bonjourServices: [String] = [
+  "_lec-project25._tcp",
+  "_lec-project25._udp",
+]
+```
+<img src="images/p2p-info-plist.png" width=350 />
 
 # Type vs. self vs. Self
 <img src="images/self-Self-Type.jpeg" width=200 />
