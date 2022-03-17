@@ -143,7 +143,7 @@ override func viewWillAppear(_ animated: Bool) {
 }
 ```
 
-# P2P (MultipeerConnectivity)
+# 👫 P2P (MultipeerConnectivity)
 Allows devices to connect and share data (Message based, streaming, and resources) with each other automatically using 3 possible technologies:
 - Wifi Connection (In case in the same Wifi)
 - P2P Wifi
@@ -160,7 +160,7 @@ let bonjourServices: [String] = [
   "_lec-project25._udp",
 ]
 ```
-<img src="images/p2p-info-plist.png" width=350 />
+<img src="images/p2p-info-plist.png" width=500 />
 
 # Type vs. self vs. Self
 <img src="images/self-Self-Type.jpeg" width=200 />
