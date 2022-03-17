@@ -12,18 +12,20 @@ enum P2PConfig: String {
   case serviceType = "lec-project25"
 }
 
-final class ViewController: UICollectionViewController, MCNearbyServiceAdvertiserDelegate {
+final class ViewController: UICollectionViewController {
   private var photoPicker: PhotoPicker?
 
   // Identifies each user uniquely in a session
-  private var peerID: MCPeerID?
+  private let peerID = MCPeerID(displayName: UIDevice.current.name)
 
-  // Manager class that handles all multipeer connectivity
+  // Manages all the connected devices (peers), and allows sending and recieving messages
   private var mcSession: MCSession?
 
-  // Used when creating a session, propagating our user
-//  private var mcAdvertiserAssistant: MCAdvertiserAssistant?
-  private var mcAdvertiserAssistant: MCNearbyServiceAdvertiser?
+  // Used to advertise the session, propagating our user
+  private var mcNearbyServiceAdvertiser: MCNearbyServiceAdvertiser?
+
+  // Look for a service in the network
+  private var mcServiceBrowser: MCNearbyServiceBrowser?
 
   private var images = [UIImage]()
 
@@ -96,8 +98,8 @@ extension ViewController {
   @objc
   private func showConnectionPrompt() {
     let ac = UIAlertController(title: "Connect to others", message: nil, preferredStyle: .alert)
-    let hostSessionAction = UIAlertAction(title: "Host a session", style: .default, handler: configureHosting)
-    let joinSessionAction = UIAlertAction(title: "Join session", style: .default, handler: joinSession)
+    let hostSessionAction = UIAlertAction(title: "Host a session", style: .default, handler: configureServiceAdvertiser)
+    let joinSessionAction = UIAlertAction(title: "Join session", style: .default, handler: configureServiceBrowser)
     let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
     ac.addAction(hostSessionAction)
     ac.addAction(joinSessionAction)
@@ -108,38 +110,24 @@ extension ViewController {
 
 extension ViewController {
   private func configureP2P() {
-    configurePeerID()
     configureMCSession()
   }
 
-  private func configurePeerID() {
-    let deviceName: String = UIDevice.current.name
-    peerID = MCPeerID(displayName: deviceName)
-  }
-
   private func configureMCSession() {
-    guard let peerID = peerID else { fatalError("Failed creating PeerID") }
-    mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
+    mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .none)
     mcSession?.delegate = self
   }
 
-  private func configureHosting(action: UIAlertAction) {
-    guard let mcSession = mcSession else { fatalError("Failed accessing session") }
+  private func configureServiceAdvertiser(action: UIAlertAction) {
     let serviceType: String = P2PConfig.serviceType.rawValue
-//    mcAdvertiserAssistant = MCAdvertiserAssistant(serviceType: serviceType, discoveryInfo: nil, session: mcSession)
-    mcAdvertiserAssistant = MCNearbyServiceAdvertiser(peer: peerID!, discoveryInfo: nil, serviceType: serviceType)
-    mcAdvertiserAssistant?.delegate = self
-
-    // Begins advertising and starts the assistant
-//    mcAdvertiserAssistant?.start()
-    mcAdvertiserAssistant?.startAdvertisingPeer()
+    mcNearbyServiceAdvertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: nil, serviceType: serviceType)
+    mcNearbyServiceAdvertiser?.delegate = self
+    mcNearbyServiceAdvertiser?.startAdvertisingPeer()
   }
 
-  private func joinSession(action: UIAlertAction) {
+  private func configureServiceBrowser(action: UIAlertAction) {
     guard let mcSession = mcSession else { fatalError("Failed accessing session") }
     let serviceType: String = P2PConfig.serviceType.rawValue
-
-    // Used when looking for sessions, in charge of showing users that are nearby
     let mcBrowser = MCBrowserViewController(serviceType: serviceType, session: mcSession)
     mcBrowser.delegate = self
     present(mcBrowser, animated: true)
@@ -176,12 +164,6 @@ extension ViewController: MCSessionDelegate {
   }
 }
 
-extension ViewController: MCAdvertiserAssistantDelegate {
-  func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
-    print("resolved invitation from: \(peerID.displayName)")
-  }
-}
-
 extension ViewController: MCBrowserViewControllerDelegate {
   func browserViewControllerDidFinish(_ browserViewController: MCBrowserViewController) {
     dismiss(animated: true)
@@ -189,5 +171,24 @@ extension ViewController: MCBrowserViewControllerDelegate {
 
   func browserViewControllerWasCancelled(_ browserViewController: MCBrowserViewController) {
     dismiss(animated: true)
+  }
+}
+
+extension ViewController: MCNearbyServiceAdvertiserDelegate {
+  func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
+    let ac = UIAlertController(title: "Connect Request", message: "\(advertiser.myPeerID.displayName) wants to connect", preferredStyle: .alert)
+    let acceptedAction = UIAlertAction(title: "Accept", style: .default) { [unowned self] _ in
+      guard let mcSession = self.mcSession else { return }
+      invitationHandler(true, mcSession)
+    }
+
+    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { [unowned self] _ in
+      guard let mcSession = self.mcSession else { return }
+      invitationHandler(false, mcSession)
+    }
+
+    ac.addAction(acceptedAction)
+    ac.addAction(cancelAction)
+    present(ac, animated: true)
   }
 }

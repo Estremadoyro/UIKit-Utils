@@ -7,7 +7,7 @@
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_lec-project25._tcp</string>
-		<string>lec-project25.udp</string>
+		<string>_lec-project25._udp</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
