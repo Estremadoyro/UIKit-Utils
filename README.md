@@ -160,7 +160,7 @@ let bonjourServices: [String] = [
   "_lec-project25._udp",
 ]
 ```
-<img src="images/p2p-info-plist.png" width=500 />
+<img src="images/p2p-info-plist.png" width=700 />
 
 # Type vs. self vs. Self
 <img src="images/self-Self-Type.jpeg" width=200 />
