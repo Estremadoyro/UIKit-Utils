@@ -163,8 +163,6 @@ let bonjourServices: [String] = [
 <img src="images/p2p-info-plist.png" width=700 />
 
 # Type vs. self vs. Self
-<img src="images/self-Self-Type.jpeg" width=200 />
-
 ### Type (MetaType)
 Type, references to the Metatype of a Type (The type of a type). This Type can change, as it's value, during compilation, might be different from execution. Also called "Dynamic Metatype". A reference to a Metatype allows you to use all of that type's properties and methods.
 | Value | Type |

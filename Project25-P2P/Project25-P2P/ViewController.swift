@@ -29,6 +29,8 @@ final class ViewController: UICollectionViewController {
 
   private var images = [UIImage]()
 
+  var connectedPeersAmount: Int = 0
+
   override func viewDidLoad() {
     super.viewDidLoad()
     configureNavBar()
@@ -55,7 +57,9 @@ private extension ViewController {
   func configureNavBar() {
     title = "Selfie Share"
     navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(importPicture))
-    navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showConnectionPrompt))
+    let connectionItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showConnectionPrompt))
+    let connectedUsersItem = UIBarButtonItem(image: UIImage(systemName: "person.2.wave.2.fill"), style: .plain, target: self, action: #selector(showConnectedUsers))
+    navigationItem.leftBarButtonItems = [connectionItem, connectedUsersItem]
   }
 }
 
@@ -82,7 +86,10 @@ extension ViewController: PhotoPickerDelegate {
       // Converting UIImage to pngData (Data)
       if let imageData = photo.pngData() {
         do {
+          let customMessage: String = "Let's get excited"
+          let customMessageData = Data(customMessage.utf8)
           try mcSession.send(imageData, toPeers: mcSession.connectedPeers, with: .reliable)
+          try mcSession.send(customMessageData, toPeers: mcSession.connectedPeers, with: .reliable)
           // Swift created the new constant "error" for us to use when "catch" gets ran
         } catch {
           let ac = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
@@ -132,6 +139,27 @@ extension ViewController {
     mcBrowser.delegate = self
     present(mcBrowser, animated: true)
   }
+
+  private func alertUserDisconnected(peer: MCPeerID) {
+    let ac = UIAlertController(title: "Disconnected", message: "\(peer.displayName) disconnected from the network", preferredStyle: .alert)
+    ac.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+    present(ac, animated: true)
+  }
+
+  @objc
+  private func showConnectedUsers() {
+    var aux: String = ""
+    mcSession!.connectedPeers.forEach { peer in
+      aux += "- \(peer.displayName)\n"
+    }
+    let connectedUsersMessage: String = """
+    Users:
+    \(aux.isEmpty ? "No users" : aux)
+    """
+    let ac = UIAlertController(title: "Connected Users", message: connectedUsersMessage, preferredStyle: .alert)
+    ac.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+    present(ac, animated: true)
+  }
 }
 
 extension ViewController: MCSessionDelegate {
@@ -142,10 +170,19 @@ extension ViewController: MCSessionDelegate {
   func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
     switch state {
       case .connected:
+        connectedPeersAmount += 1
         print("Connected: \(peerID.displayName)")
       case .connecting:
         print("Connecting: \(peerID.displayName)")
+      // Device disconnected
       case .notConnected:
+        if connectedPeersAmount >= 1 {
+          DispatchQueue.main.async { [unowned self] in
+            self.alertUserDisconnected(peer: peerID)
+            self.connectedPeersAmount -= 1
+          }
+        }
+
         print("Not connected: \(peerID.displayName)")
       @unknown default:
         print("Unknown state recieved")
@@ -160,6 +197,9 @@ extension ViewController: MCSessionDelegate {
         let indexPath = IndexPath(row: 0, section: 0)
         self?.collectionView.insertItems(at: [indexPath])
       }
+
+      let customMessage = String(decoding: data, as: UTF8.self)
+      self?.navigationItem.title = customMessage
     }
   }
 }
@@ -176,7 +216,7 @@ extension ViewController: MCBrowserViewControllerDelegate {
 
 extension ViewController: MCNearbyServiceAdvertiserDelegate {
   func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
-    let ac = UIAlertController(title: "Connect Request", message: "\(advertiser.myPeerID.displayName) wants to connect", preferredStyle: .alert)
+    let ac = UIAlertController(title: "Connect Request", message: "\(peerID.displayName) wants to connect", preferredStyle: .alert)
     let acceptedAction = UIAlertAction(title: "Accept", style: .default) { [unowned self] _ in
       guard let mcSession = self.mcSession else { return }
       invitationHandler(true, mcSession)
