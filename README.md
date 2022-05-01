@@ -344,6 +344,17 @@ Should be called inside **viewDidLayoutSubviews** in a VC, but if not, an **asyn
     }
 
 ```
+- Simple solution, doesn't apply for subviews of class *UIImageView*
+```swift
+view.backgroundColor = UIColor.systemPink
+view.layer.cornerRadius = 15
+view.layer.shadowColor = UIColor.systemPink.cgColor
+view.layer.shadowOffset = CGSize(width: 0.0, height: 5.0)
+view.layer.shadowRadius = 5
+view.layer.shadowOpacity = 0.5
+```
+<img src="images/corner-shadow-pink.png" width=250 />
+
 # 📋 TableView
 ## TableViewCell
 Comes with an embeded **contentView** inside the **cell**, it's size must not be edited, as it is done manually by the API.
