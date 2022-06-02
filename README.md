@@ -147,10 +147,10 @@ override func viewWillAppear(_ animated: Bool) {
 Helps you create custom-complex UICollectionView layouts without needing to do manual calculations. It's composed of a **Section**, **Groups** and **Items**.
 
 #### Structure
-<img src="images/apple-compositonal-layout.png" width=400 />
+<img src="images/apple-compositonal-layout.png" width=150 />
 
 #### Staggered Layout
-<img src="images/compositional-layout-staggered.png" width=400 />
+<img src="images/compositional-layout-staggered.png" width=150 />
 
 # 👫 P2P (MultipeerConnectivity)
 Allows devices to connect and share data (Message based, streaming, and resources) with each other automatically using 3 possible technologies:
