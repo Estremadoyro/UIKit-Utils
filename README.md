@@ -37,6 +37,7 @@ Some of HackigWithSwift challenges taken to a next level.
 - [Fix Massive View Controllers](https://www.hackingwithswift.com/articles/86/how-to-move-data-sources-and-delegates-out-of-your-view-controllers)
 - [self vs. Self vs. Type](https://swiftrocks.com/whats-type-and-self-swift-metatypes.html)
 - [MultipeerConnectivity (P2P)](https://www.ralfebert.com/ios-app-development/multipeer-connectivity/)
+- [UICollectionViewCompositionalLayout](https://developer.apple.com/documentation/uikit/uicollectionviewcompositionallayout)
 # 📌 Tips
 Get an object's ARC count
 ```swift
@@ -142,6 +143,14 @@ override func viewWillAppear(_ animated: Bool) {
   self.picker != nil { self.picker = nil }
 }
 ```
+# 🗄 UICollectionViewCompositionalLayout
+Helps you create custom-complex UICollectionView layouts without needing to do manual calculations. It's composed of a **Section**, **Groups** and **Items**.
+
+#### Structure
+<img src="images/apple-compositonal-layout.png" width=400 />
+
+#### Staggered Layout
+<img src="images/compositional-layout-staggered.png" width=400 />
 
 # 👫 P2P (MultipeerConnectivity)
 Allows devices to connect and share data (Message based, streaming, and resources) with each other automatically using 3 possible technologies:
